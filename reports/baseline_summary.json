@@ -128,6 +128,7 @@
   "max_output_rate": 1.0,
   "mlx_peak_bytes": 1684113210,
   "n": 60,
+  "output_loop_rate": 0.0,
   "reasoning_tokens": {
     "mean": 2044.1333333333334,
     "p50": 2048.0,

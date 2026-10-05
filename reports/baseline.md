@@ -3,7 +3,7 @@
 Measured on 60 DEV problems, ten each across six deterministic families. TEST was not evaluated.
 Pinned original bf16 text weights, MLX on M3 Pro. Total-output cap: 2048 tokens. No runtime guard.
 
-| Variant | Accuracy | Median Think Tokens | P95 Think Tokens | Exact Loop Rate | Max-Out Rate | Mean Latency |
+| Variant | Accuracy | Median Think Tokens | P95 Think Tokens | Exact Output Loop Rate | Max-Out Rate | Mean Latency |
 |---|---:|---:|---:|---:|---:|---:|
 | A: official thinking | 0.0% | 2048 | 2048 | 0.0% | 100.0% | 33.90 s |
 

@@ -86,3 +86,19 @@ Interpretation: divergence is consistent with bf16 numerical differences near a
 tie; this diagnostic supports architecture fidelity but is not universal backend
 equivalence. Pins/seeds reproduce within a backend, not across devices.
 Next decision: continue MLX experiments and retain explicit backend identifiers.
+
+## CONTROL-005 — completed
+
+Configuration: `configs/nonthinking.yaml`, same 60 DEV tasks and stable per-problem
+seeds, original weights, official non-thinking sampler, 2048 total-output cap.
+Run: `20261005T173939-A0-official-nonthinking-723496fd`.
+Result: 15/60 correct (25%; Wilson 95% interval 15.78–37.23%); median total output
+381.5 tokens, mean 815.13, p95 2048; 17/60 cap failures; mean latency 12.39 s;
+aggregate throughput 65.76 tokens/s. Median explicit thinking partition is zero,
+but final-channel text includes calculations and sometimes very long reconsideration.
+Task accuracy: algebra 50%, arithmetic 30%, boolean 30%, state 20%, word problems
+20%, ordering 0%. Exact all-output cycle heuristic detects none.
+Interpretation: mode changes bounded accuracy and output compute substantially,
+while many very short answers are wrong. This is a control, not an optimized
+reasoning-preserving model; no claim about uncapped capability or TEST performance.
+Next decision: finish the predeclared thinking sampler pilots before dataset selection.

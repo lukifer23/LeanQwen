@@ -1,0 +1,162 @@
+{
+  "accuracy": 0.25,
+  "accuracy_bootstrap_ci95": [
+    0.15,
+    0.36666666666666664
+  ],
+  "accuracy_over_median_reasoning_tokens": 0.25,
+  "accuracy_wilson_ci95": [
+    0.15776522530056675,
+    0.37232070077047824
+  ],
+  "aggregate_output_tokens_per_second": 65.76352048535391,
+  "by_family": {
+    "algebra": {
+      "accuracy": 0.5,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "arithmetic": {
+      "accuracy": 0.3,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "boolean_logic": {
+      "accuracy": 0.3,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "ordering": {
+      "accuracy": 0.0,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.1,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.09999999999999964,
+        "p95": 0.5499999999999989,
+        "p99": 0.9100000000000001
+      }
+    },
+    "state_machine": {
+      "accuracy": 0.2,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "word_problem": {
+      "accuracy": 0.2,
+      "n": 10,
+      "reasoning_tokens": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p75": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    }
+  },
+  "candidate_conclusion_found": 0,
+  "candidate_correct_then_wrong_final": 0,
+  "excessive_reasoning_rate": {
+    "1024": 0.0,
+    "2048": 0.0,
+    "4096": 0.0,
+    "512": 0.0
+  },
+  "final_tokens": {
+    "mean": 814.3666666666667,
+    "p50": 380.5,
+    "p75": 2048.0,
+    "p90": 2048.0,
+    "p95": 2048.0,
+    "p99": 2048.0
+  },
+  "latency_s": {
+    "mean": 12.394916320133294,
+    "p50": 5.889911312500772,
+    "p75": 27.625717146260286,
+    "p90": 33.653487545604,
+    "p95": 33.90788086105094,
+    "p99": 34.461693630334196
+  },
+  "lexical_redundancy_density": {
+    "mean": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "longest_repeated_span_words": {
+    "mean": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "loop_rate": 0.0,
+  "max_output_rate": 0.2833333333333333,
+  "mlx_peak_bytes": 1689110374,
+  "n": 60,
+  "output_loop_rate": 0.0,
+  "reasoning_tokens": {
+    "mean": 0.016666666666666666,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "p95": 0.0,
+    "p99": 0.4099999999999966
+  },
+  "repetition_density": {
+    "mean": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "rss_peak_observed_bytes": 360153088,
+  "termination_counts": {
+    "eos": 43,
+    "max_output_tokens": 17
+  },
+  "total_output_tokens": {
+    "mean": 815.1333333333333,
+    "p50": 381.5,
+    "p75": 2048.0,
+    "p90": 2048.0,
+    "p95": 2048.0,
+    "p99": 2048.0
+  },
+  "unclosed_thinking_rate": 0.0
+}

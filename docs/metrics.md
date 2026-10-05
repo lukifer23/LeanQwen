@@ -67,3 +67,9 @@ accuracy/p50 ratio is not a selection objective. No arbitrary reward coefficient
 Memory: MLX peak allocator bytes and sampled process RSS every 64 tokens plus
 start/end. Both are imperfect and must not be summed (shared/unified accounting).
 Neither is total machine usage. Available system RAM is recorded separately.
+
+Latency observations were collected during interactive development, with some
+CPU analysis and small unit-test operations in the session. Treat them as
+preliminary hardware timings; dedicated latency comparisons should isolate
+background activity and control power/thermal conditions. Model experiments ran
+one at a time, with no overlapping model instances.
