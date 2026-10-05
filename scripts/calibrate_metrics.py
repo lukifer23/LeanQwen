@@ -6,6 +6,8 @@ import math
 from collections import Counter
 from pathlib import Path
 
+import numpy as np
+
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.metrics.conclusions import conclusion_states
 from qwenlean.metrics.guard_replay import replay

@@ -93,6 +93,22 @@ class MLXBackend:
             "eos_metadata_warnings": ["model_config_eos_missing"] if eos is None else [],
         }
 
+        if config.get("adapter_path"):
+            from mlx_lm.tuner.utils import load_adapters
+
+            adapter = Path(config["adapter_path"])
+            meta = json.loads((adapter / "adapter_config.json").read_text())
+            if meta.get("revision") != config["revision"] or meta.get("base_model") != config["model"]:
+                raise ValueError("Adapter base-model pin mismatch")
+            load_adapters(self.model, adapter)
+            self.model.eval()
+            mx.eval(self.model.parameters())
+            adapter_hash = hashlib.sha256((adapter / "adapters.safetensors").read_bytes()).hexdigest()
+            self.model_info.update(
+                adapter_sha256=adapter_hash,
+                weights_identifier=self.model_info["weights_identifier"] + ":adapter:" + adapter_hash,
+            )
+
     def generate(self, prompt, seed, config=None):
         config = config or self.config
         thinking = config.get("enable_thinking", True)

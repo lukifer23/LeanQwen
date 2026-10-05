@@ -75,6 +75,14 @@ def _train(cfg, rows, output):
     mx.random.seed(cfg['seed'])
     rng = random.Random(cfg['seed'])
     backend = MLXBackend(cfg)
+    for row in rows:
+        formatted = backend.tokenizer.apply_chat_template(
+            [{"role": "user", "content": row["prompt"]}], tokenize=False,
+            add_generation_prompt=True, enable_thinking=True)
+        if backend.tokenizer.encode(formatted, add_special_tokens=False) != row["prompt_token_ids"]:
+            raise ValueError("Saved prompt IDs differ from official thinking template")
+        if row["target_token_ids"][-1] not in backend.eos_ids:
+            raise ValueError("Training target lacks a preserved Qwen EOS token")
     model = backend.model
     targets = attach_adapters(model, cfg)
     model.train()  # Native differentiable gated-delta path; inference kernels have no VJP.
@@ -155,6 +163,9 @@ def _train(cfg, rows, output):
     mx.eval(reloaded.model.parameters())
     reload_leaves = {n: p for n, p in tree_flatten(reloaded.model.parameters()) if n.endswith(('lora_a', 'lora_b'))}
     reload_hash = parameter_hash(reload_leaves)
+    adapter_file_hash = hashlib.sha256((output/'adapters.safetensors').read_bytes()).hexdigest()
+    reloaded.model_info.update(adapter_sha256=adapter_file_hash,
+        weights_identifier=info['weights_identifier'] + ':adapter:' + adapter_file_hash)
     if reload_hash != after_hash:
         raise RuntimeError('Reloaded adapter tensor hash differs')
     smoke_tasks, smoke_rows = read_jsonl('data/splits/procedural-v2/dev.jsonl'), []
