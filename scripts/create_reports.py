@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from qwenlean.evaluation.summary import paired_comparison, summarize
-from qwenlean.scoring.exact import SCORING_VERSION
 from qwenlean.utils.io import read_jsonl, write_json
 
 
@@ -48,7 +47,10 @@ def main():
     parser.add_argument("--baseline-run", required=True)
     parser.add_argument("--sampling", default="reports/sampling_measurements.json")
     parser.add_argument("--nonthinking-run")
+    parser.add_argument("--output-dir", required=True, help="New report directory; historical files are protected")
     args = parser.parse_args()
+    out = Path(args.output_dir)
+    out.mkdir(parents=True, exist_ok=False)
     baseline = Path(args.baseline_run)
     verify_complete(baseline)
     a = read_jsonl(baseline / "samples.jsonl")
@@ -59,7 +61,7 @@ def main():
             "config": json.loads((baseline / "config.json").read_text()),
         }
     }
-    write_json("reports/baseline_summary.json", sa)
+    write_json(out / "baseline_summary.json", sa)
     lines = [
         "# Baseline A — original Qwen weights, official thinking sampler",
         "",
@@ -139,7 +141,7 @@ def main():
             "```",
             "",
         ]
-    write_json("reports/inspection_records.json", selected)
+    write_json(out / "inspection_records.json", selected)
     lines += [
         "## Limits",
         "",
@@ -154,7 +156,7 @@ def main():
         "```",
         "",
     ]
-    Path("reports/baseline.md").write_text("\n".join(lines))
+    Path(out / "baseline.md").write_text("\n".join(lines))
     entries = [("A", a, sa)]
     if Path(args.sampling).exists():
         sweep = json.loads(Path(args.sampling).read_text())
@@ -231,7 +233,7 @@ def main():
             "",
         ]
         write_json(args.sampling, sweep)
-        Path("reports/sampling_ablation.md").write_text("\n".join(report))
+        Path(out / "sampling_ablation.md").write_text("\n".join(report))
     if args.nonthinking_run:
         control = Path(args.nonthinking_run)
         verify_complete(control)
@@ -243,12 +245,12 @@ def main():
             "sample_count": len(c),
             "config": json.loads((control / "config.json").read_text()),
         }
-        write_json("reports/nonthinking_summary.json", sc)
+        write_json(out / "nonthinking_summary.json", sc)
         control_extra = (
             f"Task accuracy {sc['accuracy']:.1%}; strict extraction accuracy {sc['strict_final_accuracy']:.1%}; "
-            f"format compliance {sc['format_compliance_rate']:.1%}. Scorer: {SCORING_VERSION}.\n"
+            f"format compliance {sc['format_compliance_rate']:.1%}. Scorers: {sc['scoring_versions']}.\n"
         )
-        Path("reports/nonthinking_control.md").write_text(
+        Path(out / "nonthinking_control.md").write_text(
             "# Official default-mode control\n\n"
             + table([("A thinking", sa), ("A0 non-thinking", sc)])
             + "\n\nNon-thinking uses the official non-thinking sampler. This is a mode plus sampler control. "
@@ -256,7 +258,7 @@ def main():
             + f"{sa['total_output_tokens']['p50']:.0f} for A and {sc['total_output_tokens']['p50']:.0f} for A0. "
             + "This control does not establish that harder reasoning tasks can dispense with thinking.\n"
         )
-        with Path("reports/nonthinking_control.md").open("a") as handle:
+        with Path(out / "nonthinking_control.md").open("a") as handle:
             handle.write("\n" + control_extra)
     fig, axes = plt.subplots(1, 2, figsize=(11, 4))
     for label, rows, s in entries:
@@ -278,7 +280,7 @@ def main():
         ax.grid(alpha=0.2)
         ax.legend()
     fig.tight_layout()
-    fig.savefig("reports/reasoning_accuracy.png", dpi=180)
+    fig.savefig(out / "reasoning_accuracy.png", dpi=180)
     plt.close(fig)
     # Compact per-sample evidence persists in Git; bulky full run outputs stay local.
     evidence = {
@@ -305,8 +307,8 @@ def main():
         ]
         for label, rows, _ in entries
     }
-    write_json("reports/per_sample_measurements.json", evidence)
-    write_json("reports/run_sources.json", source)
+    write_json(out / "per_sample_measurements.json", evidence)
+    write_json(out / "run_sources.json", source)
 
 
 if __name__ == "__main__":

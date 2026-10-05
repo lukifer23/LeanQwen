@@ -93,6 +93,9 @@ def evaluate(backend, tasks, config, label=None, root="runs", resume=None):
     if resume:
         run = Path(resume)
         records = validate_resume(run, tasks, config)
+        saved_model = json.loads((run / "model.json").read_text()) if (run / "model.json").exists() else (records[0]["model_identifier"] if records else None)
+        if saved_model is not None and digest(saved_model) != digest(backend.model_info):
+            raise ValueError("Resume loaded model/adapter/precision/template/context fingerprint changed")
         event = {
             "existing_generations": len(records),
             "remaining_generations": len(plan) - len(records),
@@ -104,6 +107,7 @@ def evaluate(backend, tasks, config, label=None, root="runs", resume=None):
     else:
         run = create_run(root, label or config["name"], config)
         write_json(run / "environment.json", environment_manifest())
+        write_json(run / "model.json", backend.model_info)
         write_json(run / "scoring_contract.json", contract)
         write_json(
             run / "dataset.json",

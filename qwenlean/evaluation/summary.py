@@ -55,6 +55,8 @@ def summarize(records):
         subset = [r for r in records if r["family"] == name]
         family[name] = {
             "n": len(subset),
+            "total_generations": len(subset),
+            "unique_tasks": len({r.get("task_id", r.get("sample_id")) for r in subset}),
             "accuracy": sum(r["correct"] for r in subset) / len(subset),
             "reasoning_tokens": distribution([r["reasoning_tokens"] for r in subset]),
         }

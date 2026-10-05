@@ -8,7 +8,6 @@ from pathlib import Path
 
 import numpy as np
 
-from qwenlean.inference.parsing import parse_tokens
 from qwenlean.metrics.conclusions import conclusion_states
 from qwenlean.metrics.guard_replay import replay
 from qwenlean.metrics.repetition import STOP_WORDS, words
@@ -64,10 +63,11 @@ def main():
     for config in configs:
         triggers = []
         for r in rows:
-            ids = parse_tokens(r['token_ids'], tokenizer, True).reasoning_ids
-            evidence = replay(ids, config)
+            ids = r['token_ids']
+            evidence = replay(ids, config, opening=tokenizer.convert_tokens_to_ids('<think>'),
+                              closing=tokenizer.convert_tokens_to_ids('</think>'), eos_ids=tokenizer.eos_token_ids)
             if evidence:
-                n = evidence['trigger_reasoning_token']
+                n = evidence['trigger_output_token']
                 triggers.append({'source_generation_id':r['generation_id'], **evidence,
                                  'original_correct':r['correct'], 'original_eos':r['termination_reason']=='eos',
                                  'trigger_context':tokenizer.decode(ids[max(0,n-3*evidence['period_tokens']):n]),

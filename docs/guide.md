@@ -53,7 +53,7 @@ Substitute actual directories for the shell placeholders below:
 ```bash
 uv run --frozen qwenlean analyze runs/<A-run>
 uv run --frozen python scripts/sampling_ablation.py --baseline-run runs/<A-run>
-uv run --frozen python scripts/create_reports.py --baseline-run runs/<A-run> --nonthinking-run runs/<A0-run>
+uv run --frozen python scripts/create_reports.py --baseline-run runs/<A-run> --nonthinking-run runs/<A0-run> --output-dir reports/<new-derived-report-directory>
 ```
 
 The sampler script uses twelve DEV examples (two per family) for a three-candidate

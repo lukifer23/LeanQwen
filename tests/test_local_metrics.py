@@ -29,3 +29,12 @@ def test_guard_replay_respects_polling():
     assert r['trigger_reasoning_token'] == 72
     assert r['observed_reasoning_tokens_saved'] == 4
     assert replay(list(range(100)), {'min_period': 24, 'max_period': 24, 'repeats': 3}) is None
+
+
+def test_guard_replay_preserves_control_polling_and_excludes_final():
+    block = list(range(24))
+    ids = [1000] + block*3 + [1001] + block*3 + [1002]
+    # Opening token shifts global polling. A reasoning-only replay would fire
+    # at 72, but the actual 8-token cadence misses the exact cycle before close.
+    assert replay(ids, {'min_period':24, 'max_period':24, 'repeats':3},
+                  check_every=8, opening=1000, closing=1001, eos_ids={1002}) is None

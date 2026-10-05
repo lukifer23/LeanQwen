@@ -37,7 +37,9 @@ establish that the 0.8B model will fail on this machine.
 
 ## Backend boundary
 
-Within the `qwenlean` package, only `inference/mlx_backend.py` imports MLX.
+Apple device imports are isolated in `inference/mlx_backend.py` and
+`training/mlx_sft.py`. Optional semantic inference imports its CPU framework only
+when the local encoder is explicitly constructed.
 Diagnostic scripts import the frameworks they probe directly. The runner consumes a backend
 with `generate(prompt, seed, config)` and `tokenizer`. Scoring, provenance, procedural
 tasks and statistics are independent of device and model framework. A future
