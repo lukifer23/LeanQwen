@@ -98,3 +98,24 @@ CPU analysis and small unit-test operations in the session. Treat them as
 preliminary hardware timings; dedicated latency comparisons should isolate
 background activity and control power/thermal conditions. Model experiments ran
 one at a time, with no overlapping model instances.
+
+
+## Phase 2 contract (v6)
+
+Historical v5 is frozen in `qwenlean/scoring/legacy_v5.py`; existing reports and
+records are not overwritten. New rendered-policy experiments use
+`terminal_numeric_policies_v6`, adding terminal numerical LaTeX fraction boxing,
+display-math wrappers and explicit rejection of quoted/example hypotheses.
+Task correctness is independent of policy. Format compliance is terminal box for
+P1, integer-only final line for P2, legacy numeric FINAL for P3, and null for P0.
+No label selects which model number to extract. Adversarial cases are unit-tested.
+
+Replicate seeds match across policies. Statistics record unique tasks and total
+generations. Bootstrap units are per-task replicate averages, not trajectories;
+Wilson intervals are omitted when multiple observations share a task. Separate
+prompt comparison enforces task/label/revision/weights/sampler/seed/cap/scorer/guard
+invariants and permits only rendered prompt/policy differences. Its deltas include
+correctness, applicable format compliance, EOS/cap, total/reasoning tokens, latency,
+literal/lexical redundancy and format-meta reasoning. Within-task variability is
+reported separately. The new format-meta line heuristic remains uncalibrated until
+manual review; it is not a semantic redundancy metric.

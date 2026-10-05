@@ -9,4 +9,7 @@
 - TEST is reserved; use DEV for sampler selection and TRAIN for candidate generation.
 - No proprietary closed-model outputs in training data without verified permission.
 - No Docker. No long training until baseline/decoding diagnosis and dataset quality gates.
-- Verify changes with `uv run --frozen --extra compat pytest -q` and Ruff as appropriate.
+- Verify changes with `uv run --frozen pytest -q` and Ruff as appropriate.
+
+- Preserve the original model context window and RoPE/position settings; refuse excess input instead of silently truncating. Output and smoke-training sequence budgets are separately documented.
+- Preserve historical v1/v5 artifacts; new prompt experiments use independent IDs/scoring contracts and task-clustered replicate statistics.

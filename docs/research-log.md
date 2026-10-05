@@ -1,205 +1,142 @@
-# Research log
+# Measurement contract
 
-Chronological entries retain earlier decisions and measurements. Later scoring
-corrections supersede older accuracy counts; current results are in
-[the first-pass report](../reports/first-pass.md).
+Final task correctness is programmatic, using terminal numeric FINAL/boxed/plain answers
+where present. Quoted formatting examples or markers followed by reconsideration
+are not terminal answers. If those are absent, accept a unique terminal numeric conclusion after explicit
+final-channel cues such as "integer solution is", "answer is", or "Total True
+Expressions:". Conflicting numeric FINAL markers are rejected; nonterminal calculation cues
+are not treated as final answers. The extraction never uses
+ground truth to select an output number and never scores the thinking channel.
+Labels must be valid exact rational values. This conservative grammar cannot
+score every natural-language answer; its method/version are saved per record.
 
-## ENV-001 — 2026-10-05
+The historical `strict_final_correct` extractor searches numeric FINAL markers
+anywhere in the final channel; it is retained only for audit and can credit
+nonterminal formatting examples. Main task accuracy uses the terminal v5 contract.
+Keep `strict_final_correct` and `format_compliant` separate from task `correct`.
+A response that says "Total True Expressions: 3" and then leaves `FINAL:` empty
+can be task-correct and format-noncompliant. Earlier v1 measurements conflated
+these; preserved raw outputs are rescored with v5 and original metrics retained. A conclusion must end the final
+channel, with only whitespace/punctuation or an empty FINAL marker afterward;
+ongoing reconsideration after a numeric result is not a terminal answer.
+Terminal standalone numeric lines and numeric equation results are accepted,
+as are explicit total-count/count-of conclusions. A trailing empty FINAL marker
+or an explicit notice that the answer follows the requested format may be
+removed before terminal extraction; continued reconsideration is never removed.
+These rules are independent of ground truth. Missing/truncated answers still count as incorrect unless the final channel
+contains an unambiguous answer. Reasoning-only correct numbers receive no accuracy
+credit. Format compliance requires a trailing numeric FINAL marker.
 
-Hypothesis: native Mac inference can support the first controlled research loop.
-Configuration: original Qwen/Qwen3.5-0.8B pinned weights, no quantization; isolated
-Python 3.12; MLX 0.32.3/MLX-LM 0.32.0, Transformers 5.18.0/Torch 2.14.1 on MPS.
-Dataset: one diagnostic arithmetic prompt, outside all split pools.
-Result: both inference paths run. MLX 512-token thinking diagnostic 7.15 s;
-MPS 64-token greedy thinking diagnostic 7.42 s. MLX trace reaches cap after
-multiple recalculations; sampler omitted presence penalty, so not baseline A.
-Interpretation: select MLX for evaluation; diagnostic confirms parse behavior.
-Next decision: implement measured DEV baseline with full official parameters.
+Token partitions use actual emitted IDs, not separately retokenized strings.
+Reasoning excludes `<think>`, `</think>` and EOS. Final text excludes those controls.
+Total = reasoning + final + controls, including the sampled EOS (one compute step).
+The opening `<think>` in the prompt is not an output token. A missing `</think>`
+leaves all output in reasoning. Non-thinking prompt precloses the empty block.
+Wall-clock latency includes prefill/decode/synchronization and runtime guard costs,
+excluding post-hoc scoring/metrics. Aggregate output throughput = emitted tokens /
+summed inference latency; backend decode throughput is recorded separately.
 
-## COMPAT-002 — 2026-10-05
+Reasoning mean/p50/p75/p90/p95/p99 and rates strictly greater than 512/1024/2048/4096
+are reported. A 2048-total-token cap censors the tail: zero values above the cap
+cannot establish that unlimited traces would be short. Inspect cap-hit rate.
 
-Hypothesis: adapter gradients can pass through Qwen3.5's hybrid MLX architecture.
-Configuration: rank 4 adapters in last two blocks; fixed 32 token IDs; numerical
-logit diagnostic; no optimizer steps.
-Result: first attempt fails because snapshot request expected uncached metadata;
-restricting the request to the same files as inference fixes that download issue.
-Second attempt fails with CustomKernel VJP: model was in inference mode.
-Root cause: the architecture selects non-differentiable fast kernels when not
-training. Correct fix is `model.train()`, using the existing differentiable path.
-Final result is in `reports/mlx_lora_probe.json`; preserve failed probe artifacts.
-Interpretation: backward compatibility is distinct from a validated training run.
-Next decision: real bounded SFT smoke only after dataset quality gates.
+Literal n-grams use normalized words and mathematical operators, with n=5/8/12.
+Require at least max(2,n/3) non-stopword units. Report repeated unique n-grams and
+redundant occurrences / eligible occurrences. Repetition density is the union
+of *subsequent* occurrences of repeated spans of at least eight words, divided by
+all word units; the first occurrence is not charged. Longest repeated span is
+exact and non-overlapping, in word units. These distinguish terminology reuse
+from substantial copied blocks, but cannot establish uselessness by themselves.
 
-## EOS-003 — 2026-10-05
+Report reasoning-only `loop_rate` and all-output `output_loop_rate` separately.
+The latter also inspects final-channel text, particularly important for non-thinking
+controls. A zero thinking partition does not establish low total output compute.
 
-Hypothesis: a tokenizer/model EOS mismatch could masquerade as poor termination.
-Configuration: inspect checkpoint text config and official tokenizer metadata.
-Result: chat EOS is `<|im_end|>` (248046); text config EOS is `<|endoftext|>`
-(248044). Added both to the stop set. Aborted the initial three-sample partial
-run and retained it locally with an explicit aborted status. Restarted A.
-Interpretation: subsequent cap failures cannot be attributed to omitting either
-checkpoint-declared terminal token. Parser treats both as control tokens.
-Next decision: complete the corrected run and predeclared sampler sweep.
+Loop heuristic: exact repetition of a 24–128 emitted-token block at least three
+consecutive times. Offline detection checks every endpoint. Runtime guard checks
+every 16 output tokens, only during reasoning, logs period/repeats/start/end, and
+stops without forcing an answer. False positives must be manually reviewed on
+real traces before enabling it as a default. Narrow exact matching misses loops
+that change wording or cycle over long periods. Zero detected loops is not zero
+pathological behavior. Thresholds are exposed in YAML.
 
-## PROCESS-004 — 2026-10-05
+Semantic redundancy is initially a **lexical proxy**, not an embedding metric
+or semantic oracle: sentence/line chunks of at least ten words, content-word
+bag cosine >=0.90 with a previous chunk. Numbers are preserved. This catches
+similar wording and reordered content but misses paraphrases and can flag
+necessary re-verification. Keep separate from literal loop rate. Local embeddings
+are deferred until these low-cost diagnostics are calibrated by inspection.
 
-User constraint: avoid duplicate, orphaned or concurrent model processes.
-Result: process audit found exactly one active evaluator with a live supervisor;
-all earlier probes exited. Added repository-wide nonblocking OS lock, PID and
-process creation-time metadata, stale-owner recovery and lock regression test.
-Registered the already-running evaluator; verified a second lease is rejected.
-Next decision: model workloads remain strictly sequential, with final process audit.
+Candidate correct-conclusion distance: find the first exact ground-truth numeric
+value after an equation RHS or an answer/result/total/therefore/thus cue in the
+reasoning. Locate its endpoint by decoding prefixes of emitted IDs; count later
+reasoning tokens. It is **not answer-reached ground truth**. A coincidental number,
+intermediate calculation or later correction can mislead it. The saved evidence
+must be inspected. `candidate_correct_then_wrong_final` excludes capped/guarded
+traces; even EOS cases require human verification before claiming overthinking
+caused answer damage. This metric uses labels for evaluation only.
 
-## CONTROL-005 — planned before full baseline completion
+Accuracy uncertainty: Wilson binomial intervals provide a non-degenerate boundary
+interval even for zero/all correct. Also save deterministic-seed nonparametric sample bootstrap, 5000
+resamples, 95% percentile intervals. Bootstrap intervals are degenerate at zero/all correct
+and must not be interpreted as proof of zero population uncertainty. Comparisons use paired sample IDs and seeds.
+Also report exact two-sided McNemar probability: under the paired null, the
+number of gains among discordant samples is binomial with p=0.5; double the
+smaller tail, capped at one. Four gains and zero losses give p=0.125, so a
+positive small-sample percentile-bootstrap interval alone is insufficient to
+claim a statistically established improvement. These reflect sample uncertainty, not multiple generation-seed variation.
+Discrete 60-sample accuracy changes and six small families warrant cautious claims.
+Primary comparisons remain accuracy versus reasoning compute; the supplementary
+accuracy/p50 ratio is not a selection objective. No arbitrary reward coefficients.
 
-Hypothesis: thinking-mode failure can differ from task-solving capability.
-Configuration: official default non-thinking mode with its distinct official
-text sampler (temperature 1, top-p 1, top-k 20, presence 2). Same DEV tasks/seeds
-and total-output cap. This changes mode and recommended sampler together, so it
-is a mode control, not a single-variable sampler ablation.
-Result: pending; do not populate until measured.
-Next decision: compare total output compute as well as reasoning-token partitions.
+Memory: MLX peak allocator bytes and sampled process RSS every 64 tokens plus
+start/end. Both are imperfect and must not be summed (shared/unified accounting).
+Neither is total machine usage. Available system RAM is recorded separately.
 
-## BASELINE-A-006 — 2026-10-05
-
-Hypothesis: the official thinking sampler provides a measurable accuracy/compute baseline.
-Configuration: original bf16 text weights, temperature 1, top-p .95, top-k 20,
-presence 1.5, repetition 1, thinking enabled, both checkpoint EOS IDs, 2048 total
-output cap, no guard. Run `20261005T170152-A-official-thinking-0d62e9fa`.
-Dataset: procedural-v1 DEV, 60 problems across six families, one stable seed each.
-Result: 0/60 final accuracy; all capped; mean reasoning 2044.13, p50/p95 2048;
-mean latency 33.90 s; aggregate 60.42 output tokens/s; MLX peak 1.684 GB, sampled
-RSS peak 2.140 GB. Exact-cycle rate 0%; mean repeated-content density 7.76%.
-Reanalysis fixes sentence punctuation matching, preserving original samples and
-all generation IDs; final accuracy remains unchanged. Candidate correct-conclusion
-cues in 40/60 are heuristic, not verified solution states.
-Interpretation: termination is severely impaired at this cap and with these
-format-constrained prompts. Do not infer uncapped or general reasoning accuracy.
-Manual inspection includes correct arithmetic followed by formatting reconsideration.
-Next decision: default-mode control and bounded single-variable sampler sweep.
-
-## PARITY-007 — 2026-10-05
-
-Hypothesis: severe baseline behavior could reflect an MLX architecture implementation error.
-Configuration: same original bf16 checkpoint and diagnostic prompt; greedy, no
-penalties, 64-token cap. Compare sequential MLX and prior MPS generations.
-Result: first 53 tokens agree. Divergence is newline versus double newline.
-Teacher-forced cached logits at this context have cosine .9999007, RMSE .03784,
-and 19/20 top-token overlap. MPS logits tie at 22.5; MLX double-newline logit 22.625.
-Interpretation: divergence is consistent with bf16 numerical differences near a
-tie; this diagnostic supports architecture fidelity but is not universal backend
-equivalence. Pins/seeds reproduce within a backend, not across devices.
-Next decision: continue MLX experiments and retain explicit backend identifiers.
-
-## CONTROL-005 — completed
-
-Configuration: `configs/nonthinking.yaml`, same 60 DEV tasks and stable per-problem
-seeds, original weights, official non-thinking sampler, 2048 total-output cap.
-Run: `20261005T173939-A0-official-nonthinking-723496fd`.
-Result: 15/60 correct (25%; Wilson 95% interval 15.78–37.23%); median total output
-381.5 tokens, mean 815.13, p95 2048; 17/60 cap failures; mean latency 12.39 s;
-aggregate throughput 65.76 tokens/s. Median explicit thinking partition is zero,
-but final-channel text includes calculations and sometimes very long reconsideration.
-Task accuracy: algebra 50%, arithmetic 30%, boolean 30%, state 20%, word problems
-20%, ordering 0%. Exact all-output cycle heuristic detects none.
-Interpretation: mode changes bounded accuracy and output compute substantially,
-while many very short answers are wrong. This is a control, not an optimized
-reasoning-preserving model; no claim about uncapped capability or TEST performance.
-Next decision: finish the predeclared thinking sampler pilots before dataset selection.
-
-## SCORE-008 — correctness versus format, manual calibration
-
-Hypothesis: strict FINAL extraction can conflate task accuracy and format compliance.
-Evidence: a completed repetition-penalty response correctly concludes "Total True
-Expressions: 3" but leaves `FINAL:` empty. Another completes with `ANSWER: 2006`.
-Decision: separate task correctness, strict extraction correctness and numeric
-FINAL compliance. Accept only terminal explicit conclusion cues, independent of
-label matching. Reject values followed by continued reconsideration. Test all
-observed edge cases. Preserve original metrics and versioned scoring backups.
-Result: baseline A remains 0/60. A0 is 19/60 task-correct, 15/60 strict-correct.
-Manual review rejects a capped intermediate-correct total and accepts a terminal
-state answer after earlier incorrect computations. All four A0 recoveries are EOS.
-Pilot task accuracy: cooler 1/12, presence-zero 0/12, repetition-1.05 2/12; the
-last two successes are format-noncompliant but have correct terminal answers.
-Interrupted the controller after 11/12 repetition samples to fix scoring;
-resumed only the final pending sample, with identical config/hash/ordered dataset.
-No model generation was fabricated or replaced. Candidate selection remains
-repetition-1.05 under the corrected definition; full DEV confirmation is running.
-Interpretation: report format separately from reasoning ability, and inspect
-intermediate reasoning quality separately from final-answer accuracy.
-Next decision: rescore full confirmation under the same v3 scorer before comparison.
+Latency observations were collected during interactive development, with some
+CPU analysis and small unit-test operations in the session. Treat them as
+preliminary hardware timings; dedicated latency comparisons should isolate
+background activity and control power/thermal conditions. Model experiments ran
+one at a time, with no overlapping model instances.
 
 
-## SCORE-009 — terminal numeric markers
+## Phase 2 contract (v6)
 
-Hypothesis: marker extraction can mistake quoted formatting examples for an answer.
-Evidence: `dev-algebra-45a5b6efe1bc` in the full repetition candidate quotes
-`FINAL: 43` while continuing format deliberation and reaches the cap.
-Decision: v4 requires terminal numeric FINAL/boxed/plain answers or terminal
-explicit conclusion cues. Preserve legacy extraction as `strict_final_correct`
-for audit, independently of format compliance. Versioned backups retain all
-previous measurements. No regenerated or modified model output.
-Result: completed A/A0 and pilot task counts remain 0/60, 19/60, and 1/12,
-0/12, 2/12. The observed quoted example is rejected. Thirty tests pass.
-Next decision: apply the same v4 contract to full B before final comparison.
+Historical v5 is frozen in `qwenlean/scoring/legacy_v5.py`; existing reports and
+records are not overwritten. New rendered-policy experiments use
+`terminal_numeric_policies_v6`, adding terminal numerical LaTeX fraction boxing,
+display-math wrappers and explicit rejection of quoted/example hypotheses.
+Task correctness is independent of policy. Format compliance is terminal box for
+P1, integer-only final line for P2, legacy numeric FINAL for P3, and null for P0.
+No label selects which model number to extract. Adversarial cases are unit-tested.
 
-
-## SCORE-010 — calibrated terminal numeric forms
-
-Hypothesis: a conservative marker/cue grammar can miss clear completed solutions.
-Evidence: A0 outputs terminal standalone numbers, x=43, total count=2, and a
-count-of-3 conclusion; B correctly calculates 2871 in its final channel before
-an empty FINAL marker. None should be mistaken for answer degradation.
-Decision: v5 accepts terminal standalone numeric lines, numeric equations,
-explicit count conclusions, and terminal equations followed only by a format
-notice/empty marker. Still reject quoted examples or continued reconsideration.
-All extraction is label-independent; correctness compares the extracted result
-with the algorithmic label. Thirty-one regression tests pass. Preserve v1–v4
-metrics and original emitted IDs/raw outputs.
-Result: uniformly rescored A0=24/60, A=0/60, B=4/60. Pilot counts remain 1/12,
-0/12, 2/12, so candidate selection is unchanged. No wrong EOS final result in B;
-the earlier heuristic candidate was a correct mathematical solution with a
-missing numeric FINAL field. No causal overthinking-to-wrong-answer rate claimed.
-Next decision: freeze this documented grammar for the next prompt-control experiment.
-
-## SAMPLING-011 — completed first decoding confirmation
-
-Hypothesis: single-variable sampling changes can improve bounded thinking behavior.
-Configuration: three balanced 12-example DEV pilots: temperature .6, presence 0,
-repetition 1.05, all other A settings fixed. Promote repetition 1.05 to all 60 DEV.
-Dataset: procedural-v1 DEV; no TEST/model evaluation or TRAIN trajectory generation.
-Result: pilots 1/12, 0/12, 2/12; full B 4/60, 56/60 capped, median/p95 reasoning
-2048. A 0/60, 60/60 capped. Paired accuracy +6.7 percentage points, bootstrap 95%
-interval +1.7 to +13.3 points. Exact paired McNemar two-sided p=0.125:
-this small gain is not statistically established at 0.05. B mean total tokens 2007.33 versus A 2048: 2.0%
-reduction. Mean repeated-content density A 7.76%, B 5.67%. All-output exact-cycle
-rate 0% under the documented narrow heuristic. Twelve of twelve repeated pilot
-token sequences are identical. B 62.08 output tokens/s; mean latency 32.34 seconds.
-MLX allocator peak 1.684 GB; sampled B RSS 0.515 GB (distinct accounting measures).
-Interpretation: small bounded accuracy gain, unchanged censored reasoning tails;
-no established material efficiency improvement. Default-mode control 40% is far
-better on this small suite but changes mode and sampler together. Format
-reconsideration is a prominent manually observed confound; a learned-behavior
-versus prompt/decoder attribution is not yet resolved.
-Next decision: matched-seed DEV prompt-format control before training, then a
-small higher-cap diagnostic if needed. First dataset should be Qwen TRAIN best-of-N
-only after semantic split fixes and reasoning-quality gates.
-
-## PROCESS-012 — first-pass cleanup
-
-Result: full sampler controller exited normally; process audit found no registered
-QwenLean model workloads and an inactive lease with a dead former owner. Exclusive
-lock acquisition/release succeeds. No unrelated application was terminated.
-See reports/process_audit.json. All model experiments were serialized; offline
-scoring/report jobs are separate from model inference.
+Replicate seeds match across policies. Statistics record unique tasks and total
+generations. Bootstrap units are per-task replicate averages, not trajectories;
+Wilson intervals are omitted when multiple observations share a task. Separate
+prompt comparison enforces task/label/revision/weights/sampler/seed/cap/scorer/guard
+invariants and permits only rendered prompt/policy differences. Its deltas include
+correctness, applicable format compliance, EOS/cap, total/reasoning tokens, latency,
+literal/lexical redundancy and format-meta reasoning. Within-task variability is
+reported separately. The new format-meta line heuristic remains uncalibrated until
+manual review; it is not a semantic redundancy metric.
 
 
-## FOUNDATION-013 — validation milestone
+## PHASE2-AUDIT-014 — starting from main
 
-Result: 32 tests pass; Ruff and whitespace checks pass. Machine-generated reports
-use complete preserved records under the calibrated v5 scoring contract. Docs
-state implemented commands and measured limits; no adapter, CUDA backend, semantic
-embedding metric, quality-approved training corpus or efficiency breakthrough is
-claimed. GitHub About/description/homepage and eight research topics are configured.
-Milestone tag: v0.1.0, first-pass research foundation. Main-only development.
-Next decision: the DEV prompt-format control described in reports/first-pass.md.
+Starting SHA: 8f67d3b2a1c217f5cad819ac2b8211b24db57e7d. Pulled main fast-forward;
+working tree clean. All 32 starting tests and Ruff pass. Six completed local runs
+match their stored summaries; token counts/config hashes/pinned revision agree.
+Pinned model remains 2fc06364715b967f1860aea9cf38778875588b17. Exclusive process
+lease available; no model workload active. Historical artifact hashes preserved
+in reports/phase2_start.json. New environment artifact: phase2_environment.json.
+Next decision: harden before collecting new model trajectories.
+
+## HARNESS-015 — stream/resume/prompt contracts
+
+Implemented explicit stream edge/error statuses with cleanup, valid EOS checks,
+optional dependency recording, protected general resume, task/policy identities,
+matched replicate seeds, clustered summaries, prompt-intervention comparison,
+and a frozen v5 plus new policy-aware v6 scorer. No model context/position/RoPE
+settings changed and no silent truncation is permitted. Unit/serialization tests
+pass; full inference integration and the 144-trajectory prompt study are next.
+No TRAIN targets or optimizer steps yet.

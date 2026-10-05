@@ -1,0 +1,78 @@
+{
+  "exclusive_model_lock_available": true,
+  "historical_artifact_hashes": {
+    "data/splits/dev.jsonl": "83ab824ed4094d599e03e6f251836618c0d93c20b0a5d0630256e6949f888044",
+    "data/splits/manifest.json": "2226d7bb91cf7ed616650e04796312dbcf15654791cb0a3c5927a91f6b907331",
+    "data/splits/test.jsonl": "0796d57ee032f3cf7cefd58944a6b40e14628cd513795b274165cbbe510c9bfa",
+    "data/splits/train.jsonl": "0a4911c1992ea1fb0729a21ad94d4f2c42eb07e18d2855eb63e3df4ee297220e",
+    "reports/backend_logit_comparison.json": "cf27535f51a03dadd6eee27946815e687a67274fd49e9450fe9e96b8ccedb076",
+    "reports/backend_parity.json": "78dd57f0f6954e96e4b4c66504aa9ac235386977c67508c8a736fa871a789ae1",
+    "reports/baseline.md": "b05a0bed046a3b3febe47e08a364d7f3716e547252da9a9f8776678f5c52af1c",
+    "reports/baseline_summary.json": "dc25df34f56a9a3a132b07a4767dfe261e5a1e35a5fab8907d05f34b6c905147",
+    "reports/environment.json": "638dbdc165efe0ca601f144352cb248f0133819c90f29bc826e6cfb4458656da",
+    "reports/first-pass.md": "9a9c4490208785e4633ac65e00e4664298733ebd8b2187c241f63e9320edbd5b",
+    "reports/inspection_records.json": "0790cfbc6d630f0d02ca1086407f58d9e4d797288957b299bf11dc77df157ec7",
+    "reports/mlx_lora_probe.json": "bdb1cb25c452541df63ab6719b8cd76e40e5766737e2eecefec9fa03a88de142",
+    "reports/mlx_lora_probe_eval_mode_failure.json": "cbe283d40d923283a9d7e0832020d9c10e49b00565c5f25197eb5aaa2111d999",
+    "reports/mlx_lora_probe_initial_download_failure.json": "25fe542cf4339e2d7a2f146cb9d552853eaa293911a3bfe70e76b088ad6eabcc",
+    "reports/nonthinking_control.md": "81eae6f49214d898f9e37adcddcf1f3aefbe1954c2d59194c6cccbaf95eb654c",
+    "reports/nonthinking_summary.json": "2b1c462fccf83faeb00014c8c0dbae6c508d0ac114e782013621e8c4f9133af1",
+    "reports/per_sample_measurements.json": "c232e71ae8d32cab95f74c4c974eccc6370a5db3fea9f203c45fc35467d3f384",
+    "reports/process_audit.json": "bd85f8cbf6bacb3dea06b0f83d01281e0f871c7f2c95d4aa5015b8397da64c35",
+    "reports/reasoning_accuracy.png": "94779383e7ebb18102b433f05c1bc01e83580b64fac31b922336a55ef281fab3",
+    "reports/run_sources.json": "b66b4bea30c6810d11f42a187e9515dd1f1b182bac23c4a325efde06c6771458",
+    "reports/sampling_ablation.md": "1fdeb86cc27fac94376c697c604f4f9981edac6c86eaea298215abce4dc2d222",
+    "reports/sampling_measurements.json": "ae16a20c1ed5a91a6b637f6f21f3dd4d02479f5f1d1abdf681a703089dc93292",
+    "reports/smoke_generations.json": "77e8bc711951bb581a111893f13630d17678ca4d3414bdf44919eed79b7002b9",
+    "reports/trace_evidence.json": "2d71933fad857c3f832bc7f00701cfef36cc7e20f7e7b34566576824cae0a776",
+    "reports/trace_review.md": "ed026cc6d93907e431a4109fcb4ca54cb06b5a116be1127e27348454dea48450",
+    "reports/transformers_probe.json": "357151bfe85ad8e60cc8a37fdbf205a5bb8ec4e8dd3d7fbd0538cd90fdc10323"
+  },
+  "historical_runs_verified": [
+    {
+      "n": 60,
+      "run": "runs/20261005T181544-B-candidate-repetition-105-c5b80339",
+      "sha256": "1f044216a551051ee73a5701753d4f778c591982adfb20c91073a1c9e8424f86"
+    },
+    {
+      "n": 12,
+      "run": "runs/20261005T180526-pilot-repetition-105-d3173dd2",
+      "sha256": "fb486453f84bd9637850b81b256b5ebf0871b8783161fd15784c006ce2f0b3a6"
+    },
+    {
+      "n": 12,
+      "run": "runs/20261005T175851-pilot-presence-zero-f07365a5",
+      "sha256": "c2916d4b2a14cf9ccf95e678487d2c57496aba281ef36edb73529fa446d7102b"
+    },
+    {
+      "n": 12,
+      "run": "runs/20261005T175251-pilot-cooler-f98807ab",
+      "sha256": "71355f659963a7fb514263153e286f2213c8920161799dad37743c9973233f2a"
+    },
+    {
+      "n": 60,
+      "run": "runs/20261005T173939-A0-official-nonthinking-723496fd",
+      "sha256": "9e599580d74526f8207d82e5f57c0457f91301f2b13371f7b14bb90783a9598d"
+    },
+    {
+      "n": 60,
+      "run": "runs/20261005T170152-A-official-thinking-0d62e9fa",
+      "sha256": "48993e18e17a94365deafb24b0a2bcaa95a99e00a4ec38f0b3b5ba489ac24eda"
+    }
+  ],
+  "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "packages": {
+    "mlx": "0.32.3",
+    "mlx-lm": "0.32.0",
+    "peft": "0.21.2",
+    "torch": "2.14.1",
+    "transformers": "5.18.0",
+    "trl": "1.14.1"
+  },
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "python": "3.12.12",
+  "ram_bytes": 19327352832,
+  "ruff_passed": true,
+  "starting_git_sha": "8f67d3b2a1c217f5cad819ac2b8211b24db57e7d",
+  "tests_passed": 32
+}

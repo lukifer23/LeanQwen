@@ -15,6 +15,12 @@ All development stays on `main`.
 
 ## Current status
 
+Phase 2 is in progress: hardening resumption and stream handling, then separating
+prompt-format effects, stochastic variance and capped termination. See the
+[Phase 2 methodology](docs/phase2-methodology.md). New experiments are not yet complete.
+
+The following measurements are the completed **historical first pass**.
+
 Real inference works with the original, unquantized `Qwen/Qwen3.5-0.8B` checkpoint
 on an M3 Pro with 18 GiB unified memory. MLX-LM is the selected text inference
 backend; Transformers/MPS also passes an inference probe but uses slower hybrid
@@ -57,13 +63,13 @@ committed summaries and selected excerpts are inspectable but not a full output 
 Python 3.12 and [uv](https://docs.astral.sh/uv/) are required. No Docker.
 
 ```bash
-uv sync --frozen --extra compat
-uv run --frozen --extra compat pytest -q
-uv run --frozen --extra compat ruff check qwenlean scripts tests
-uv run --frozen --extra compat python scripts/validate_environment.py
-uv run --frozen --extra compat python scripts/smoke_inference.py
-uv run --frozen --extra compat qwenlean build-dataset
-uv run --frozen --extra compat qwenlean eval --config configs/baseline.yaml
+uv sync --frozen
+uv run --frozen pytest -q
+uv run --frozen ruff check qwenlean scripts tests
+uv run --frozen python scripts/validate_environment.py
+uv run --frozen python scripts/smoke_inference.py
+uv run --frozen qwenlean build-dataset
+uv run --frozen qwenlean eval --config configs/baseline.yaml
 ```
 
 Run model commands sequentially. A repository-wide OS process lock rejects a
@@ -73,15 +79,16 @@ Hugging Face user cache; generated model files and run directories are ignored.
 Use the completed baseline directory printed by `eval`:
 
 ```bash
-uv run --frozen --extra compat qwenlean analyze runs/<baseline-run>
-uv run --frozen --extra compat qwenlean eval --config configs/nonthinking.yaml
-uv run --frozen --extra compat python scripts/sampling_ablation.py --baseline-run runs/<baseline-run>
-uv run --frozen --extra compat python scripts/create_reports.py --baseline-run runs/<baseline-run>
+uv run --frozen qwenlean analyze runs/<baseline-run>
+uv run --frozen qwenlean eval --config configs/nonthinking.yaml
+uv run --frozen python scripts/sampling_ablation.py --baseline-run runs/<baseline-run>
+uv run --frozen python scripts/create_reports.py --baseline-run runs/<baseline-run>
 # Only compare full runs with identical sample IDs and seeds:
-uv run --frozen --extra compat qwenlean compare runs/<baseline-run> runs/<candidate-run>
+uv run --frozen qwenlean compare runs/<baseline-run> runs/<candidate-run>
 ```
 
-`generate --config ... --prompt ... --output ...` saves a real generation. There is currently no `train-sft`, preference trainer, trajectory compression,
+`generate --config ... --prompt ... --output ...` saves a real generation. `eval --resume` and task-paired `compare-prompts` are now available; see the guide.
+There is currently no `train-sft`, preference trainer, trajectory compression,
 embedding redundancy metric, or adaptive budget implementation. A CUDA backend
 has not been implemented. These are possible later experiments, subject to the
 data and measurement gates.

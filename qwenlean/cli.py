@@ -7,7 +7,9 @@ from pathlib import Path
 import yaml
 
 from qwenlean.datasets.procedural import build_pools
-from qwenlean.evaluation.runner import evaluate
+from qwenlean.datasets.prompts import POLICIES, render_task
+from qwenlean.evaluation.prompt_comparison import intervention_comparison
+from qwenlean.evaluation.runner import evaluate, validate_resume
 from qwenlean.evaluation.summary import paired_comparison, summarize
 from qwenlean.utils.io import read_jsonl, write_json
 
@@ -23,15 +25,29 @@ def main():
     ev.add_argument("--dataset", default="data/splits/dev.jsonl")
     ev.add_argument("--limit", type=int)
     ev.add_argument("--runs-dir", default="runs")
+    ev.add_argument(
+        "--resume", help="Resume a matching incomplete run; never regenerate its prefix"
+    )
+    ev.add_argument("--replicates", type=int)
+    ev.add_argument("--prompt-policy", choices=list(POLICIES))
     gen = subs.add_parser("generate", help="Save real inference for a supplied prompt")
     gen.add_argument("--config", required=True)
     gen.add_argument("--prompt", required=True)
     gen.add_argument("--output", required=True)
     analyze = subs.add_parser("analyze")
     analyze.add_argument("run")
+    analyze.add_argument("--output", help="Save a new summary explicitly; default only prints")
     compare = subs.add_parser("compare")
     compare.add_argument("runs", nargs="+")
     compare.add_argument("--output", default="reports/comparison.json")
+    prompt_compare = subs.add_parser(
+        "compare-prompts", help="Task/replicate paired prompt intervention"
+    )
+    prompt_compare.add_argument("left")
+    prompt_compare.add_argument("right")
+    prompt_compare.add_argument("--left-policy", required=True, choices=list(POLICIES))
+    prompt_compare.add_argument("--right-policy", required=True, choices=list(POLICIES))
+    prompt_compare.add_argument("--output", required=True)
     args = parser.parse_args()
     if args.command == "build-dataset":
         if args.per_family <= 0:
@@ -42,22 +58,44 @@ def main():
         config = yaml.safe_load(Path(args.config).read_text())
         if config.get("backend") != "mlx":
             parser.error("This milestone implements only the validated MLX backend")
+        if args.command == "eval":
+            if args.replicates is not None:
+                config["replicates"] = args.replicates
+            policy = args.prompt_policy or config.get("prompt_policy")
+            tasks = read_jsonl(args.dataset)
+            if args.limit:
+                tasks = tasks[: args.limit]
+            if policy:
+                config["prompt_policy"] = policy
+                tasks = [render_task(t, policy) for t in tasks]
+            if args.resume:
+                validate_resume(args.resume, tasks, config)
         from qwenlean.inference.mlx_backend import MLXBackend
         from qwenlean.utils.process_lock import model_process_lock
 
         with model_process_lock():
             backend = MLXBackend(config)
             if args.command == "eval":
-                tasks = read_jsonl(args.dataset)
-                if args.limit:
-                    tasks = tasks[: args.limit]
-                evaluate(backend, tasks, config, root=args.runs_dir)
+                evaluate(backend, tasks, config, root=args.runs_dir, resume=args.resume)
             else:
                 write_json(args.output, backend.generate(args.prompt, config["seed"]))
     elif args.command == "analyze":
         summary = summarize(read_jsonl(Path(args.run) / "samples.jsonl"))
-        write_json(Path(args.run) / "summary.json", summary)
+        if args.output:
+            write_json(args.output, summary)
         print(json.dumps(summary, indent=2))
+    elif args.command == "compare-prompts":
+
+        def records(path, policy):
+            p = Path(path)
+            rows = read_jsonl(p / "samples.jsonl" if p.is_dir() else p)
+            return [r for r in rows if r.get("prompt_policy") == policy]
+
+        result = intervention_comparison(
+            records(args.left, args.left_policy), records(args.right, args.right_policy)
+        )
+        write_json(args.output, result)
+        print(json.dumps(result, indent=2))
     else:
         records = [read_jsonl(Path(r) / "samples.jsonl") for r in args.runs]
         output = {

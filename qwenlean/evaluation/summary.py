@@ -1,7 +1,7 @@
 """Measured aggregates, bootstrap uncertainty, and paired sampler comparisons."""
 
 import math
-from collections import Counter
+from collections import Counter, defaultdict
 
 import numpy as np
 
@@ -38,6 +38,13 @@ def summarize(records):
     n = len(records)
     correct = [r["correct"] for r in records]
     reasoning = [r["reasoning_tokens"] for r in records]
+    groups = defaultdict(list)
+    for r in records:
+        groups[r.get("task_id", r.get("sample_id", "unit-fixture"))].append(r)
+    task_rates = [sum(r["correct"] for r in rows) / len(rows) for rows in groups.values()]
+    applicable_format = [
+        r["format_compliant"] for r in records if r.get("format_compliant") is not None
+    ]
     termination = Counter(r["termination_reason"] for r in records)
     output_loop_evidence = [
         find_loop(r["token_ids"], **r["generation_parameters"].get("metrics", {}).get("loop", {}))
@@ -53,17 +60,36 @@ def summarize(records):
         }
     return {
         "n": n,
+        "total_generations": n,
+        "unique_tasks": len(groups),
+        "accuracy_unit": "task_mean"
+        if any(len(g) > 1 for g in groups.values())
+        else "one_trajectory_per_task",
+        "task_mean_accuracy": float(np.mean(task_rates)),
+        "task_accuracy_bootstrap_ci95": bootstrap_mean_ci(task_rates),
+        "within_task_variation": {
+            "tasks_with_mixed_correctness": sum(0 < p < 1 for p in task_rates),
+            "fraction_tasks_with_mixed_correctness": sum(0 < p < 1 for p in task_rates)
+            / len(groups),
+            "mean_total_token_std": float(
+                np.mean(
+                    [np.std([r["total_output_tokens"] for r in rows]) for rows in groups.values()]
+                )
+            ),
+            "per_task_accuracy": {
+                tid: sum(r["correct"] for r in rows) / len(rows) for tid, rows in groups.items()
+            },
+        },
         "accuracy": sum(correct) / n,
         "strict_final_accuracy": sum(r.get("strict_final_correct", r["correct"]) for r in records)
         / n,
-        "format_compliance_rate": (
-            sum(r["format_compliant"] for r in records) / n
-            if all("format_compliant" in r for r in records)
-            else None
-        ),
+        "format_compliance_rate": sum(applicable_format) / len(applicable_format)
+        if applicable_format
+        else None,
+        "format_applicable_generations": len(applicable_format),
         "scoring_versions": sorted({r.get("scoring_version", "legacy") for r in records}),
-        "accuracy_bootstrap_ci95": bootstrap_mean_ci(correct),
-        "accuracy_wilson_ci95": wilson_interval(sum(correct), n),
+        "accuracy_bootstrap_ci95": bootstrap_mean_ci(task_rates),
+        "accuracy_wilson_ci95": wilson_interval(sum(correct), n) if len(groups) == n else None,
         "reasoning_tokens": distribution(reasoning),
         "final_tokens": distribution([r["final_tokens"] for r in records]),
         "total_output_tokens": distribution([r["total_output_tokens"] for r in records]),
@@ -83,6 +109,13 @@ def summarize(records):
         ),
         "termination_counts": dict(termination),
         "max_output_rate": termination.get("max_output_tokens", 0) / n,
+        "generation_error_count": sum(
+            r["termination_reason"] not in {"eos", "max_output_tokens", "runtime_loop_guard"}
+            for r in records
+        ),
+        "format_meta_density": distribution(
+            [r.get("format_meta", {}).get("word_density", 0) for r in records]
+        ),
         "unclosed_thinking_rate": sum(r["parse_status"] == "unclosed_thinking" for r in records)
         / n,
         "latency_s": distribution([r["latency_s"] for r in records]),
@@ -119,27 +152,42 @@ def paired_comparison(a, b):
         raise ValueError(
             "Paired comparison requires the same scoring version; reanalyze raw outputs first"
         )
-    if {r["sample_id"] for r in a} != {r["sample_id"] for r in b}:
-        raise ValueError("Paired comparison requires exactly the same sample IDs")
-    lookup = {r["sample_id"]: r for r in b}
+
+    def key(r):
+        return r["sample_id"], r.get("replicate", 0)
+
+    if len({key(r) for r in a}) != len(a) or len({key(r) for r in b}) != len(b):
+        raise ValueError("Duplicate sample/replicate IDs in paired comparison")
+    if {key(r) for r in a} != {key(r) for r in b}:
+        raise ValueError("Paired comparison requires exactly the same sample IDs and replicates")
+    lookup = {key(r): r for r in b}
     if any(
-        r["prompt"] != lookup[r["sample_id"]]["prompt"]
-        or r["expected"] != lookup[r["sample_id"]]["expected"]
-        or r["seed"] != lookup[r["sample_id"]]["seed"]
+        r["prompt"] != lookup[key(r)]["prompt"]
+        or r["expected"] != lookup[key(r)]["expected"]
+        or r["seed"] != lookup[key(r)]["seed"]
         for r in a
     ):
         raise ValueError("Paired prompts, ground truth and seeds must match")
-    differences = [int(lookup[r["sample_id"]]["correct"]) - int(r["correct"]) for r in a]
+    differences = [int(lookup[key(r)]["correct"]) - int(r["correct"]) for r in a]
+    grouped = defaultdict(list)
+    for r, d in zip(a, differences):
+        grouped[r.get("task_id", r["sample_id"])].append(d)
+    task_differences = [np.mean(v) for v in grouped.values()]
     return {
-        "accuracy_delta": float(np.mean(differences)),
-        "paired_accuracy_delta_ci95": bootstrap_mean_ci(differences),
+        "accuracy_delta": float(np.mean(task_differences)),
+        "paired_accuracy_delta_ci95": bootstrap_mean_ci(task_differences),
         "mcnemar_exact_two_sided_p": exact_mcnemar_p(
             sum(d == 1 for d in differences), sum(d == -1 for d in differences)
-        ),
+        )
+        if len(grouped) == len(a)
+        else None,
         "gained": sum(d == 1 for d in differences),
         "lost": sum(d == -1 for d in differences),
         "reasoning_median_delta": float(
             np.median([r["reasoning_tokens"] for r in b])
             - np.median([r["reasoning_tokens"] for r in a])
         ),
+        "unique_tasks": len(grouped),
+        "paired_trajectories": len(a),
+        "uncertainty_unit": "task",
     }

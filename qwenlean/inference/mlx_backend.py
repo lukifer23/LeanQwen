@@ -11,7 +11,7 @@ from huggingface_hub import snapshot_download
 from mlx_lm import load, stream_generate
 from mlx_lm.sample_utils import apply_min_p, apply_top_k, apply_top_p
 
-from qwenlean.metrics.repetition import suffix_loop
+from qwenlean.inference.streaming import consume_stream, validate_context_budget, validate_eos_ids
 from qwenlean.utils.io import digest
 
 
@@ -65,10 +65,15 @@ class MLXBackend:
         mx.eval(self.model.parameters())
         model_config = json.loads((Path(path) / "config.json").read_text())
         eos = model_config.get("text_config", model_config).get("eos_token_id")
-        for token_id in eos if isinstance(eos, list) else [eos]:
+        model_eos = eos if isinstance(eos, list) else ([] if eos is None else [eos])
+        if model_eos:
+            validate_eos_ids(model_eos, self.tokenizer.vocab_size)
+        for token_id in model_eos:
             if token_id is not None:
                 self.tokenizer.add_eos_token(self.tokenizer.convert_ids_to_tokens(token_id))
-        self.eos_ids = set(self.tokenizer.eos_token_ids)
+        text_config = model_config.get("text_config", model_config)
+        self.context_window = text_config.get("max_position_embeddings")
+        self.eos_ids = validate_eos_ids(self.tokenizer.eos_token_ids, self.tokenizer.vocab_size)
         self.model_info = {
             "model": config["model"],
             "revision": config["revision"],
@@ -77,11 +82,19 @@ class MLXBackend:
             "precision": "upstream_unquantized_bfloat16_text_weights",
             "template_sha256": hashlib.sha256(self.tokenizer.chat_template.encode()).hexdigest(),
             "config_hash": digest(json.loads((Path(path) / "config.json").read_text())),
+            "context_window_tokens": self.context_window,
+            "context_config_hash": digest(
+                {
+                    "max_position_embeddings": self.context_window,
+                    "rope_parameters": text_config.get("rope_parameters"),
+                }
+            ),
+            "weights_identifier": f"{config['model']}@{config['revision']}:original-bf16",
+            "eos_metadata_warnings": ["model_config_eos_missing"] if eos is None else [],
         }
 
     def generate(self, prompt, seed, config=None):
         config = config or self.config
-        sampling = config["sampling"]
         thinking = config.get("enable_thinking", True)
         formatted = self.tokenizer.apply_chat_template(
             [{"role": "user", "content": prompt}],
@@ -90,78 +103,80 @@ class MLXBackend:
             enable_thinking=thinking,
         )
         prompt_ids = self.tokenizer.encode(formatted, add_special_tokens=False)
-        mx.random.seed(seed)
-        sampler = make_sampler(sampling)
-        penalties = make_penalties(len(prompt_ids), sampling)
+        return self.generate_tokens(prompt_ids, seed, config, formatted_prompt=formatted)
 
+    def generate_tokens(
+        self, prompt_ids, seed, config=None, *, formatted_prompt=None, thinking=None
+    ):
+        """Explicit token-prefix path used only by labeled counterfactual probes."""
+        config = config or self.config
+        if config["max_output_tokens"] <= 0:
+            raise ValueError("max_output_tokens must be positive")
+        thinking = config.get("enable_thinking", True) if thinking is None else thinking
+        validate_context_budget(len(prompt_ids), config["max_output_tokens"], self.context_window)
+        mx.random.seed(seed)
+        sampler = make_sampler(config["sampling"])
+        penalties = make_penalties(len(prompt_ids), config["sampling"])
         mx.reset_peak_memory()
         start = time.perf_counter()
-        ids, pieces = [], []
-        guard = config.get("loop_guard", {})
-        guard_evidence = None
-        closing = self.tokenizer.convert_tokens_to_ids("</think>")
-        in_reasoning = thinking
-        iterator = stream_generate(
-            self.model,
-            self.tokenizer,
-            prompt_ids,
-            max_tokens=config["max_output_tokens"],
-            sampler=sampler,
-            logits_processors=[penalties],
-        )
         rss_peak = psutil.Process().memory_info().rss
         first_token_s = None
-        for response in iterator:
+
+        def observe(count):
+            nonlocal rss_peak, first_token_s
             if first_token_s is None:
                 first_token_s = time.perf_counter() - start
-            ids.append(response.token)
-            pieces.append(response.text)
-            if len(ids) % 64 == 0:
+            if count % 64 == 0:
                 rss_peak = max(rss_peak, psutil.Process().memory_info().rss)
-            if response.token == closing:
-                in_reasoning = False
-            if (
-                guard.get("enabled", False)
-                and in_reasoning
-                and len(ids) % guard.get("check_every", 16) == 0
-            ):
-                guard_evidence = suffix_loop(
-                    ids,
-                    **{
-                        k: v
-                        for k, v in guard.items()
-                        if k in {"min_period", "max_period", "repeats"}
-                    },
-                )
-                if guard_evidence:
-                    break
-        iterator.close()
-        mx.synchronize()
-        elapsed = time.perf_counter() - start
-        if guard_evidence:
-            termination = "runtime_loop_guard"
-        elif ids[-1] in self.eos_ids:
-            termination = "eos"
-        elif response.finish_reason == "length":
-            termination = "max_output_tokens"
-        else:
-            termination = "other"
-        # Decode actual tokens: stream detokenizer buffering must not lose text on guard stops.
-        raw = self.tokenizer.decode(
-            [t for t in ids if t not in self.eos_ids], skip_special_tokens=False
+
+        def responses():
+            yield from stream_generate(
+                self.model,
+                self.tokenizer,
+                prompt_ids,
+                max_tokens=config["max_output_tokens"],
+                sampler=sampler,
+                logits_processors=[penalties],
+            )
+
+        iterator = responses()
+        result = consume_stream(
+            iterator,
+            eos_ids=self.eos_ids,
+            max_tokens=config["max_output_tokens"],
+            thinking=thinking,
+            closing=self.tokenizer.convert_tokens_to_ids("</think>"),
+            opening=self.tokenizer.convert_tokens_to_ids("<think>"),
+            guard=config.get("loop_guard", {}),
+            on_token=observe,
         )
+        response = result.pop("last_response")
+        ids = result["token_ids"]
+        try:
+            mx.synchronize()
+            raw = self.tokenizer.decode(
+                [t for t in ids if t not in self.eos_ids], skip_special_tokens=False
+            )
+        except Exception as exc:
+            raw = ""
+            result["generation_error"] = {
+                "type": type(exc).__name__,
+                "message": str(exc),
+                "stage": "synchronize_decode",
+            }
+            result["termination_reason"] = "synchronize_decode_error"
+        elapsed = time.perf_counter() - start
         return {
+            **result,
             "raw_output": raw,
-            "token_ids": ids,
             "prompt_tokens": len(prompt_ids),
-            "formatted_prompt": formatted,
+            "prompt_token_ids": list(prompt_ids),
+            "formatted_prompt": formatted_prompt,
             "latency_s": elapsed,
             "first_token_latency_s": first_token_s,
-            "output_tokens_per_second": len(ids) / elapsed,
-            "backend_decode_tokens_per_second": response.generation_tps,
-            "termination_reason": termination,
-            "stop_token_id": ids[-1] if termination == "eos" else None,
-            "loop_guard_evidence": guard_evidence,
+            "output_tokens_per_second": len(ids) / elapsed if elapsed > 0 else None,
+            "backend_decode_tokens_per_second": getattr(response, "generation_tps", None),
+            "stop_token_id": ids[-1] if ids and result["termination_reason"] == "eos" else None,
             "mlx_peak_bytes": mx.get_peak_memory(),
             "rss_peak_observed_bytes": max(rss_peak, psutil.Process().memory_info().rss),
             "system_available_ram_bytes": psutil.virtual_memory().available,
