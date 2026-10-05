@@ -52,3 +52,10 @@ def test_real_template_and_generated_token_partition(tokenizer):
         conclusion_distance(parsed.reasoning, parsed.reasoning_ids, "500", tokenizer)["evidence"]
         is None
     )
+
+
+def test_eos_validation_includes_added_special_tokens(tokenizer):
+    from qwenlean.inference.streaming import validate_eos_ids
+
+    assert tokenizer.vocab_size <= min(tokenizer.eos_token_ids)
+    assert validate_eos_ids(tokenizer.eos_token_ids, len(tokenizer)) == {248044, 248046}

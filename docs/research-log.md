@@ -140,3 +140,12 @@ and a frozen v5 plus new policy-aware v6 scorer. No model context/position/RoPE
 settings changed and no silent truncation is permitted. Unit/serialization tests
 pass; full inference integration and the 144-trajectory prompt study are next.
 No TRAIN targets or optimizer steps yet.
+
+
+## EOS-016 — added-token vocabulary bounds
+
+The first prompt-study launch stopped during model initialization, with zero
+trajectories generated. New validation mistakenly bounded EOS by vocab_size248044,
+which excludes33 added tokens; full tokenizer length248077 contains both EOS IDs.
+Fixed the bound to len(tokenizer), retained fail-closed checks, and added a real
+cached-tokenizer regression test. Failed-launch artifact is preserved separately.

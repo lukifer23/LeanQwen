@@ -67,13 +67,13 @@ class MLXBackend:
         eos = model_config.get("text_config", model_config).get("eos_token_id")
         model_eos = eos if isinstance(eos, list) else ([] if eos is None else [eos])
         if model_eos:
-            validate_eos_ids(model_eos, self.tokenizer.vocab_size)
+            validate_eos_ids(model_eos, len(self.tokenizer))
         for token_id in model_eos:
             if token_id is not None:
                 self.tokenizer.add_eos_token(self.tokenizer.convert_ids_to_tokens(token_id))
         text_config = model_config.get("text_config", model_config)
         self.context_window = text_config.get("max_position_embeddings")
-        self.eos_ids = validate_eos_ids(self.tokenizer.eos_token_ids, self.tokenizer.vocab_size)
+        self.eos_ids = validate_eos_ids(self.tokenizer.eos_token_ids, len(self.tokenizer))
         self.model_info = {
             "model": config["model"],
             "revision": config["revision"],
