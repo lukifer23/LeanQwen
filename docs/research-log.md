@@ -55,3 +55,34 @@ and total-output cap. This changes mode and recommended sampler together, so it
 is a mode control, not a single-variable sampler ablation.
 Result: pending; do not populate until measured.
 Next decision: compare total output compute as well as reasoning-token partitions.
+
+## BASELINE-A-006 — 2026-10-05
+
+Hypothesis: the official thinking sampler provides a measurable accuracy/compute baseline.
+Configuration: original bf16 text weights, temperature 1, top-p .95, top-k 20,
+presence 1.5, repetition 1, thinking enabled, both checkpoint EOS IDs, 2048 total
+output cap, no guard. Run `20261005T170152-A-official-thinking-0d62e9fa`.
+Dataset: procedural-v1 DEV, 60 problems across six families, one stable seed each.
+Result: 0/60 final accuracy; all capped; mean reasoning 2044.13, p50/p95 2048;
+mean latency 33.90 s; aggregate 60.42 output tokens/s; MLX peak 1.684 GB, sampled
+RSS peak 2.140 GB. Exact-cycle rate 0%; mean repeated-content density 7.76%.
+Reanalysis fixes sentence punctuation matching, preserving original samples and
+all generation IDs; final accuracy remains unchanged. Candidate correct-conclusion
+cues in 40/60 are heuristic, not verified solution states.
+Interpretation: termination is severely impaired at this cap and with these
+format-constrained prompts. Do not infer uncapped or general reasoning accuracy.
+Manual inspection includes correct arithmetic followed by formatting reconsideration.
+Next decision: default-mode control and bounded single-variable sampler sweep.
+
+## PARITY-007 — 2026-10-05
+
+Hypothesis: severe baseline behavior could reflect an MLX architecture implementation error.
+Configuration: same original bf16 checkpoint and diagnostic prompt; greedy, no
+penalties, 64-token cap. Compare sequential MLX and prior MPS generations.
+Result: first 53 tokens agree. Divergence is newline versus double newline.
+Teacher-forced cached logits at this context have cosine .9999007, RMSE .03784,
+and 19/20 top-token overlap. MPS logits tie at 22.5; MLX double-newline logit 22.625.
+Interpretation: divergence is consistent with bf16 numerical differences near a
+tie; this diagnostic supports architecture fidelity but is not universal backend
+equivalence. Pins/seeds reproduce within a backend, not across devices.
+Next decision: continue MLX experiments and retain explicit backend identifiers.

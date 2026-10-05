@@ -1,0 +1,111 @@
+{
+  "cosine": 0.9999007225119145,
+  "mlx_top_tokens": [
+    {
+      "id": 271,
+      "logit": 22.625,
+      "text": "\n\n"
+    },
+    {
+      "id": 198,
+      "logit": 22.5,
+      "text": "\n"
+    },
+    {
+      "id": 18,
+      "logit": 21.25,
+      "text": "3"
+    },
+    {
+      "id": 318,
+      "logit": 20.25,
+      "text": " ("
+    },
+    {
+      "id": 283,
+      "logit": 17.75,
+      "text": " ="
+    },
+    {
+      "id": 11,
+      "logit": 17.5,
+      "text": ","
+    },
+    {
+      "id": 25,
+      "logit": 17.5,
+      "text": ":"
+    },
+    {
+      "id": 15,
+      "logit": 17.5,
+      "text": "0"
+    },
+    {
+      "id": 16,
+      "logit": 17.25,
+      "text": "1"
+    },
+    {
+      "id": 13,
+      "logit": 16.875,
+      "text": "."
+    }
+  ],
+  "mps_top_tokens": [
+    {
+      "id": 198,
+      "logit": 22.5,
+      "text": "\n"
+    },
+    {
+      "id": 271,
+      "logit": 22.5,
+      "text": "\n\n"
+    },
+    {
+      "id": 18,
+      "logit": 21.125,
+      "text": "3"
+    },
+    {
+      "id": 318,
+      "logit": 20.25,
+      "text": " ("
+    },
+    {
+      "id": 283,
+      "logit": 17.75,
+      "text": " ="
+    },
+    {
+      "id": 11,
+      "logit": 17.5,
+      "text": ","
+    },
+    {
+      "id": 25,
+      "logit": 17.5,
+      "text": ":"
+    },
+    {
+      "id": 15,
+      "logit": 17.5,
+      "text": "0"
+    },
+    {
+      "id": 16,
+      "logit": 17.125,
+      "text": "1"
+    },
+    {
+      "id": 13,
+      "logit": 16.75,
+      "text": "."
+    }
+  ],
+  "note": "Teacher-forced cached forward at one divergence, bf16 original weights. Sequential processes, one model instance at a time.",
+  "prefix_tokens": 53,
+  "rmse": 0.03784108359169802,
+  "top20_overlap": 19
+}

@@ -1,0 +1,45 @@
+{
+  "runs/20261005T170152-A-official-thinking-0d62e9fa": {
+    "config": {
+      "backend": "mlx",
+      "enable_thinking": true,
+      "loop_guard": {
+        "check_every": 16,
+        "enabled": false,
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "A-official-thinking",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261005
+    },
+    "sample_count": 60
+  }
+}

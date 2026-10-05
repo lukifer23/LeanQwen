@@ -22,7 +22,9 @@ reference kernels. Adapter backward compatibility passes in MLX training mode;
 no optimizer updates, SFT or preference training have run.
 
 A tested evaluation harness and 60-problem DEV suite are implemented. The stock
-thinking baseline and staged decoding experiments are in progress. No improvement
+thinking baseline is complete; default-mode control and staged decoding experiments
+are in progress. At the 2048-token cap, the thinking baseline produced 0/60
+correct final answers and all samples reached the cap (60.4 output tokens/s). No improvement
 has been established. Small compatibility measurements are under `reports/`;
 research findings will be recorded only after complete runs.
 
