@@ -65,7 +65,9 @@ RoPE settings remain unchanged. Prompt tokenization does not truncate. A prompt
 plus output budget exceeding the original window is refused. Output caps and
 bounded future smoke-training sequence lengths are experimental budgets, not
 changes to model context capacity. Full source traces remain saved; counterfactual
-prefixes will be separately labeled interventions. Long-context behavioral retention
+prefixes will be separately labeled interventions. The user permits a documented 128K limit if useful, with a floor of 131072 tokens;
+current experiments keep 262144. Lowering a configured ceiling alone does not save
+compute for short inputs. Long-context behavioral retention
 has not been tested and cannot be inferred from unchanged configuration alone.
 
 ## Remaining gates

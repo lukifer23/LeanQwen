@@ -11,5 +11,5 @@
 - No Docker. No long training until baseline/decoding diagnosis and dataset quality gates.
 - Verify changes with `uv run --frozen pytest -q` and Ruff as appropriate.
 
-- Preserve the original model context window and RoPE/position settings; refuse excess input instead of silently truncating. Output and smoke-training sequence budgets are separately documented.
+- Keep the original context window by default; an explicitly documented limit may be lowered to 131072 tokens (128K), never below. Preserve RoPE/position settings; refuse excess input instead of silently truncating. Output and smoke-training sequence budgets are separately documented.
 - Preserve historical v1/v5 artifacts; new prompt experiments use independent IDs/scoring contracts and task-clustered replicate statistics.

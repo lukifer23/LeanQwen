@@ -1,0 +1,117 @@
+{
+  "context": {
+    "current_model_window_changed": false,
+    "minimum_acceptable_limit": 131072,
+    "original_configured_tokens": 262144
+  },
+  "early_exit": {
+    "additional_cutoff": "first cue-qualified candidate conclusion",
+    "cohort": "six balanced DEV trajectories under selected prompt policy, replicate zero",
+    "cutoffs": [
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "final_budget": 128,
+    "final_sampler": "greedy, no presence/repetition penalties, explicit counterfactual control; does not estimate natural policy",
+    "intervention": "exact rendered prompt IDs plus emitted prefix, then forced </think> and two newlines; original traces never changed"
+  },
+  "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "prompt_study": {
+    "max_output_tokens": 2048,
+    "pilot_ids": [
+      "dev-algebra-d5299426b280",
+      "dev-ordering-65ae42610205",
+      "dev-state_machine-94adcac9b11b",
+      "dev-boolean_logic-ba54ced04433",
+      "dev-word_problem-1f554c088282",
+      "dev-ordering-5bdf0e8a1441",
+      "dev-word_problem-0ee2ae3e0f2b",
+      "dev-boolean_logic-c015e93f8d16",
+      "dev-state_machine-03bf352695e9",
+      "dev-algebra-2bb4d5434fd2",
+      "dev-arithmetic-c61a2e941069",
+      "dev-arithmetic-f0f5389e9780"
+    ],
+    "policies": [
+      "P0",
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "replicates": 3,
+    "selection_rule": "task accuracy, then cap rate, then format-meta density, then mean total output",
+    "trajectories": 144
+  },
+  "starting_sha": "8f67d3b2a1c217f5cad819ac2b8211b24db57e7d",
+  "tail": {
+    "cap_16384_eligible_ids": [
+      "dev-arithmetic-c61a2e941069",
+      "dev-state_machine-2a23df54f658"
+    ],
+    "caps": [
+      2048,
+      4096,
+      8192
+    ],
+    "censoring_policy": "report unknown outcomes above censoring horizon; no population estimate from stratified selected cases",
+    "cohort": [
+      {
+        "historical_sample_id": "dev-arithmetic-c61a2e941069",
+        "replicate": 0,
+        "seed": 1152895734,
+        "stratum": "early_correct_conclusion",
+        "task_id": "v1-content-19048e452785c34ac990"
+      },
+      {
+        "historical_sample_id": "dev-algebra-45a5b6efe1bc",
+        "replicate": 0,
+        "seed": 3783150421,
+        "stratum": "format_deliberation",
+        "task_id": "v1-content-0420f9ae3d6136afa0ff"
+      },
+      {
+        "historical_sample_id": "dev-arithmetic-0e6e42cd6282",
+        "replicate": 0,
+        "seed": 1689776313,
+        "stratum": "arithmetic_drift",
+        "task_id": "v1-content-ba9e70780aa4012fe5ab"
+      },
+      {
+        "historical_sample_id": "dev-state_machine-2a23df54f658",
+        "replicate": 0,
+        "seed": 2588160835,
+        "stratum": "state_rule_confusion",
+        "task_id": "v1-content-208569cd7eff3196fcb9"
+      },
+      {
+        "historical_sample_id": "dev-boolean_logic-ba54ced04433",
+        "replicate": 0,
+        "seed": 1603430532,
+        "stratum": "shorter_easier_boolean",
+        "task_id": "v1-content-ca26414b3c77cff24de9"
+      },
+      {
+        "historical_sample_id": "dev-word_problem-707fca6fb1b1",
+        "replicate": 0,
+        "seed": 3395301209,
+        "stratum": "word_problem_units",
+        "task_id": "v1-content-e421b8e3fb8581ac218a"
+      },
+      {
+        "historical_sample_id": "dev-ordering-65ae42610205",
+        "replicate": 0,
+        "seed": 550475581,
+        "stratum": "pathological_ordering",
+        "task_id": "v1-content-13276a136d16a0f67643"
+      }
+    ],
+    "policy": "provisional highest-ranked prompt policy from completed DEV study",
+    "prefix_consistency_required": true,
+    "selection_basis": "Historical first-pass DEV traces, selected before inspecting new policy outcomes",
+    "skip_higher_if_eos": true
+  },
+  "test_opened": false
+}
