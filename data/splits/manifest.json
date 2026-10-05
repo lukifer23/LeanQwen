@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "dev": 60,
+    "test": 60,
+    "train": 60
+  },
+  "hashes": {
+    "dev": "bfc767bc4402235fd90d0967c1822f0553825e9a0d5bc9103d9746a96856545a",
+    "test": "a7c3fb2e698e60d7464cf3a91c0d6b270d7e5fbe2da296c52a3fb2948d519041",
+    "train": "1aabc62d2333ba2880310fc40648d8b61f7182a3bd3ab4de51831da05e3e27b7"
+  },
+  "ranges": {
+    "dev": [
+      41,
+      70
+    ],
+    "test": [
+      71,
+      100
+    ],
+    "train": [
+      11,
+      40
+    ]
+  },
+  "seeds": {
+    "dev": 22061,
+    "test": 33091,
+    "train": 11031
+  },
+  "test_policy": "Sealed from sampler tuning and training selection; no TEST evaluation in first pass.",
+  "version": "procedural-v1"
+}

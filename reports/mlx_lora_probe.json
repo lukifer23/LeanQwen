@@ -3,7 +3,19 @@
   "revision": "2fc06364715b967f1860aea9cf38778875588b17",
   "optimizer_steps": 0,
   "purpose": "Check differentiability through exact architecture, not model training",
-  "status": "failed",
-  "error": "IncompleteSnapshotError(\"The cached snapshot for 'Qwen/Qwen3.5-0.8B' (revision '2fc06364715b967f1860aea9cf38778875588b17', commit 2fc06364715b967f1860aea9cf38778875588b17) is incomplete: 3 file(s) are missing (.gitattributes, LICENSE, README.md). Outgoing traffic is disabled ('local_files_only=True'). Re-run the download with network access to complete the snapshot.\")",
-  "traceback": "Traceback (most recent call last):\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/scripts/probe_mlx_lora.py\", line 16, in <module>\n    path=snapshot_download(meta['model'],revision=meta['revision'],local_files_only=True)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py\", line 89, in _inner_fn\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 266, in _inner\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/.venv/lib/python3.12/site-packages/huggingface_hub/_snapshot_download.py\", line 330, in snapshot_download\n    _raise_if_incomplete_snapshot(\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/.venv/lib/python3.12/site-packages/huggingface_hub/_snapshot_download.py\", line 586, in _raise_if_incomplete_snapshot\n    raise IncompleteSnapshotError(\nhuggingface_hub.errors.IncompleteSnapshotError: The cached snapshot for 'Qwen/Qwen3.5-0.8B' (revision '2fc06364715b967f1860aea9cf38778875588b17', commit 2fc06364715b967f1860aea9cf38778875588b17) is incomplete: 3 file(s) are missing (.gitattributes, LICENSE, README.md). Outgoing traffic is disabled ('local_files_only=True'). Re-run the download with network access to complete the snapshot.\n"
+  "trainable_parameters": 55296,
+  "trainable_parameter_names": [
+    "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_a",
+    "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_b",
+    "language_model.model.layers.23.self_attn.q_proj.lora_a",
+    "language_model.model.layers.23.self_attn.q_proj.lora_b",
+    "language_model.model.layers.23.self_attn.v_proj.lora_a",
+    "language_model.model.layers.23.self_attn.v_proj.lora_b"
+  ],
+  "loss": 4.9836745262146,
+  "backward_s": 1.0014051660109544,
+  "finite_gradients": true,
+  "nonzero_gradient_tensors": 3,
+  "mlx_peak_bytes": 1733577660,
+  "status": "adapter_backward_ok"
 }

@@ -19,7 +19,7 @@ Compatibility audit:
 | PyTorch 2.14.1 MPS | MPS available; bf16 eager inference works; 64-token diagnostic took 7.42 s | Hybrid kernels use reference PyTorch implementations; training backward not tested |
 | PEFT 0.21.2 | Real r=4 q_proj/v_proj adapter attachment succeeds: 159,744 trainable parameters | Backward/optimizer not tested; explicit modules needed |
 | TRL 1.14.1 | Installed code includes Qwen3.5 thinking/non-thinking and training templates | No SFT/DPO run; template support alone is not end-to-end training validation |
-| MLX 0.32.3 / MLX-LM 0.32.0 | Original checkpoint runs; 512-token diagnostic took 7.15 s; adapter backward probe recorded separately | Long sequence training still needs a real SFT smoke test |
+| MLX 0.32.3 / MLX-LM 0.32.0 | Original checkpoint runs; 512-token diagnostic took 7.15 s; adapter backward passes in training mode: 55,296 adapter parameters, 1.00 s, 1.73 GB MLX peak | Long sequence training still needs a real SFT smoke test |
 
 These diagnostic timings use different lengths and sampling; they justify a
 practical backend choice, not a rigorous performance benchmark. MLX adapter

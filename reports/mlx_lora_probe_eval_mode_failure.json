@@ -1,0 +1,18 @@
+{
+  "model": "Qwen/Qwen3.5-0.8B",
+  "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "optimizer_steps": 0,
+  "purpose": "Check differentiability through exact architecture, not model training",
+  "trainable_parameters": 55296,
+  "trainable_parameter_names": [
+    "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_a",
+    "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_b",
+    "language_model.model.layers.23.self_attn.q_proj.lora_a",
+    "language_model.model.layers.23.self_attn.q_proj.lora_b",
+    "language_model.model.layers.23.self_attn.v_proj.lora_a",
+    "language_model.model.layers.23.self_attn.v_proj.lora_b"
+  ],
+  "status": "failed",
+  "error": "ValueError('[Primitive::vjp] Not implemented for CustomKernel.')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/scripts/probe_mlx_lora.py\", line 32, in <module>\n    loss,grads=nn.value_and_grad(model,probe_loss)(model)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/admin/Downloads/CodeProjects/QwenLean/.venv/lib/python3.12/site-packages/mlx/nn/utils.py\", line 35, in wrapped_value_grad_fn\n    value, grad = value_grad_fn(model.trainable_parameters(), *args, **kwargs)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: [Primitive::vjp] Not implemented for CustomKernel.\n"
+}
