@@ -49,7 +49,9 @@ The [official checkpoint card](https://huggingface.co/Qwen/Qwen3.5-0.8B) states
 that non-thinking is default and warns specifically about this model's thinking
 loops. Enable thinking through the official template parameter. Thinking prompt
 suffix: `assistant\n<think>\n`; non-thinking precloses an empty block. Generated
-`</think>` is the reasoning boundary. A missing boundary means an unclosed trace;
+`</think>` is the reasoning boundary. The tokenizer ends turns at `<|im_end|>` (248046); text config also specifies
+`<|endoftext|>` (248044). Honor both and record the actual stop token.
+A missing boundary means an unclosed trace;
 reasoning never gets scored as a final answer. Record EOS separately from token
 cap termination, and never interpret a token cap as clean termination.
 

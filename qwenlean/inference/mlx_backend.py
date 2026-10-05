@@ -63,11 +63,17 @@ class MLXBackend:
         )
         self.model, self.tokenizer = load(path)
         mx.eval(self.model.parameters())
+        model_config = json.loads((Path(path) / "config.json").read_text())
+        eos = model_config.get("text_config", model_config).get("eos_token_id")
+        for token_id in eos if isinstance(eos, list) else [eos]:
+            if token_id is not None:
+                self.tokenizer.add_eos_token(self.tokenizer.convert_ids_to_tokens(token_id))
         self.eos_ids = set(self.tokenizer.eos_token_ids)
         self.model_info = {
             "model": config["model"],
             "revision": config["revision"],
             "backend": "mlx",
+            "eos_token_ids": sorted(self.eos_ids),
             "precision": "upstream_unquantized_bfloat16_text_weights",
             "template_sha256": hashlib.sha256(self.tokenizer.chat_template.encode()).hexdigest(),
             "config_hash": digest(json.loads((Path(path) / "config.json").read_text())),
