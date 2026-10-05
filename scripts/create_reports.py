@@ -42,6 +42,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline-run", required=True)
     parser.add_argument("--sampling", default="reports/sampling_measurements.json")
+    parser.add_argument("--nonthinking-run")
     args = parser.parse_args()
     baseline = Path(args.baseline_run)
     verify_complete(baseline)
@@ -195,13 +196,33 @@ def main():
             "",
         ]
         Path("reports/sampling_ablation.md").write_text("\n".join(report))
+    if args.nonthinking_run:
+        control = Path(args.nonthinking_run)
+        verify_complete(control)
+        c = read_jsonl(control / "samples.jsonl")
+        sc = summarize(c)
+        paired_comparison(a, c)
+        entries.append(("A0 non-thinking", c, sc))
+        source[str(control)] = {
+            "sample_count": len(c),
+            "config": json.loads((control / "config.json").read_text()),
+        }
+        write_json("reports/nonthinking_summary.json", sc)
+        Path("reports/nonthinking_control.md").write_text(
+            "# Official default-mode control\n\n"
+            + table([("A thinking", sa), ("A0 non-thinking", sc)])
+            + "\n\nNon-thinking uses the official non-thinking sampler. This is a mode plus sampler control. "
+            "A zero reasoning partition does not mean zero compute: median total output tokens are "
+            + f"{sa['total_output_tokens']['p50']:.0f} for A and {sc['total_output_tokens']['p50']:.0f} for A0. "
+            + "This control does not establish that harder reasoning tasks can dispense with thinking.\n"
+        )
     fig, axes = plt.subplots(1, 2, figsize=(11, 4))
     for label, rows, s in entries:
         x = np.sort([r["reasoning_tokens"] for r in rows])
         axes[0].step(x, np.arange(1, len(x) + 1) / len(x), where="post", label=label)
         ci = s["accuracy_bootstrap_ci95"]
         axes[1].errorbar(
-            s["reasoning_tokens"]["mean"],
+            s["total_output_tokens"]["mean"],
             s["accuracy"],
             yerr=[[s["accuracy"] - ci[0]], [ci[1] - s["accuracy"]]],
             fmt="o",
@@ -210,7 +231,7 @@ def main():
     axes[0].set(
         xlabel="Reasoning tokens (2048 total-output cap)", ylabel="Empirical cumulative probability"
     )
-    axes[1].set(xlabel="Mean reasoning tokens", ylabel="Accuracy", ylim=(0, 1.05))
+    axes[1].set(xlabel="Mean total emitted output tokens", ylabel="Accuracy", ylim=(0, 1.05))
     for ax in axes:
         ax.grid(alpha=0.2)
         ax.legend()

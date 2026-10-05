@@ -7,7 +7,7 @@ NUMBER = r"[-+]?\d[\d,]*(?:\.\d+)?(?:/\d+)?"
 
 
 def extract_answer(final):
-    markers = re.findall(r"FINAL\s*:\s*(" + NUMBER + r")(?![\d./])", final, re.I)
+    markers = re.findall(r"FINAL\s*:\s*(" + NUMBER + r")(?![\d/]|[.]\d)", final, re.I)
     if markers:
         # Conflicting final markers are not unambiguous evidence.
         if len({normalize(x) for x in markers}) != 1:

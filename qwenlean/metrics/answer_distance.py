@@ -9,7 +9,7 @@ def conclusion_distance(text, reasoning_ids, expected, tokenizer):
     pattern = re.compile(
         r"(?:\b(?:answer|result|total|therefore|thus)\b[^\n]{0,60}?|=\s*)("
         + NUMBER
-        + r")(?![\d./])",
+        + r")(?![\d/]|[.]\d)",
         re.I,
     )
     matches = [m for m in pattern.finditer(text) if normalize(m.group(1)) == normalize(expected)]

@@ -49,6 +49,7 @@ def test_parse_prefill_and_accounting():
         ("\\boxed{42}", "42", True),
         ("FINAL: 42/0", "42", False),
         ("FINAL: 42.5", "42", False),
+        ("FINAL: 42.", "42", True),
     ],
 )
 def test_exact_scoring(text, expected, correct):
