@@ -120,3 +120,19 @@ default; use `--output` for a new summary without changing historical artifacts.
 Read [Phase 2 methodology](phase2-methodology.md) for stream/resume/scoring contracts
 and context-window preservation. The 262144-token architectural window is retained;
 output budgets and bounded smoke-training sequence lengths do not change it.
+
+## Automated checks
+
+GitHub Actions runs Ruff and device-free tests on Linux without downloading model
+weights. MLX-only unit tests and the offline pinned-tokenizer checks are marked
+`mlx` and `local_tokenizer`; run the complete suite on the Mac with its cached
+checkpoint. The Linux command is:
+
+```bash
+uv sync --frozen
+uv run --frozen pytest -q -m 'not local_tokenizer and not mlx'
+```
+
+The optional `semantic` dependency group prepares local embedding analysis; it
+is not needed for ordinary Qwen evaluation. Install optional dependencies only
+between model workloads so a running experiment keeps its recorded environment.

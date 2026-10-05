@@ -9,9 +9,12 @@ from transformers import AutoTokenizer
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.metrics.answer_distance import conclusion_distance
 
+pytestmark = pytest.mark.local_tokenizer
+
 
 @pytest.fixture(scope="module")
 def tokenizer():
+    pytest.importorskip("mlx_lm")
     meta = json.loads(Path("reports/environment.json").read_text())
     try:
         hf = AutoTokenizer.from_pretrained(

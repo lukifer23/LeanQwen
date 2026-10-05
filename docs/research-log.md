@@ -149,3 +149,12 @@ trajectories generated. New validation mistakenly bounded EOS by vocab_size24804
 which excludes33 added tokens; full tokenizer length248077 contains both EOS IDs.
 Fixed the bound to len(tokenizer), retained fail-closed checks, and added a real
 cached-tokenizer regression test. Failed-launch artifact is preserved separately.
+
+### Phase 2 — device-free CI milestone
+
+Added Linux GitHub Actions for Ruff and device-free tests, with explicit markers
+for Apple-only and cached-tokenizer checks. Local verification: 50 passed, five
+deselected; Ruff passed. This is local evidence, not a claim that remote CI ran.
+MLX remains the Apple default; optional embedding dependencies are locked but
+have not been installed during the active prompt study. The study is a single
+serialized process and retains the native 262144-token context configuration.

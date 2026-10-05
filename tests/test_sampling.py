@@ -1,8 +1,11 @@
 """Check the real MLX logit processor without loading model weights."""
 
-import mlx.core as mx
+import pytest
 
-from qwenlean.inference.mlx_backend import make_penalties, make_sampler
+mx = pytest.importorskip("mlx.core")
+pytestmark = pytest.mark.mlx
+
+from qwenlean.inference.mlx_backend import make_penalties, make_sampler  # noqa: E402
 
 
 def test_presence_excludes_prompt_and_penalizes_full_history():
