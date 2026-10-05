@@ -128,7 +128,7 @@ def main():
             'by_policy_semantic_density': {p:float(np.mean([r['semantic']['density'] for r in semantic_rows if r['policy']==p])) for p in ('P0','P1','P2','P3')},
             'default_threshold':.90,'threshold_selection':'retain conservative preregistered 0.90; sweep characterizes sensitivity, no optimality claim',
             'model':'sentence-transformers/all-MiniLM-L6-v2',
-            'limitations':'Curated DEV pairs, mainly one algebra task, one assistant reviewer, no independent human labels or held-out calibration. Similarity does not establish uselessness. Not a training filter.'}
+            'limitations':'Curated DEV pairs across five tasks, including four matched algebra policies; one assistant reviewer, no independent human labels or held-out calibration. Pair selection includes high lexical similarity and is not representative. Similarity does not establish uselessness. Not a training filter.'}
     # Avoid library-owned metadata object in serialized schema.
     result['model']='sentence-transformers/all-MiniLM-L6-v2'
     write_json('reports/metric_calibration.json',result)

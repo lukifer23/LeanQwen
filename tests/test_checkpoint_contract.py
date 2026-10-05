@@ -74,6 +74,7 @@ def test_counterfactual_exact_controls_and_token_boundary(tokenizer):
     reasoning_ids = parse_tokens(ids, tokenizer, True).reasoning_ids
     prefix = reasoning_prefix(ids, len(reasoning_ids), opening=opening, closing=close,
                               eos_ids=tokenizer.eos_token_ids)
+    assert reasoning_prefix(ids, 0, opening=opening, closing=close) == []
     assert prefix == ids[:ids.index(close)]
     assert prefix[0] == opening
     assert tokenizer.encode('</think>\n\n', add_special_tokens=False)[0] == close

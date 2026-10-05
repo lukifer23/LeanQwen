@@ -2,8 +2,10 @@
 
 
 def reasoning_prefix(ids, cutoff, *, opening, closing, eos_ids=()):
-    if type(cutoff) is not int or cutoff < 1:
-        raise ValueError('Positive reasoning cutoff required')
+    if type(cutoff) is not int or cutoff < 0:
+        raise ValueError('Nonnegative reasoning cutoff required')
+    if cutoff == 0:
+        return []
     count, in_reasoning = 0, True
     for i, token in enumerate(ids):
         if token in eos_ids:

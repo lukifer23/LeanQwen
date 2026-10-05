@@ -154,3 +154,11 @@ and the predeclared policy-selection tie breaker remains v1; v2 is diagnostic.
 Brief correct adherence to a final-line instruction is not pathological. Manual
 annotation distinguishes presence from extended deliberation. Eight traces and
 one reviewer provide limited calibration, not an oracle or population estimate.
+
+The calibration pair pool now contains 36 judgments across five tasks, rather than
+only algebra. It includes different truth-table rows/variables as hard negatives;
+selection partly uses lexical similarity and remains nonrepresentative. Early-exit
+probes include a predeclared zero-prefix control. A success at 128 tokens provides
+weaker evidence if the same final decoder also succeeds without saved reasoning.
+Forced closure and greedy/no-penalty final decoding remain combined interventions;
+these results cannot isolate their causal contributions or prove internal certainty.

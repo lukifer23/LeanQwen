@@ -106,6 +106,7 @@ def main():
             minima[row['source_generation_id']] = min(row['cutoff_token'], minima.get(row['source_generation_id'], row['cutoff_token']))
     result = {'probes': len(saved), 'source_trajectories': 6, 'correct_probes': sum(r['correct'] for r in saved),
               'minimum_sufficient_observed_prefix': minima, 'protocol': protocol['early_exit'],
+              'zero_prefix_correct':sum(r['correct'] for r in saved if r['cutoff_token']==0),
               'policy': study['selected_policy'], 'test_evaluated': False,
               'interpretation': 'Conditional forced-close recovery, not natural stopping, certainty, or population accuracy. Censored source savings are relative to observed cap only.'}
     write_json('reports/early_exit_measurements.json', result)
@@ -118,7 +119,7 @@ def main():
         if any(r['task_id'] in line for line in lines):
             continue
         lines.append(f"| {r['task_id']} | {minima.get(r['generation_id'], 'none')} | {r['correct']} | {r['termination_reason'] == 'eos'} |")
-    lines += ['', 'Uses actual saved chat-template prompt IDs plus generated reasoning IDs, then explicitly forces `</think>` and two newlines. Greedy final generation has 128 tokens and no repetition/presence penalties. Original baseline records are untouched. Counts are nested within six tasks, not independent benchmark problems.', '',
+    lines += ['', 'Uses actual saved chat-template prompt IDs plus generated reasoning IDs, then explicitly forces `</think>` and two newlines. Greedy final generation has 128 tokens and no repetition/presence penalties. Zero-prefix forced-close controls measure direct-answer recovery under the same final decoder. Original baseline records are untouched. Counts are nested within six tasks, not independent benchmark problems.', '',
               'Reproduce/resume: `uv run --frozen python scripts/early_exit_probe.py`.']
     Path('reports/early_exit_probe.md').write_text('\n'.join(lines) + '\n')
 

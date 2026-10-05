@@ -223,3 +223,14 @@ without truncation and a hashed quality manifest. Reviewer prose is excluded fro
 supervised responses. Optional TRAIN embedding analysis runs in its own sequential
 process after Qwen generation; it remains diagnostic rather than an automatic
 filter. These interfaces have not yet produced data or optimizer evidence.
+
+### Phase 2 — calibration breadth and zero-prefix control
+
+Expanded individually inspected redundancy pairs to 36 across five DEV tasks,
+including ordering, state, logic and word-problem content. Useful distinct
+truth-table rows and different variables are explicit negative examples. This is
+curated, partly selected for lexical similarity, and not population calibration.
+Before any early-exit generation, added a zero-prefix forced-close control to the
+committed protocol. Without it, a correct 128-token probe might simply reflect
+existing direct-answer ability. Greedy/no-penalty closure remains an intervention,
+not ordinary model behavior. No source generations or historical artifacts change.
