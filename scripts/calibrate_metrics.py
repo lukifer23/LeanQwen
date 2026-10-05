@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from qwenlean.metrics.conclusions import conclusion_states
+from qwenlean.metrics.format_meta import format_meta_reasoning_v2
 from qwenlean.metrics.guard_replay import replay
 from qwenlean.metrics.repetition import STOP_WORDS, words
 from qwenlean.metrics.semantic import LocalSemanticMetric
@@ -50,6 +51,9 @@ def main():
     meta_labels = [a['format_meta_present'] for a in annotations]
     meta_pred = [sources[a['source_generation_id']]['format_meta']['flagged_lines'] > 0 for a in annotations]
     fmt = confusion(meta_labels, meta_pred)
+    format_v2 = {r['generation_id']:format_meta_reasoning_v2(r['reasoning']) for r in rows}
+    fmt2 = confusion(meta_labels,[format_v2[a['source_generation_id']]['flagged_lines']>0 for a in annotations])
+    write_jsonl('reports/format_meta_v2_records.jsonl',[{'source_generation_id':k,'format_meta':v} for k,v in format_v2.items()])
     from mlx_lm.tokenizer_utils import TokenizerWrapper
     from transformers import AutoTokenizer
 
@@ -120,7 +124,7 @@ def main():
     write_jsonl('reports/redundancy_calibration_measured_pairs.jsonl',measured_pairs)
     result={'calibration_pair_count':len(pairs),'independent_annotated_tasks':len({sources[p['source_generation_id']]['task_id'] for p in pairs}),
             'semantic_by_threshold':calibration,'lexical_threshold_0.90':lexical,
-            'format_meta_presence_calibration':fmt,'manual_annotation_count':len(annotations),
+            'format_meta_presence_calibration':{'historical_v1':fmt,'anchored_v2':fmt2},'manual_annotation_count':len(annotations),
             'by_policy_semantic_density': {p:float(np.mean([r['semantic']['density'] for r in semantic_rows if r['policy']==p])) for p in ('P0','P1','P2','P3')},
             'default_threshold':.90,'threshold_selection':'retain conservative preregistered 0.90; sweep characterizes sensitivity, no optimality claim',
             'model':metric.model.model_card_data.model_id if hasattr(metric.model, 'model_card_data') else 'all-MiniLM-L6-v2',
@@ -129,7 +133,7 @@ def main():
     result['model']='sentence-transformers/all-MiniLM-L6-v2'
     write_json('reports/metric_calibration.json',result)
     lines=['# Local redundancy and conclusion calibration','',result['limitations'],'',
-           f"{len(pairs)} manually inspected pairs; default semantic threshold 0.90. Lexical @0.90: {lexical}. Format-meta presence: {fmt} over {len(annotations)} inspected traces.", '',
+           f"{len(pairs)} manually inspected pairs; default semantic threshold 0.90. Lexical @0.90: {lexical}. Format-meta presence v1: {fmt}; derived anchored v2: {fmt2} over {len(annotations)} inspected traces.", '',
            '| Semantic threshold | TP | FP | TN | FN | Precision | Recall |','|---:|---:|---:|---:|---:|---:|---:|']
     for t,c in calibration.items():
         lines.append(f"| {t} | {c['tp']} | {c['fp']} | {c['tn']} | {c['fn']} | {c['precision']:.2f} | {c['recall']:.2f} |")

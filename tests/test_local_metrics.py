@@ -38,3 +38,11 @@ def test_guard_replay_preserves_control_polling_and_excludes_final():
     # at 72, but the actual 8-token cadence misses the exact cycle before close.
     assert replay(ids, {'min_period':24, 'max_period':24, 'repeats':3},
                   check_every=8, opening=1000, closing=1001, eos_ids={1002}) is None
+
+
+def test_format_meta_separates_task_rules_from_answer_syntax():
+    from qwenlean.metrics.format_meta import format_meta_reasoning_v2
+
+    assert not format_meta_reasoning_v2('Crucial instruction: reduce modulo 54.\nThere is another interpretation of the operation order.')['flagged_lines']
+    assert format_meta_reasoning_v2('The final line must contain only the integer answer.')['flagged_lines']
+    assert format_meta_reasoning_v2('The phrase FINAL: followed by just the answer.\nDoes it imply the literal string and a space?')['flagged_lines'] == 2

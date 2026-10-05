@@ -143,3 +143,14 @@ reasoning IDs. Trigger position, observed tokens saved, original final correctne
 and continuation text are retained. Every trigger needs individual review before
 a live pilot. No triggers means precision cannot be estimated. Censored savings
 are relative to observed output only.
+
+### Format-meta calibration correction
+
+Complete inspection of eight saved DEV traces found task-rule ambiguity mistaken
+for output-format discussion by v1's generic `instruction`/`interpretation` cues.
+A separate derived v2 metric anchors `FINAL:`, boxing, formatting and final-line
+syntax, with bounded within-paragraph context. Raw run v1 fields are preserved,
+and the predeclared policy-selection tie breaker remains v1; v2 is diagnostic.
+Brief correct adherence to a final-line instruction is not pathological. Manual
+annotation distinguishes presence from extended deliberation. Eight traces and
+one reviewer provide limited calibration, not an oracle or population estimate.

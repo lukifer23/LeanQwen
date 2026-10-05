@@ -192,3 +192,15 @@ historical/censored. All report builders write new destinations; first-pass repo
 and split hashes remain unchanged. Four completed P3 replicate-zero controls
 reproduce the historical emitted token IDs exactly. Remote CI is queued, so no
 remote pass is claimed. Substantial SFT remains gated and TEST has no responses.
+
+### Phase 2 — format-meta heuristic confound
+
+Inspected four further complete P2 trajectories: ordering, modular state, logic
+and word problem. They repeatedly question task semantics without prolonged
+answer-format discussion. The generic v1 format-meta cues falsely capture this.
+Added derived anchored v2 while preserving all v1 run fields and the original
+policy-selection rule. State trace never reaches its expected 11; word trace
+never reaches its expected discounted price; ordering never assembles the chain.
+Logic trace corrects initially wrong XOR/NOT definitions but truncates before an
+aggregate final count. Long continuation includes both necessary error recovery
+and redundant reconsideration; it cannot all be labeled waste.
