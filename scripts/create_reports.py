@@ -154,6 +154,22 @@ def main():
     entries = [("A", a, sa)]
     if Path(args.sampling).exists():
         sweep = json.loads(Path(args.sampling).read_text())
+        # Saved aggregate metrics can become stale after a scoring correction.
+        # Rebuild them from preserved records; do not change sampler selection.
+        pilot_ids = set(sweep["pilot_sample_ids"])
+        pilot_a = [r for r in a if r["sample_id"] in pilot_ids]
+        sweep["pilot_A"] = summarize(pilot_a)
+        for candidate in sweep["pilot_candidates"]:
+            pilot_path = Path(candidate["path"])
+            verify_complete(pilot_path)
+            pilot_rows = read_jsonl(pilot_path / "samples.jsonl")
+            candidate["summary"] = summarize(pilot_rows)
+            candidate["paired_against_A"] = paired_comparison(pilot_a, pilot_rows)
+            source[str(pilot_path)] = {
+                "sample_count": len(pilot_rows),
+                "config": json.loads((pilot_path / "config.json").read_text()),
+            }
+        sweep["summary_scoring_versions"] = sa["scoring_versions"]
         report = [
             "# Initial sampling ablation",
             "",
@@ -175,6 +191,8 @@ def main():
             b = read_jsonl(bpath / "samples.jsonl")
             sb = summarize(b)
             pair = paired_comparison(a, b)
+            sweep["finalist_summary"] = sb
+            sweep["full_paired_against_A"] = pair
             entries.append(("B candidate", b, sb))
             source[str(bpath)] = {
                 "sample_count": len(b),
@@ -207,6 +225,7 @@ def main():
             "```",
             "",
         ]
+        write_json(args.sampling, sweep)
         Path("reports/sampling_ablation.md").write_text("\n".join(report))
     if args.nonthinking_run:
         control = Path(args.nonthinking_run)

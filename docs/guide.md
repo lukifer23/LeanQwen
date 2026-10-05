@@ -70,7 +70,10 @@ uv run --frozen --extra compat qwenlean generate --config configs/baseline.yaml 
 `analyze` aggregates saved metrics and does not generate text or change scoring.
 If a scoring bug is fixed, `scripts/recompute_metrics.py runs/<A-run>` reprocesses
 actual emitted IDs, preserves `samples.original.jsonl`, and records the correction
-in `reanalysis.json`. This is an offline metric correction, not a new experiment.
+in `reanalysis.json`. Rescore every run involved in a comparison under the same
+version, then rerun `create_reports.py`; it refreshes saved sweep aggregates from
+those records while preserving the original sampler-selection decision. This is
+an offline metric correction, not a new experiment.
 
 Read `docs/metrics.md` before interpreting any efficiency statistic. In particular,
 a 2048-total-output-token cap bounds observed percentiles; zero detected exact

@@ -148,7 +148,7 @@
   },
   "rss_peak_observed_bytes": 2139504640,
   "scoring_versions": [
-    "terminal_final_cues_v3"
+    "terminal_answers_v4"
   ],
   "strict_final_accuracy": 0.0,
   "termination_counts": {

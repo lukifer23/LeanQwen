@@ -124,3 +124,17 @@ repetition-1.05 under the corrected definition; full DEV confirmation is running
 Interpretation: report format separately from reasoning ability, and inspect
 intermediate reasoning quality separately from final-answer accuracy.
 Next decision: rescore full confirmation under the same v3 scorer before comparison.
+
+
+## SCORE-009 — terminal numeric markers
+
+Hypothesis: marker extraction can mistake quoted formatting examples for an answer.
+Evidence: `dev-algebra-45a5b6efe1bc` in the full repetition candidate quotes
+`FINAL: 43` while continuing format deliberation and reaches the cap.
+Decision: v4 requires terminal numeric FINAL/boxed/plain answers or terminal
+explicit conclusion cues. Preserve legacy extraction as `strict_final_correct`
+for audit, independently of format compliance. Versioned backups retain all
+previous measurements. No regenerated or modified model output.
+Result: completed A/A0 and pilot task counts remain 0/60, 19/60, and 1/12,
+0/12, 2/12. The observed quoted example is rejected. Thirty tests pass.
+Next decision: apply the same v4 contract to full B before final comparison.

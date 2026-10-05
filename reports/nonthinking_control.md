@@ -7,4 +7,4 @@
 
 Non-thinking uses the official non-thinking sampler. This is a mode plus sampler control. A zero reasoning partition does not mean zero compute: median total output tokens are 2048 for A and 382 for A0. This control does not establish that harder reasoning tasks can dispense with thinking.
 
-Task accuracy 31.7%; strict extraction accuracy 25.0%; format compliance 45.0%. Scorer: terminal_final_cues_v3.
+Task accuracy 31.7%; strict extraction accuracy 25.0%; format compliance 45.0%. Scorer: terminal_answers_v4.
