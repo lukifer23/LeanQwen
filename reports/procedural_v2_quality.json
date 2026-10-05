@@ -1,0 +1,27 @@
+{
+  "scope": "Generator metadata audit only. TEST stimuli checked for contamination, never queried through a model. No claim of conceptual independence.",
+  "test_model_evaluated": false,
+  "v1_logic_fixed_formula_template_shared": true,
+  "v1_logic_truth_assignment_overlap_counts": {
+    "dev/test": 4,
+    "train/dev": 3,
+    "train/test": 2
+  },
+  "v2": {
+    "cross_split_structure_collisions": 0,
+    "limitation": "Signatures exclude numerical values/variable aliases where applicable, but do not prove conceptual independence. Algebra/word templates and ordering sizes are intentionally held out; difficulty is structural, not observed accuracy.",
+    "semantic_duplicates": 0,
+    "unique_structures": {
+      "dev": 50,
+      "test": 50,
+      "train": 50
+    }
+  },
+  "v2_counts": {
+    "dev": 64,
+    "test": 64,
+    "train": 64
+  },
+  "v2_difficulty_bins": 4,
+  "v2_family_count": 8
+}
