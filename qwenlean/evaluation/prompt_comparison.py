@@ -56,6 +56,7 @@ def intervention_comparison(a, b):
             "latency_s": lambda x: x["latency_s"],
             "repeated_content_density": lambda x: x["repetition"]["repetition_density"],
             "lexical_density": lambda x: x["repetition"]["lexical_redundancy"]["density"],
+            "semantic_density": lambda x: x.get("semantic", {}).get("density"),
             "format_meta_density": lambda x: x.get("format_meta", {}).get("word_density", 0),
         }
         delta = {

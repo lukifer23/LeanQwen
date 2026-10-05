@@ -171,3 +171,15 @@ not model outcomes. Historical v1 data and v5 report artifacts remain unchanged.
 Predeclared TRAIN pilot: sixteen tasks, N=4, 4096 cap. No TRAIN generations or
 optimizer steps have been executed at this milestone. Prompt study continues
 under the exclusive model lease.
+
+### Phase 2 — first matched qualitative calibration
+
+Inspected the complete first algebra replicate under all four policies. P0 still
+repeatedly rederives arithmetic without format wording. P1 both drifts arithmetically
+and repeatedly plans boxed presentation. P2 solves, performs a substitution check
+and terminates at 554 reasoning tokens. P3 recovers the solution then deliberates
+at length about literal FINAL syntax until the cap. This is a single matched case,
+not an aggregate prompt-effect estimate. Source-linked DEV annotations and 24
+curated chunk-pair judgments are recorded with training permission false. They
+will calibrate local lexical/semantic measurement; actual embedding inference is
+pending until Qwen releases the exclusive lease.

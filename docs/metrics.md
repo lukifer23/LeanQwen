@@ -119,3 +119,27 @@ correctness, applicable format compliance, EOS/cap, total/reasoning tokens, late
 literal/lexical redundancy and format-meta reasoning. Within-task variability is
 reported separately. The new format-meta line heuristic remains uncalibrated until
 manual review; it is not a semantic redundancy metric.
+
+## Phase 2 local calibration
+
+`conclusions.py` separates correct numeric mentions, conclusion cues, later
+conflicting cues, observed final correctness and unobserved closure. These are
+text categories, not hidden-state claims. Structured DEV annotations reference
+source generation IDs and are forbidden for training. Four complete matched
+algebra traces have been inspected so far; aggregate conclusions await the study.
+
+`semantic.py` implements local MiniLM chunk cosine independently of literal and
+content-word overlap. CPU float32 inference is pinned and cached. Logical text
+units are bounded to the encoder's window without truncating Qwen inputs or
+changing its context. Numeric agreement is reported alongside similarity because
+embeddings can confuse mathematically different statements. Default 0.90 and a
+0.80/0.85/0.90/0.95 sensitivity sweep are pending actual measurement against 24
+curated repeated-claim/operation pair judgments. These judgments do not certify
+that a repeated step has zero expected value. The calibration is primarily one
+algebra task and one assistant reviewer; no independent human labels are claimed.
+
+`guard_replay.py` reproduces the runtime 16-token polling cadence on saved
+reasoning IDs. Trigger position, observed tokens saved, original final correctness
+and continuation text are retained. Every trigger needs individual review before
+a live pilot. No triggers means precision cannot be estimated. Censored savings
+are relative to observed output only.
