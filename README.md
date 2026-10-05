@@ -51,18 +51,23 @@ uv run --frozen --extra compat qwenlean analyze runs/<baseline-run>
 uv run --frozen --extra compat qwenlean eval --config configs/nonthinking.yaml
 uv run --frozen --extra compat python scripts/sampling_ablation.py --baseline-run runs/<baseline-run>
 uv run --frozen --extra compat python scripts/create_reports.py --baseline-run runs/<baseline-run>
+# Only compare full runs with identical sample IDs and seeds:
 uv run --frozen --extra compat qwenlean compare runs/<baseline-run> runs/<candidate-run>
 ```
 
-`generate --config ... --prompt ... --output ...` saves a real generation. Training
-commands will be implemented only when the data/experimental gates are satisfied.
+`generate --config ... --prompt ... --output ...` saves a real generation. There is currently no `train-sft`, preference trainer, trajectory compression,
+embedding redundancy metric, or adaptive budget implementation. A CUDA backend
+has not been implemented. These are possible later experiments, subject to the
+data and measurement gates.
 
 ## Experimental design
 
 Six deterministic families: integer arithmetic, multi-step discount word problems,
 algebra, boolean logic, ordering constraints, and modular state transitions.
 Algorithmic labels use exact rational scoring. Independently seeded TRAIN/DEV/TEST
-pools have disjoint numeric ranges and prompt-hash contamination checks. TEST is
+pools have disjoint numeric ranges and prompt-hash contamination checks. Those
+checks detect duplicate prompts, not all semantic overlap: the small boolean truth
+domain can repeat across pools despite different instance labels. TEST is
 reserved from tuning and training selection; first-pass experiments use DEV only.
 The suite is intentionally small and does not establish general reasoning capability.
 

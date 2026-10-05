@@ -40,7 +40,8 @@ establish that the 0.8B model will fail on this machine.
 Only `qwenlean/inference/mlx_backend.py` imports MLX. The runner consumes a backend
 with `generate(prompt, seed, config)` and `tokenizer`. Scoring, provenance, procedural
 tasks and statistics are independent of device and model framework. A future
-Transformers/CUDA backend can implement that interface. No CUDA implementation
+Transformers/CUDA backend can implement that interface; macOS/Linux process
+locking currently uses POSIX `flock`. Windows is not a validated target. No CUDA implementation
 is claimed in this milestone; do not add unsupported CLI commands for training.
 
 ## Thinking and sampler semantics
