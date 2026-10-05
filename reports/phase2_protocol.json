@@ -45,6 +45,24 @@
     "selection_rule": "task accuracy, then cap rate, then format-meta density, then mean total output",
     "trajectories": 144
   },
+  "sft_smoke": {
+    "batch_size": 1,
+    "gradient_accumulation": 1,
+    "keys": [
+      "self_attn.q_proj",
+      "self_attn.v_proj",
+      "linear_attn.in_proj_qkv"
+    ],
+    "last_layers": 2,
+    "learning_rate": 0.0001,
+    "max_sequence_length": 1024,
+    "optimizer": "adamw",
+    "optimizer_steps": 4,
+    "purpose": "pipeline viability only",
+    "rank": 4,
+    "scale": 2.0,
+    "targets": "up to four individually quality-reviewed naturally terminated correct TRAIN records fitting the bound; no truncation"
+  },
   "starting_sha": "8f67d3b2a1c217f5cad819ac2b8211b24db57e7d",
   "tail": {
     "cap_16384_eligible_ids": [
@@ -113,5 +131,16 @@
     "selection_basis": "Historical first-pass DEV traces, selected before inspecting new policy outcomes",
     "skip_higher_if_eos": true
   },
-  "test_opened": false
+  "test_opened": false,
+  "train_candidate_pilot": {
+    "compression": false,
+    "dataset": "procedural-v2",
+    "guard": false,
+    "max_output_tokens": 4096,
+    "policy": "DEV selected",
+    "replicates": 4,
+    "selection": "first task per family in trivial and medium bins of deterministic TRAIN order",
+    "tasks": 16,
+    "total_trajectories": 64
+  }
 }

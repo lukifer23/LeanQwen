@@ -1,0 +1,30 @@
+{
+  "checks": {
+    "cross_split_structure_collisions": 0,
+    "limitation": "Signatures exclude numerical values/variable aliases where applicable, but do not prove conceptual independence. Algebra/word templates and ordering sizes are intentionally held out; difficulty is structural, not observed accuracy.",
+    "semantic_duplicates": 0,
+    "unique_structures": {
+      "dev": 50,
+      "test": 50,
+      "train": 50
+    }
+  },
+  "counts": {
+    "dev": 64,
+    "test": 64,
+    "train": 64
+  },
+  "hashes": {
+    "dev": "5c6028fedca77acd398d46ddb9b405b36077e53c2544f5a6cfc50f9d2e9a2f33",
+    "test": "9a7b9c76ea20650b5b04716e8fc2e03ded91c9c2c5542c50ba856272cdad538c",
+    "train": "3ac89570b1d496a5097489a8a4fe8fa33e4bdc10d624c74edbb4d27b37ed9959"
+  },
+  "per_bin": 2,
+  "seeds": {
+    "dev": 722061,
+    "test": 733091,
+    "train": 711031
+  },
+  "test_policy": "No model evaluation or trajectory selection on TEST.",
+  "version": "procedural-v2"
+}

@@ -72,12 +72,15 @@ uv run --frozen qwenlean generate --config configs/baseline.yaml --prompt 'Compu
 ```
 
 `analyze` aggregates saved metrics and does not generate text or change scoring.
-If a scoring bug is fixed, `scripts/recompute_metrics.py runs/<A-run>` reprocesses
-actual emitted IDs, preserves `samples.original.jsonl`, and records the correction
-in `reanalysis.json`. Rescore every run involved in a comparison under the same
-version, then rerun `create_reports.py`; it refreshes saved sweep aggregates from
-those records while preserving the original sampler-selection decision. This is
-an offline metric correction, not a new experiment.
+Metric reanalysis must write a new derived directory:
+
+```bash
+uv run --frozen python scripts/recompute_metrics.py runs/<source> --output runs/<new-derived-analysis> --scoring-version terminal_numeric_policies_v6
+```
+
+It preserves original configurations, raw output and historical measurements.
+Derived metrics carry their source run, source scoring versions and new version.
+Do not replace first-pass v5 reports with a new scoring contract.
 
 Read `docs/metrics.md` before interpreting any efficiency statistic. In particular,
 a 2048-total-output-token cap bounds observed percentiles; zero detected exact
@@ -86,9 +89,10 @@ appearances do not prove the model had reached a reliable solution.
 
 ## Not implemented
 
-Training-data candidate sampling, trajectory compression, dataset quality reports,
-SFT training, preference optimization, adaptive budgets and a CUDA backend are
-future work. No trained checkpoint is included. The optional exact-cycle guard
+The Phase 2 candidate and SFT interfaces described below are implemented but have
+not yet completed real model validation. Trajectory compression, preference
+optimization, adaptive budgets and a CUDA backend remain unimplemented. No
+trained checkpoint or training improvement is currently claimed. The optional exact-cycle guard
 exists but remains experimental; enabling `loop_guard.enabled` changes termination
 and needs real false-positive inspection before use as a default.
 
@@ -136,3 +140,52 @@ uv run --frozen pytest -q -m 'not local_tokenizer and not mlx'
 The optional `semantic` dependency group prepares local embedding analysis; it
 is not needed for ordinary Qwen evaluation. Install optional dependencies only
 between model workloads so a running experiment keeps its recorded environment.
+
+
+## Procedural-v2 and diagnostic controllers
+
+```bash
+uv run --frozen qwenlean build-dataset --version v2 --per-bin 2 --output data/splits/<new-v2-directory>
+uv run --frozen python scripts/termination_tail.py
+uv run --frozen python scripts/early_exit_probe.py
+```
+
+The v2 builder refuses nonempty destinations. The tracked first v2 pool contains
+64 tasks per split, eight families and four structural difficulty bins. Numeric
+ASTs, logic ASTs, state operation patterns, sequence operations, ordering sizes,
+algebra forms and word-problem templates define structural signatures. Cross-split
+signature and exact semantic-task collisions are rejected; this does not prove
+conceptual independence. `trivial` is relative to the family, not model accuracy.
+TEST has no generated model responses.
+
+The tail controller requires the completed prompt study. It follows the committed
+seven-case protocol, skips larger caps after EOS and verifies exact emitted-ID
+prefixes. A prefix divergence stops escalation and writes its evidence. The
+counterfactual controller forces closure on six saved DEV reasoning prefixes and
+uses a separately labeled greedy 128-token final budget. It does not modify the
+source traces or demonstrate that ordinary Qwen would stop at those positions.
+Controllers retain individual generations and validate saved contracts on restart.
+
+## Candidate and optimizer interfaces — awaiting real validation
+
+```bash
+uv run --frozen python scripts/train_candidates.py
+uv run --frozen qwenlean train-sft --config configs/training/<explicit-config>.yaml --dataset data/processed/<approved-train>.jsonl --quality-manifest reports/<approved-quality-manifest>.json --output adapters/<new-directory>
+```
+
+Candidate generation refuses to proceed until the prompt, tail, early-exit, metric
+and runtime-guard reports exist. Its predeclared pilot is sixteen TRAIN tasks,
+N=4, with a 4096 total-output cap. Selection requires correct clean EOS responses;
+length only breaks quality ties. Detected invalid numeric equations disqualify
+an otherwise correct final answer. Narrow step validation leaves much reasoning
+unverified, so selected targets need individual inspection.
+
+SFT requires exact source prompt/response token IDs, natural Qwen parent IDs,
+TRAIN permission and a matching approved dataset-quality manifest. The current
+implementation uses batch size one with configurable gradient accumulation,
+AdamW and explicit mixed-attention LoRA modules. It masks prompt loss, saves
+adapter-only checkpoints and reloads a fresh base instance for DEV pipeline
+sanity. It refuses existing outputs; optimizer resume is not supported. Bounded
+training examples do not change the model context or RoPE, and none are silently
+truncated. The first four-step smoke test remains pending; no substantial run is
+authorized in this phase.

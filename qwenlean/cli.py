@@ -20,6 +20,8 @@ def main():
     build = subs.add_parser("build-dataset", help="Build deterministic TRAIN/DEV/TEST pools")
     build.add_argument("--output", default="data/splits")
     build.add_argument("--per-family", type=int, default=10)
+    build.add_argument("--version", choices=["v1", "v2"], default="v1")
+    build.add_argument("--per-bin", type=int, default=2)
     ev = subs.add_parser("eval", help="Run real model evaluation")
     ev.add_argument("--config", required=True)
     ev.add_argument("--dataset", default="data/splits/dev.jsonl")
@@ -48,12 +50,28 @@ def main():
     prompt_compare.add_argument("--left-policy", required=True, choices=list(POLICIES))
     prompt_compare.add_argument("--right-policy", required=True, choices=list(POLICIES))
     prompt_compare.add_argument("--output", required=True)
+    train = subs.add_parser("train-sft", help="Real masked LoRA training from an approved TRAIN pool")
+    train.add_argument("--config", required=True)
+    train.add_argument("--dataset", required=True)
+    train.add_argument("--quality-manifest", required=True)
+    train.add_argument("--output", required=True)
     args = parser.parse_args()
     if args.command == "build-dataset":
         if args.per_family <= 0:
             parser.error("--per-family must be positive")
-        pools = build_pools(args.output, args.per_family)
+        if args.version == "v2":
+            from qwenlean.datasets.procedural_v2 import build_pools as build_v2
+
+            pools = build_v2(args.output, args.per_bin)
+        else:
+            pools = build_pools(args.output, args.per_family)
         print({s: len(r) for s, r in pools.items()})
+    elif args.command == "train-sft":
+        from qwenlean.training.mlx_sft import train
+
+        config = yaml.safe_load(Path(args.config).read_text())
+        result = train(config, args.dataset, args.quality_manifest, args.output)
+        print(json.dumps(result, indent=2))
     elif args.command in {"eval", "generate"}:
         config = yaml.safe_load(Path(args.config).read_text())
         if config.get("backend") != "mlx":

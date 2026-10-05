@@ -59,9 +59,9 @@ def main():
                 raise ValueError("Reused pilot dataset mismatch")
         else:
             run, _ = evaluate(backend, selected, config, label=f"pilot-{name}", resume=reuse)
-        from scripts.recompute_metrics import recompute
 
-        recompute(run)
+        # Baseline generation already records its explicit scoring contract.
+        # Historical runs must never be rewritten by a new scorer.
         summary = json.loads((run / "summary.json").read_text())
         records = read_jsonl(run / "samples.jsonl")
         runs.append(

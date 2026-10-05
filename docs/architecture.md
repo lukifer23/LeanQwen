@@ -78,3 +78,21 @@ license. Responses originate from pinned Qwen weights. DEV/TEST permissions are
 false for training. Unknown or closed-model origins fail the future training
 gate; derived records must retain parent IDs. Numerical labels are algorithmic.
 A future imported dataset must be reviewed individually before import.
+
+## Phase 2 implementation boundaries
+
+Device code now also lives in `training/mlx_sft.py`; framework-independent
+training contracts live in `training/quality.py`. The real optimizer interface
+is implemented but awaits approved TRAIN data and a measured save/reload smoke.
+Explicit targets are full-attention `self_attn.q_proj`/`v_proj` and gated-delta
+`linear_attn.in_proj_qkv` in selected final layers. Attachment verifies the expected
+adapter tensor count instead of silently falling back to generic modules.
+
+Local semantic analysis uses Apache-2.0
+[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2),
+pinned to `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`, CPU float32 and one thread.
+Its model card discloses public sentence-pair training sources. It is used only
+as a local measurement encoder, not a response teacher or source of training
+content. Encoder-sized chunk subdivision is separate from Qwen context handling.
+The Qwen context remains 262144; the documented acceptable floor is 131072.
+Long-context behavior after any future adapter is unmeasured.

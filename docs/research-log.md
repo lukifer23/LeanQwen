@@ -158,3 +158,16 @@ deselected; Ruff passed. This is local evidence, not a claim that remote CI ran.
 MLX remains the Apple default; optional embedding dependencies are locked but
 have not been installed during the active prompt study. The study is a single
 serialized process and retains the native 262144-token context configuration.
+
+### Phase 2 — diagnostic and structural-data infrastructure
+
+Implemented staged-cap censor-aware summaries, exact prefix checks and labeled
+forced-close probes. Added local MiniLM measurement code (not yet run), offline
+exact-guard replay, conclusion categories, natural correctness-first candidate
+ranking and a guarded masked-LoRA optimizer interface (not yet model validated).
+Procedural-v2 produces 64 tasks per split with independently tested exact labels
+and cross-split structural holdouts. Difficulty follows operation/AST structure,
+not model outcomes. Historical v1 data and v5 report artifacts remain unchanged.
+Predeclared TRAIN pilot: sixteen tasks, N=4, 4096 cap. No TRAIN generations or
+optimizer steps have been executed at this milestone. Prompt study continues
+under the exclusive model lease.
