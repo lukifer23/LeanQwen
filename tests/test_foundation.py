@@ -277,3 +277,15 @@ def test_numeric_markers_in_ongoing_planning_do_not_receive_task_credit():
     assert not score(r"\boxed{43} but I will check again", "43")["correct"]
     assert score("Work above. FINAL: 43.", "43")["correct"]
     assert score(r"Therefore $\boxed{43}$.", "43")["correct"]
+
+
+def test_terminal_numeric_conclusions_without_requested_marker():
+    assert score("Work above.\n47", "47")["correct"]
+    assert score("Checked the equation.\n$x = 43$", "43")["correct"]
+    assert score("Total count = 2.", "2")["correct"]
+    assert score("Standard evaluation results in a count of **3**.", "3")["correct"]
+    final = "2928 - 57 = 2871.\nThe answer follows the specified format at the end.\nFINAL:"
+    assert score(final, "2871")["correct"]
+    assert not score("2928 - 57 = 2871. But I will reconsider.\nFINAL:", "2871")["correct"]
+    assert not score("Example: `x = 43`", "43")["correct"]
+    assert not score("Work above.\n48", "47")["correct"]

@@ -12,14 +12,18 @@ score every natural-language answer; its method/version are saved per record.
 
 The historical `strict_final_correct` extractor searches numeric FINAL markers
 anywhere in the final channel; it is retained only for audit and can credit
-nonterminal formatting examples. Main task accuracy uses the terminal v4 contract.
+nonterminal formatting examples. Main task accuracy uses the terminal v5 contract.
 Keep `strict_final_correct` and `format_compliant` separate from task `correct`.
 A response that says "Total True Expressions: 3" and then leaves `FINAL:` empty
 can be task-correct and format-noncompliant. Earlier v1 measurements conflated
-these; preserved raw outputs are rescored with v4 and original metrics retained. A conclusion must end the final
+these; preserved raw outputs are rescored with v5 and original metrics retained. A conclusion must end the final
 channel, with only whitespace/punctuation or an empty FINAL marker afterward;
 ongoing reconsideration after a numeric result is not a terminal answer.
-Missing/truncated answers still count as incorrect unless the final channel
+Terminal standalone numeric lines and numeric equation results are accepted,
+as are explicit total-count/count-of conclusions. A trailing empty FINAL marker
+or an explicit notice that the answer follows the requested format may be
+removed before terminal extraction; continued reconsideration is never removed.
+These rules are independent of ground truth. Missing/truncated answers still count as incorrect unless the final channel
 contains an unambiguous answer. Reasoning-only correct numbers receive no accuracy
 credit. Format compliance requires a trailing numeric FINAL marker.
 

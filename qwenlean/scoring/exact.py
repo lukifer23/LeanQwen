@@ -3,7 +3,7 @@
 import re
 from fractions import Fraction
 
-SCORING_VERSION = "terminal_answers_v4"
+SCORING_VERSION = "terminal_numeric_conclusions_v5"
 
 NUMBER = r"[-+]?\d[\d,]*(?:\.\d+)?(?:/\d+)?"
 
@@ -49,19 +49,35 @@ def normalize(value):
 
 def extract_conclusion(final):
     clean = final.replace("**", "").replace("$", "").replace("\\(", "").replace("\\)", "")
+    clean = re.sub(r"\s*FINAL\s*:?\s*[.!]?\s*$", "", clean, flags=re.I)
+    # A format notice does not retract an otherwise terminal mathematical answer.
+    clean = re.sub(
+        r"\s*(?:the )?(?:answer|result) (?:follows|uses) (?:the )?"
+        r"(?:specified|requested) format(?: at the end)?[.!]?\s*$",
+        "",
+        clean,
+        flags=re.I,
+    )
+    terminal = r"[\s.!]*$"
+    plain = re.search(r"(?:^|\n)\s*(" + NUMBER + r")" + terminal, clean)
+    if plain:
+        return plain.group(1), "terminal_numeric_line"
     cue = (
         r"(?:final answer|answer|final result|result|integer solution|solution|final state|"
-        r"total true expressions|total number of true expressions|true count|total price)"
+        r"total true expressions|total number of true expressions|true count|total count|"
+        r"count|total price)"
     )
-    pattern = cue + r"\s*(?:is|equals|=|:)\s*(?:[a-z]\s*=\s*)?(" + NUMBER + r")(?![\d/]|[.]\d)"
-    matches = []
-    for match in re.finditer(pattern, clean, re.I):
-        # A conclusion must be terminal, allowing an empty requested FINAL marker.
-        tail = clean[match.end() :]
-        if re.fullmatch(r"[\s.!]*(?:FINAL\s*:?[\s.!]*)?", tail, re.I):
-            matches.append(match.group(1))
-    if matches and len({normalize(x) for x in matches}) == 1:
-        return matches[-1], "terminal_final_conclusion"
+    pattern = cue + r"\s*(?:is|equals|of|=|:)\s*(?:[a-z]\s*=\s*)?(" + NUMBER + r")" + terminal
+    match = re.search(pattern, clean, re.I)
+    if match:
+        return match.group(1), "terminal_final_conclusion"
+    equation = re.search(
+        r"(?:\b[a-z]|[\d][\d\s()+*/×÷^.,-]*)\s*=\s*(" + NUMBER + r")" + terminal,
+        clean,
+        re.I,
+    )
+    if equation:
+        return equation.group(1), "terminal_equation_result"
     return None, "unscorable_final"
 
 
