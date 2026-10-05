@@ -18,14 +18,14 @@ def table_row(name, s):
     t = s["reasoning_tokens"]
     return (
         f"| {name} | {s['accuracy']:.1%} | {t['p50']:.0f} | {t['p95']:.0f} | "
-        f"{s['loop_rate']:.1%} | {s['max_output_rate']:.1%} | {s['latency_s']['mean']:.2f} s |"
+        f"{s['output_loop_rate']:.1%} | {s['max_output_rate']:.1%} | {s['latency_s']['mean']:.2f} s |"
     )
 
 
 def table(entries):
     return "\n".join(
         [
-            "| Variant | Accuracy | Median Think Tokens | P95 Think Tokens | Exact Loop Rate | Max-Out Rate | Mean Latency |",
+            "| Variant | Accuracy | Median Think Tokens | P95 Think Tokens | Exact Output Loop Rate | Max-Out Rate | Mean Latency |",
             "|---|---:|---:|---:|---:|---:|---:|",
             *[table_row(n, s) for n, s in entries],
         ]

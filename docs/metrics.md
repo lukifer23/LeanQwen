@@ -27,6 +27,10 @@ all word units; the first occurrence is not charged. Longest repeated span is
 exact and non-overlapping, in word units. These distinguish terminology reuse
 from substantial copied blocks, but cannot establish uselessness by themselves.
 
+Report reasoning-only `loop_rate` and all-output `output_loop_rate` separately.
+The latter also inspects final-channel text, particularly important for non-thinking
+controls. A zero thinking partition does not establish low total output compute.
+
 Loop heuristic: exact repetition of a 24–128 emitted-token block at least three
 consecutive times. Offline detection checks every endpoint. Runtime guard checks
 every 16 output tokens, only during reasoning, logs period/repeats/start/end, and

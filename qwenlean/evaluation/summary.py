@@ -5,6 +5,8 @@ from collections import Counter
 
 import numpy as np
 
+from qwenlean.metrics.repetition import find_loop
+
 
 def distribution(values):
     values = np.asarray(values, dtype=float)
@@ -37,6 +39,10 @@ def summarize(records):
     correct = [r["correct"] for r in records]
     reasoning = [r["reasoning_tokens"] for r in records]
     termination = Counter(r["termination_reason"] for r in records)
+    output_loop_evidence = [
+        find_loop(r["token_ids"], **r["generation_parameters"].get("metrics", {}).get("loop", {}))
+        for r in records
+    ]
     family = {}
     for name in sorted({r["family"] for r in records}):
         subset = [r for r in records if r["family"] == name]
@@ -56,6 +62,7 @@ def summarize(records):
         "excessive_reasoning_rate": {
             str(t): sum(x > t for x in reasoning) / n for t in [512, 1024, 2048, 4096]
         },
+        "output_loop_rate": sum(e is not None for e in output_loop_evidence) / n,
         "loop_rate": sum(r["repetition"]["loop_evidence"] is not None for r in records) / n,
         "repetition_density": distribution(
             [r["repetition"]["repetition_density"] for r in records]
