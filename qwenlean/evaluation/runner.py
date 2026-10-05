@@ -2,7 +2,9 @@
 
 import importlib.metadata as md
 import json
+import subprocess
 from dataclasses import asdict
+from pathlib import Path
 
 from qwenlean.datasets.provenance import validate_provenance
 from qwenlean.evaluation.summary import summarize
@@ -10,35 +12,57 @@ from qwenlean.inference.parsing import parse_tokens
 from qwenlean.metrics.answer_distance import conclusion_distance
 from qwenlean.metrics.repetition import repetition_metrics
 from qwenlean.scoring.exact import score
-from qwenlean.utils.io import create_run, digest, write_json
+from qwenlean.utils.io import create_run, digest, read_jsonl, write_json
 
 
-def evaluate(backend, tasks, config, label=None, root="runs"):
+def evaluate(backend, tasks, config, label=None, root="runs", resume=None):
     if not tasks:
         raise ValueError("No evaluation samples")
     for task in tasks:
         validate_provenance(task)
-    run = create_run(root, label or config["name"], config)
-    write_json(
-        run / "environment.json",
-        {
-            "packages": {
-                p: md.version(p) for p in ["mlx", "mlx-lm", "transformers", "numpy", "qwenlean"]
-            }
-        },
-    )
-    write_json(
-        run / "dataset.json",
-        {
-            "sha256": digest(tasks),
-            "sample_ids": [r["sample_id"] for r in tasks],
-            "split": tasks[0]["split"],
-            "count": len(tasks),
-        },
-    )
-    records = []
-    with (run / "samples.jsonl").open("w") as handle:
-        for i, task in enumerate(tasks):
+    if resume:
+        run = Path(resume)
+        if digest(json.loads((run / "config.json").read_text())) != digest(config):
+            raise ValueError("Resume configuration mismatch")
+        if json.loads((run / "dataset.json").read_text())["sha256"] != digest(tasks):
+            raise ValueError("Resume dataset mismatch")
+        records = read_jsonl(run / "samples.jsonl")
+        if [r["sample_id"] for r in records] != [t["sample_id"] for t in tasks[: len(records)]]:
+            raise ValueError("Resume samples must be an exact ordered prefix")
+        write_json(
+            run / "resumption.json",
+            {
+                "existing_samples": len(records),
+                "remaining_samples": len(tasks) - len(records),
+                "configuration_unchanged": True,
+                "git_commit": subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], text=True
+                ).strip(),
+            },
+        )
+    else:
+        run = create_run(root, label or config["name"], config)
+        write_json(
+            run / "environment.json",
+            {
+                "packages": {
+                    p: md.version(p) for p in ["mlx", "mlx-lm", "transformers", "numpy", "qwenlean"]
+                }
+            },
+        )
+        write_json(
+            run / "dataset.json",
+            {
+                "sha256": digest(tasks),
+                "sample_ids": [r["sample_id"] for r in tasks],
+                "split": tasks[0]["split"],
+                "count": len(tasks),
+            },
+        )
+        records = []
+    start_index = len(records)
+    with (run / "samples.jsonl").open("a" if resume else "w") as handle:
+        for i, task in enumerate(tasks[start_index:], start=start_index):
             seed = (config["seed"] + int(digest(task["sample_id"])[:8], 16)) % (2**32)
             generation = backend.generate(task["prompt"], seed, config)
             parsed = parse_tokens(

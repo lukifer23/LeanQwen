@@ -1,10 +1,20 @@
 # Measurement contract
 
-Final correctness is strict and programmatic. The last unambiguous `FINAL:`
-number, a single consistent boxed answer, or a bare numeric final response must
-match exact rational ground truth. Conflicting FINAL values are failures.
-Reasoning numbers never receive final-answer accuracy credit. Missing final
-answers and truncated traces count as incorrect in unconditional accuracy.
+Final task correctness is programmatic, with strict numeric/boxed/plain answers
+preferred. If those are absent, accept a unique numeric conclusion after explicit
+final-channel cues such as "integer solution is", "answer is", or "Total True
+Expressions:". Conflicting markers/cues are rejected. The extraction never uses
+ground truth to select an output number and never scores the thinking channel.
+Labels must be valid exact rational values. This conservative grammar cannot
+score every natural-language answer; its method/version are saved per record.
+
+Keep `strict_final_correct` and `format_compliant` separate from task `correct`.
+A response that says "Total True Expressions: 3" and then leaves `FINAL:` empty
+can be task-correct and format-noncompliant. Earlier v1 measurements conflated
+these; preserved raw outputs are rescored with v2 and original metrics retained.
+Missing/truncated answers still count as incorrect unless the final channel
+contains an unambiguous answer. Reasoning-only correct numbers receive no accuracy
+credit. Format compliance requires a trailing numeric FINAL marker.
 
 Token partitions use actual emitted IDs, not separately retokenized strings.
 Reasoning excludes `<think>`, `</think>` and EOS. Final text excludes those controls.

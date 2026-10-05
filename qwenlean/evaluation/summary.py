@@ -54,6 +54,9 @@ def summarize(records):
     return {
         "n": n,
         "accuracy": sum(correct) / n,
+        "strict_final_accuracy": sum(r.get("strict_final_correct", r["correct"]) for r in records)
+        / n,
+        "format_compliance_rate": sum(r.get("format_compliant", False) for r in records) / n,
         "accuracy_bootstrap_ci95": bootstrap_mean_ci(correct),
         "accuracy_wilson_ci95": wilson_interval(sum(correct), n),
         "reasoning_tokens": distribution(reasoning),

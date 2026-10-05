@@ -27,10 +27,37 @@ def normalize(value):
         return None
 
 
+def extract_conclusion(final):
+    clean = final.replace("**", "").replace("$", "").replace("\\(", "").replace("\\)", "")
+    cue = (
+        r"(?:final answer|answer|final result|result|integer solution|solution|final state|"
+        r"total true expressions|total number of true expressions|true count|total price)"
+    )
+    matches = re.findall(
+        cue + r"\s*(?:is|equals|=|:)\s*(?:[a-z]\s*=\s*)?(" + NUMBER + r")(?![\d/]|[.]\d)",
+        clean,
+        re.I,
+    )
+    # Explicit conclusions only; never search for ground-truth-matching numbers.
+    if matches and len({normalize(x) for x in matches}) == 1:
+        return matches[-1], "explicit_final_conclusion"
+    return None, "conflicting_conclusion_cues" if matches else "unscorable_final"
+
+
 def score(final, expected):
-    answer, method = extract_answer(final)
+    target = normalize(expected)
+    if target is None:
+        raise ValueError("Exact-answer ground truth must be a valid rational number")
+    strict_answer, strict_method = extract_answer(final)
+    answer, method = strict_answer, strict_method
+    if answer is None and strict_method == "unscorable_final":
+        answer, method = extract_conclusion(final)
+    compliant = re.search(r"FINAL\s*:\s*(" + NUMBER + r")\s*$", final, re.I)
     return {
-        "correct": answer is not None and normalize(answer) == normalize(expected),
+        "correct": answer is not None and normalize(answer) == target,
+        "strict_final_correct": strict_answer is not None and normalize(strict_answer) == target,
+        "format_compliant": compliant is not None,
         "extracted_answer": answer,
         "scoring_method": method,
+        "scoring_version": "explicit_final_cues_v2",
     }

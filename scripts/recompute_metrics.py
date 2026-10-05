@@ -18,11 +18,8 @@ from qwenlean.scoring.exact import score
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("run")
-    args = parser.parse_args()
-    run = Path(args.run)
+def recompute(run):
+    run = Path(run)
     if json.loads((run / "completion.json").read_text())["status"] != "complete":
         raise ValueError("Only complete runs can be reanalyzed")
     config = json.loads((run / "config.json").read_text())
@@ -52,7 +49,7 @@ def main():
                 "answer_distance": conclusion_distance(
                     p.reasoning, p.reasoning_ids, r["expected"], t
                 ),
-                "metric_revision": "sentence_punctuation_fix_20261005",
+                "metric_revision": "task_accuracy_format_separation_v2",
             }
         )
     write_jsonl(run / "samples.jsonl", records)
@@ -66,11 +63,17 @@ def main():
                 a["correct"] != b["correct"] for a, b in zip(original, records)
             ),
             "git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
-            "reason": "Recognize sentence punctuation after numeric conclusions; preserve original measurements",
+            "reason": "Separate explicit final-conclusion correctness from format compliance; preserve raw generations",
             "generation_unchanged": True,
         },
     )
     print(run, "rescored", len(records), "correct", sum(r["correct"] for r in records))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("run")
+    recompute(parser.parse_args().run)
 
 
 if __name__ == "__main__":

@@ -15,6 +15,9 @@ from qwenlean.utils.io import digest, read_jsonl, write_json
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline-run", required=True)
+    parser.add_argument(
+        "--pilot-runs", nargs=3, help="Reuse complete pilots or resume ordered partial pilots"
+    )
     args = parser.parse_args()
     baseline = Path(args.baseline_run)
     if not (baseline / "completion.json").exists():
@@ -41,9 +44,25 @@ def main():
     backend = MLXBackend(base)
     runs = []
     # Predeclared broad stage. Never scan TEST to choose configurations.
-    for name in ["cooler", "presence-zero", "repetition-105"]:
+    for index, name in enumerate(["cooler", "presence-zero", "repetition-105"]):
         config = yaml.safe_load(Path(f"configs/sampling/{name}.yaml").read_text())
-        run, summary = evaluate(backend, selected, config, label=f"pilot-{name}")
+        reuse = Path(args.pilot_runs[index]) if args.pilot_runs else None
+        if (
+            reuse
+            and (reuse / "completion.json").exists()
+            and json.loads((reuse / "completion.json").read_text())["status"] == "complete"
+        ):
+            run = reuse
+            if json.loads((run / "config.json").read_text()) != config:
+                raise ValueError("Reused pilot config mismatch")
+            if json.loads((run / "dataset.json").read_text())["sha256"] != digest(selected):
+                raise ValueError("Reused pilot dataset mismatch")
+        else:
+            run, _ = evaluate(backend, selected, config, label=f"pilot-{name}", resume=reuse)
+        from scripts.recompute_metrics import recompute
+
+        recompute(run)
+        summary = json.loads((run / "summary.json").read_text())
         records = read_jsonl(run / "samples.jsonl")
         runs.append(
             {

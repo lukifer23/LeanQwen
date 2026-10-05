@@ -222,3 +222,32 @@ def test_summary_does_not_hide_final_channel_loops():
     summary = summarize([record])
     assert summary["loop_rate"] == 0 and summary["output_loop_rate"] == 1
     assert summary["total_output_tokens"]["mean"] == 96
+
+
+def test_task_correctness_is_separate_from_output_format():
+    r = score("Total True Expressions: 3.\n\nFINAL:", "3")
+    assert r["correct"] and not r["strict_final_correct"] and not r["format_compliant"]
+    assert score("The integer solution is **57**.", "57")["correct"]
+    assert not score("Result: 3. Answer: 4.", "3")["correct"]
+    assert not score("Intermediate computation: 57. FINAL:", "57")["correct"]
+    assert not score("Answer: 57. FINAL: 58", "57")["correct"]
+    with pytest.raises(ValueError, match="ground truth"):
+        score("FINAL: 42/0", "invalid")
+
+
+def test_resume_rejects_changed_config_dataset_and_prefix(tmp_path):
+    from qwenlean.evaluation.runner import evaluate
+    from qwenlean.utils.io import write_json
+
+    tasks = generate("dev")[:1]
+    config = {"name": "resume-test", "seed": 7}
+    write_json(tmp_path / "config.json", config)
+    with pytest.raises(ValueError, match="configuration"):
+        evaluate(None, tasks, {**config, "seed": 8}, resume=tmp_path)
+    write_json(tmp_path / "dataset.json", {"sha256": "wrong"})
+    with pytest.raises(ValueError, match="dataset"):
+        evaluate(None, tasks, config, resume=tmp_path)
+    write_json(tmp_path / "dataset.json", {"sha256": digest(tasks)})
+    write_jsonl(tmp_path / "samples.jsonl", [{"sample_id": "different"}])
+    with pytest.raises(ValueError, match="ordered prefix"):
+        evaluate(None, tasks, config, resume=tmp_path)
