@@ -243,3 +243,12 @@ not ranks. This addresses a grammar defect and a known task-parsing ambiguity
 before collecting TRAIN/DEV model responses. Labels, semantic IDs and structural
 signatures are unchanged; pool hashes/provenance now record the patch. Earlier
 v2 drafts remain in Git history. Historical v1 and every measured run are untouched.
+
+### Phase 2 — model-instance lifecycle hardening
+
+Future CLI/diagnostic/candidate invocations now close the MLX backend (synchronize,
+release model/tokenizer references and allocator cache) before releasing the OS
+lease. Training explicitly destroys its first instance before reload and closes
+the reloaded instance before unlocking. The currently running prompt study uses
+its original committed code; its process will be fully reaped before another
+model is launched, so this change does not alter its generations or environment.

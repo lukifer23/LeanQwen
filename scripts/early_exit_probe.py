@@ -63,8 +63,7 @@ def main():
         raise ValueError('Probes must be exact unique ordered prefix')
     from qwenlean.inference.mlx_backend import MLXBackend
 
-    with model_process_lock():
-        backend = MLXBackend(cfg)
+    with model_process_lock(), MLXBackend(cfg) as backend:
         close = backend.tokenizer.encode('</think>\n\n', add_special_tokens=False)
         if not close or close[0] != backend.tokenizer.convert_tokens_to_ids('</think>'):
             raise ValueError('Counterfactual close is not an atomic reasoning control token')

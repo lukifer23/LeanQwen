@@ -91,8 +91,7 @@ def main():
         from qwenlean.inference.mlx_backend import MLXBackend
         from qwenlean.utils.process_lock import model_process_lock
 
-        with model_process_lock():
-            backend = MLXBackend(config)
+        with model_process_lock(), MLXBackend(config) as backend:
             if args.command == "eval":
                 evaluate(backend, tasks, config, root=args.runs_dir, resume=args.resume)
             else:

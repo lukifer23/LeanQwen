@@ -126,8 +126,7 @@ def main():
         validate_resume(args.resume, tasks, cfg)
     from qwenlean.inference.mlx_backend import MLXBackend
 
-    with model_process_lock():
-        backend = MLXBackend(cfg)
+    with model_process_lock(), MLXBackend(cfg) as backend:
         run, _ = evaluate(backend, tasks, cfg, resume=args.resume)
     publish(run)
 

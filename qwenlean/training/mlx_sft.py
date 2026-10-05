@@ -197,6 +197,7 @@ def _train(cfg, rows, output):
               'output': str(output), 'test_evaluated': False,
               'dev_smoke_correct': sum(r['correct'] for r in smoke_rows),
               'dev_smoke_count': len(smoke_rows), 'improvement_claim': False}
+    reloaded.close()
     write_json(output/'smoke_report.json', report)
     write_json(output/'completion.json', {'status': 'complete', 'optimizer_steps': cfg['steps']})
     return report

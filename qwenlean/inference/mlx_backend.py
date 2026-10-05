@@ -1,5 +1,6 @@
 """All Apple/MLX-specific inference stays behind this backend."""
 
+import gc
 import hashlib
 import json
 import time
@@ -108,6 +109,20 @@ class MLXBackend:
                 adapter_sha256=adapter_hash,
                 weights_identifier=self.model_info["weights_identifier"] + ":adapter:" + adapter_hash,
             )
+
+    def close(self):
+        """Release the model instance before the repository lease is released."""
+        mx.synchronize()
+        self.model = None
+        self.tokenizer = None
+        gc.collect()
+        mx.clear_cache()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_):
+        self.close()
 
     def generate(self, prompt, seed, config=None):
         config = config or self.config

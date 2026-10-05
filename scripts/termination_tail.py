@@ -33,8 +33,7 @@ def main():
     records, prefixes = [], []
     from qwenlean.inference.mlx_backend import MLXBackend
 
-    with model_process_lock():
-        backend = MLXBackend(cfg)
+    with model_process_lock(), MLXBackend(cfg) as backend:
         for case in protocol['tail']['cohort']:
             task = render_task(tasks[case['historical_sample_id']], policy)
             prior = None
