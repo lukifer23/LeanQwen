@@ -7,7 +7,7 @@ Pinned original bf16 text weights, MLX on M3 Pro. Total-output cap: 2048 tokens.
 |---|---:|---:|---:|---:|---:|---:|
 | A: official thinking | 0.0% | 2048 | 2048 | 0.0% | 100.0% | 33.90 s |
 
-Accuracy 95% Wilson interval: [0.0, 0.06017185214208986].
+Accuracy 95% Wilson interval: 0.0%–6.0%.
 Reasoning mean/p75/p90/p99: 2044.1 / 2048.0 / 2048.0 / 2048.0.
 Aggregate output throughput (including prefill): 60.42 tokens/s.
 MLX allocator peak: 1.684 GB. Sampled process RSS peak: 2.140 GB.

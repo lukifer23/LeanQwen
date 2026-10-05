@@ -104,6 +104,14 @@ def summarize(records):
     }
 
 
+def exact_mcnemar_p(gained, lost):
+    discordant = gained + lost
+    if discordant == 0:
+        return 1.0
+    tail = sum(math.comb(discordant, k) for k in range(min(gained, lost) + 1))
+    return min(1.0, 2 * tail / 2**discordant)
+
+
 def paired_comparison(a, b):
     if {r.get("scoring_version", "legacy") for r in a} != {
         r.get("scoring_version", "legacy") for r in b
@@ -125,6 +133,9 @@ def paired_comparison(a, b):
     return {
         "accuracy_delta": float(np.mean(differences)),
         "paired_accuracy_delta_ci95": bootstrap_mean_ci(differences),
+        "mcnemar_exact_two_sided_p": exact_mcnemar_p(
+            sum(d == 1 for d in differences), sum(d == -1 for d in differences)
+        ),
         "gained": sum(d == 1 for d in differences),
         "lost": sum(d == -1 for d in differences),
         "reasoning_median_delta": float(

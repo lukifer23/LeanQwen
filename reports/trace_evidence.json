@@ -11,7 +11,7 @@
     "run": "runs/20261005T170152-A-official-thinking-0d62e9fa",
     "sample_id": "dev-arithmetic-e0215cb06c9f",
     "scoring_method": "unscorable_final",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": false
   },
   {
@@ -26,7 +26,7 @@
     "run": "runs/20261005T170152-A-official-thinking-0d62e9fa",
     "sample_id": "dev-state_machine-2a23df54f658",
     "scoring_method": "unscorable_final",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": false
   },
   {
@@ -41,7 +41,7 @@
     "run": "runs/20261005T173939-A0-official-nonthinking-723496fd",
     "sample_id": "dev-state_machine-94adcac9b11b",
     "scoring_method": "final_marker",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": false
   },
   {
@@ -56,7 +56,7 @@
     "run": "runs/20261005T173939-A0-official-nonthinking-723496fd",
     "sample_id": "dev-state_machine-1ab4f526fb0e",
     "scoring_method": "final_marker",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": false
   },
   {
@@ -71,7 +71,7 @@
     "run": "runs/20261005T175251-pilot-cooler-f98807ab",
     "sample_id": "dev-boolean_logic-c015e93f8d16",
     "scoring_method": "final_marker",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": true
   },
   {
@@ -85,8 +85,23 @@
     "reasoning_start": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input operation and expression: Calculate (50 * 41) - 44.\n    *   Constraint: End your response with \"FINAL:\".\n    *   Content constraint: Followed by just the integer answer. Wait, re-reading carefully: \"followed by just the integer answer.\" usually means after \"FINAL:\" it should be the number. Or does it mean \"Your output MUST start... and end with FINAL:\"? No, \"End your response with FINAL: followed by just the integer answer.\" This phrasing is a bit ambiguous. It could mean the format `Final: [answer]` or `[Answer]`. Let's look at standard instructions like this often seen in prompts like this one (likely from a benchmark dataset). Often these requests imply I need to write out the",
     "run": "runs/20261005T180526-pilot-repetition-105-d3173dd2",
     "sample_id": "dev-arithmetic-c61a2e941069",
-    "scoring_method": "terminal_final_conclusion",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_method": "terminal_numeric_line",
+    "scoring_version": "terminal_numeric_conclusions_v5",
+    "strict_final_correct": false
+  },
+  {
+    "correct": true,
+    "expected": "2871",
+    "extracted_answer": "2871",
+    "final_end": "\n\nFirst, perform the multiplication of 61 multiplied by 48.\n(61 \u00d7 48) = 2928.\nNext, subtract 57 from 2928.\n2928 - 57 = 2871.\n\nThe answer follows the specified format at the end.\n\nFINAL:",
+    "format_compliant": false,
+    "raw_output_sha256": "17bed9bb033f9cb9ca269cda14c26105fb6daabc9795cc9d1435c055039e55a2",
+    "reasoning_end": " output text, I will provide the calculation, and then end with \"FINAL: 2871\".\n\n    One more thing: Some evaluators dislike multiple spaces around the LAST line unless required by the system instruction \"no other tokens\" etc.\n    I'll make sure there are no trailing comments.\n    Structure:\n    Calculating...\n    Final result: FINAL: 2871.\n    OR:\n    2871\n    FINAL:\n\n    I'll follow the flow naturally but strictly end the entire token stream with those markers.\n\n    Refined thought process for final check:\n    Target string length/style:\n    Output starts with calculation or direct statement.\n    Ends with \"FINAL: 2871\".\n    No punctuation or newline issues after \"1\" inside the final block? Just plain space.\n    Constraint \"followed by just the integer answer\". This could imply between the initial context (\"End your response with FINAL:\") and the integer.\n    Like:\n    61 x 48 - 57 =\n    FINAL: 2871\n\n    I will prioritize clarity and compliance with the explicit endpoint instruction.\n",
+    "reasoning_start": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input expression: Calculate (61 * 48) - 57.\n    *   Constraint 1: End your response with \"FINAL:\".\n    *   Constraint 2: Followed by just the integer answer.\n\n2.  **Perform the Calculation:**\n    *   Step 1: Multiply 61 by 48.\n        *   $60 \\times 48 = 2880$\n        *   $1 \\times 48 = 48$\n        *   Total: $2928$ (Wait, let me double check.)\n        *   Let's do it digit by digit or standard multiplication table.\n        *   $61 \\times 48$:\n            *   $61 \\times 8 = 488$\n            *   $61 \\times 40 = 2440$\n            *   $2440 + 488 = 2928$. Correct.\n    *   Step 2: Subtract 57 from the result.\n        *   $2928 - 57$\n        *   $8 - 7 = 1$\n        *   $2 - 5$: Borrowing...",
+    "run": "runs/20261005T181544-B-candidate-repetition-105-c5b80339",
+    "sample_id": "dev-arithmetic-fe2981513945",
+    "scoring_method": "terminal_equation_result",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": false
   },
   {
@@ -101,7 +116,7 @@
     "run": "runs/20261005T181544-B-candidate-repetition-105-c5b80339",
     "sample_id": "dev-algebra-45a5b6efe1bc",
     "scoring_method": "nonterminal_final_marker",
-    "scoring_version": "terminal_answers_v4",
+    "scoring_version": "terminal_numeric_conclusions_v5",
     "strict_final_correct": true
   }
 ]

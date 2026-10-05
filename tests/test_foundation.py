@@ -289,3 +289,12 @@ def test_terminal_numeric_conclusions_without_requested_marker():
     assert not score("2928 - 57 = 2871. But I will reconsider.\nFINAL:", "2871")["correct"]
     assert not score("Example: `x = 43`", "43")["correct"]
     assert not score("Work above.\n48", "47")["correct"]
+
+
+def test_exact_paired_test_is_conservative_for_four_unopposed_wins():
+    from qwenlean.evaluation.summary import exact_mcnemar_p
+
+    assert exact_mcnemar_p(0, 0) == 1
+    assert exact_mcnemar_p(4, 0) == 0.125
+    assert exact_mcnemar_p(0, 4) == 0.125
+    assert exact_mcnemar_p(2, 2) == 1

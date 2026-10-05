@@ -80,7 +80,11 @@ Accuracy uncertainty: Wilson binomial intervals provide a non-degenerate boundar
 interval even for zero/all correct. Also save deterministic-seed nonparametric sample bootstrap, 5000
 resamples, 95% percentile intervals. Bootstrap intervals are degenerate at zero/all correct
 and must not be interpreted as proof of zero population uncertainty. Comparisons use paired sample IDs and seeds.
-These reflect sample uncertainty, not multiple generation-seed variation.
+Also report exact two-sided McNemar probability: under the paired null, the
+number of gains among discordant samples is binomial with p=0.5; double the
+smaller tail, capped at one. Four gains and zero losses give p=0.125, so a
+positive small-sample percentile-bootstrap interval alone is insufficient to
+claim a statistically established improvement. These reflect sample uncertainty, not multiple generation-seed variation.
 Discrete 60-sample accuracy changes and six small families warrant cautious claims.
 Primary comparisons remain accuracy versus reasoning compute; the supplementary
 accuracy/p50 ratio is not a selection objective. No arbitrary reward coefficients.

@@ -61,6 +61,10 @@ single-variable sweep. It can decline to promote any candidate. If it selects
 one, it runs the full DEV suite and measures repeatability of pilot token IDs.
 `reports/sampling_measurements.json` records the decision. A pilot cannot be
 paired against a full 60-example run: compare exactly matching sample sets.
+`--pilot-runs <cooler-run> <presence-zero-run> <repetition-run>` can reuse completed
+pilots or resume an ordered partial pilot with an identical configuration and
+dataset hash. A resumed run appends only pending generations. This recovery option
+belongs to the sweep script; general `eval --resume` is not implemented.
 
 ```bash
 uv run --frozen --extra compat qwenlean compare runs/<A-run> runs/<B-run>

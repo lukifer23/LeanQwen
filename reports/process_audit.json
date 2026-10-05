@@ -1,0 +1,8 @@
+{
+  "active_project_model_workloads": [],
+  "exclusive_lock_acquired_and_released": true,
+  "last_model_lease_active": false,
+  "last_model_owner_alive": false,
+  "scope": "QwenLean CLI and registered model probe/sweep scripts; unrelated applications are excluded",
+  "time_utc": "2026-10-05T18:49:11.802342+00:00"
+}

@@ -366,13 +366,92 @@ ANSWER:
 2006
 ```
 
+## Correct completed mathematics, empty format marker
+
+Source: `runs/20261005T181544-B-candidate-repetition-105-c5b80339` / `dev-arithmetic-fe2981513945`. Ground truth: 2871. Task score: True. Reasoning tokens: 1682. Stop: eos.
+
+Calculate (61 * 48) - 57. End your response with FINAL: followed by just the integer answer.
+
+The thinking trace correctly derives 2871 by token 354 and continues for 1328 more reasoning tokens. The final channel correctly repeats 2928 - 57 = 2871, then ends with an empty FINAL marker and EOS. Terminal numeric-equation scoring credits the task result while recording format noncompliance. This is wasted continuation and a format failure; it is not a wrong-answer degradation case.
+
+Reasoning opening:
+
+```text
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Input expression: Calculate (61 * 48) - 57.
+    *   Constraint 1: End your response with "FINAL:".
+    *   Constraint 2: Followed by just the integer answer.
+
+2.  **Perform the Calculation:**
+    *   Step 1: Multiply 61 by 48.
+        *   $60 \times 48 = 2880$
+        *   $1 \times 48 = 48$
+        *   Total: $2928$ (Wait, let me double check.)
+        *   Let's do it digit by digit or standard multiplication table.
+        *   $61 \times 48$:
+            *   $61 \times 8 = 488$
+            *   $61 \times 40 = 2440$
+            *   $2440 + 488 = 2928$. Correct.
+    *   Step 2: Subtract 57 from the result.
+        *   $2928 - 57$
+        *   $8 - 7 = 1$
+        *   $2 - 5$: Borrowing...
+```
+
+Reasoning ending:
+
+```text
+ output text, I will provide the calculation, and then end with "FINAL: 2871".
+
+    One more thing: Some evaluators dislike multiple spaces around the LAST line unless required by the system instruction "no other tokens" etc.
+    I'll make sure there are no trailing comments.
+    Structure:
+    Calculating...
+    Final result: FINAL: 2871.
+    OR:
+    2871
+    FINAL:
+
+    I'll follow the flow naturally but strictly end the entire token stream with those markers.
+
+    Refined thought process for final check:
+    Target string length/style:
+    Output starts with calculation or direct statement.
+    Ends with "FINAL: 2871".
+    No punctuation or newline issues after "1" inside the final block? Just plain space.
+    Constraint "followed by just the integer answer". This could imply between the initial context ("End your response with FINAL:") and the integer.
+    Like:
+    61 x 48 - 57 =
+    FINAL: 2871
+
+    I will prioritize clarity and compliance with the explicit endpoint instruction.
+
+```
+
+Final channel ending:
+
+```text
+
+
+First, perform the multiplication of 61 multiplied by 48.
+(61 × 48) = 2928.
+Next, subtract 57 from 2928.
+2928 - 57 = 2871.
+
+The answer follows the specified format at the end.
+
+FINAL:
+```
+
 ## Quoted formatting examples are not terminal answers
 
 Source: `runs/20261005T181544-B-candidate-repetition-105-c5b80339` / `dev-algebra-45a5b6efe1bc`. Ground truth: 43. Task score: False. Reasoning tokens: 762. Stop: max_output_tokens.
 
 Solve for the integer x: 59 * x + 56 = 2593. End your response with FINAL: followed by just the integer answer.
 
-The final channel contains quoted FINAL: 43 examples while continuing to debate formatting, then hits the cap. Historical marker extraction would give credit. The terminal v4 task scorer rejects it; raw output is unchanged.
+The final channel contains quoted FINAL: 43 examples while continuing to debate formatting, then hits the cap. Historical marker extraction would give credit. The terminal v5 task scorer rejects it; raw output is unchanged.
 
 Reasoning opening:
 
@@ -468,4 +547,4 @@ Given typical "
 
 ## Scope of the diagnosis
 
-These examples establish format reconsideration, literal restatement, short incorrect answers, skipped operations, and correct outcomes with flawed intermediate reasoning. They do not establish a population rate of semantic redundancy, runtime-guard false positives, or how often continued reasoning causally damages a previously correct solution. All quantitative summaries use the complete runs rather than this selected set.
+These examples establish format reconsideration, literal restatement, short incorrect answers, skipped operations, and correct outcomes with flawed intermediate reasoning. The completed arithmetic case retains the correct result, so it does not establish overthinking-induced answer damage. They do not establish a population rate of semantic redundancy, runtime-guard false positives, or how often continued reasoning causally damages a previously correct solution. All quantitative summaries use the complete runs rather than this selected set.

@@ -21,15 +21,36 @@ backend; Transformers/MPS also passes an inference probe but uses slower hybrid
 reference kernels. Adapter backward compatibility passes in MLX training mode;
 no optimizer updates, SFT or preference training have run.
 
-A tested evaluation harness and 60-problem DEV suite are implemented. The stock
-thinking baseline and default-mode control are complete; staged decoding experiments
-are in progress. At the 2048-token cap, the thinking baseline produced 0/60
-correct final answers and all samples reached the cap (60.4 output tokens/s). The official default-mode control achieved 19/60 task-correct (15/60 under strict extraction), median 381.5 total
-output tokens, and 17/60 cap failures. An improved thinking sampler or trained
-model has not been established. Small compatibility measurements are under `reports/`;
-See [baseline measurements](reports/baseline.md) and the
-[default-mode control](reports/nonthinking_control.md); these are small DEV results
-under a cap, not general capability or untouched TEST results.
+A tested evaluation harness, 60-problem DEV suite, stock thinking baseline,
+official default-mode control, and initial decoding ablation are complete.
+With a 2048 **total output** token cap:
+
+| Variant | Task-correct / 60 | Median / P95 thinking tokens | Cap failures |
+|---|---:|---:|---:|
+| A: official thinking | 0 | 2048 / 2048 | 60 |
+| B: repetition penalty 1.05 | 4 | 2048 / 2048 | 56 |
+| A0: official non-thinking control | 24 | 0 / 0 | 17 |
+
+A0's median total output is 381.5 tokens; a zero explicit thinking partition does
+not imply zero reasoning-like calculations. Task grading accepts terminal numeric
+answers/equations, independently of FINAL formatting; its calibrated contract is
+[documented](docs/metrics.md). Earlier format-sensitive counts are retained in the
+research log. A0 changes mode and its recommended sampler together.
+
+A generated 60.4 output tokens/s including prefill, with a 1.684 GB MLX allocator
+peak and 2.140 GB sampled process RSS peak; these memory measures overlap.
+B reduced mean total output only 2.0%; median/p95 reasoning stayed at the cap.
+There is no established material efficiency improvement or trained model.
+Observed traces include correct calculations followed by repeated format
+reconsideration, skipped operations, and short wrong answers. Zero detected exact
+cycles does not mean zero pathological behavior.
+
+Read the [first-pass decision report](reports/first-pass.md),
+[baseline](reports/baseline.md), [sampling ablation](reports/sampling_ablation.md),
+[default-mode control](reports/nonthinking_control.md), and
+[manual trace review](reports/trace_review.md). These are small DEV results under a
+cap, not general capability or untouched TEST results. Full raw runs stay local;
+committed summaries and selected excerpts are inspectable but not a full output archive.
 
 ## Reproduce
 
@@ -116,7 +137,8 @@ QwenLean/
 └── docs/                    # architecture, metric contract, research log
 ```
 
-See [architecture](docs/architecture.md), [metrics](docs/metrics.md), and the
+See the [operating guide](docs/guide.md), [exact tracked file manifest](docs/repository-files.txt),
+[architecture](docs/architecture.md), [metrics](docs/metrics.md), and the
 [research log](docs/research-log.md). This repository and its procedural stimuli
 are Apache-2.0. Provenance gates reject DEV/TEST training, unknown licenses and
 unverified closed-model origins. No external benchmark data has been imported.

@@ -1,5 +1,9 @@
 # Research log
 
+Chronological entries retain earlier decisions and measurements. Later scoring
+corrections supersede older accuracy counts; current results are in
+[the first-pass report](../reports/first-pass.md).
+
 ## ENV-001 — 2026-10-05
 
 Hypothesis: native Mac inference can support the first controlled research loop.
@@ -138,3 +142,64 @@ previous measurements. No regenerated or modified model output.
 Result: completed A/A0 and pilot task counts remain 0/60, 19/60, and 1/12,
 0/12, 2/12. The observed quoted example is rejected. Thirty tests pass.
 Next decision: apply the same v4 contract to full B before final comparison.
+
+
+## SCORE-010 — calibrated terminal numeric forms
+
+Hypothesis: a conservative marker/cue grammar can miss clear completed solutions.
+Evidence: A0 outputs terminal standalone numbers, x=43, total count=2, and a
+count-of-3 conclusion; B correctly calculates 2871 in its final channel before
+an empty FINAL marker. None should be mistaken for answer degradation.
+Decision: v5 accepts terminal standalone numeric lines, numeric equations,
+explicit count conclusions, and terminal equations followed only by a format
+notice/empty marker. Still reject quoted examples or continued reconsideration.
+All extraction is label-independent; correctness compares the extracted result
+with the algorithmic label. Thirty-one regression tests pass. Preserve v1–v4
+metrics and original emitted IDs/raw outputs.
+Result: uniformly rescored A0=24/60, A=0/60, B=4/60. Pilot counts remain 1/12,
+0/12, 2/12, so candidate selection is unchanged. No wrong EOS final result in B;
+the earlier heuristic candidate was a correct mathematical solution with a
+missing numeric FINAL field. No causal overthinking-to-wrong-answer rate claimed.
+Next decision: freeze this documented grammar for the next prompt-control experiment.
+
+## SAMPLING-011 — completed first decoding confirmation
+
+Hypothesis: single-variable sampling changes can improve bounded thinking behavior.
+Configuration: three balanced 12-example DEV pilots: temperature .6, presence 0,
+repetition 1.05, all other A settings fixed. Promote repetition 1.05 to all 60 DEV.
+Dataset: procedural-v1 DEV; no TEST/model evaluation or TRAIN trajectory generation.
+Result: pilots 1/12, 0/12, 2/12; full B 4/60, 56/60 capped, median/p95 reasoning
+2048. A 0/60, 60/60 capped. Paired accuracy +6.7 percentage points, bootstrap 95%
+interval +1.7 to +13.3 points. Exact paired McNemar two-sided p=0.125:
+this small gain is not statistically established at 0.05. B mean total tokens 2007.33 versus A 2048: 2.0%
+reduction. Mean repeated-content density A 7.76%, B 5.67%. All-output exact-cycle
+rate 0% under the documented narrow heuristic. Twelve of twelve repeated pilot
+token sequences are identical. B 62.08 output tokens/s; mean latency 32.34 seconds.
+MLX allocator peak 1.684 GB; sampled B RSS 0.515 GB (distinct accounting measures).
+Interpretation: small bounded accuracy gain, unchanged censored reasoning tails;
+no established material efficiency improvement. Default-mode control 40% is far
+better on this small suite but changes mode and sampler together. Format
+reconsideration is a prominent manually observed confound; a learned-behavior
+versus prompt/decoder attribution is not yet resolved.
+Next decision: matched-seed DEV prompt-format control before training, then a
+small higher-cap diagnostic if needed. First dataset should be Qwen TRAIN best-of-N
+only after semantic split fixes and reasoning-quality gates.
+
+## PROCESS-012 — first-pass cleanup
+
+Result: full sampler controller exited normally; process audit found no registered
+QwenLean model workloads and an inactive lease with a dead former owner. Exclusive
+lock acquisition/release succeeds. No unrelated application was terminated.
+See reports/process_audit.json. All model experiments were serialized; offline
+scoring/report jobs are separate from model inference.
+
+
+## FOUNDATION-013 — validation milestone
+
+Result: 32 tests pass; Ruff and whitespace checks pass. Machine-generated reports
+use complete preserved records under the calibrated v5 scoring contract. Docs
+state implemented commands and measured limits; no adapter, CUDA backend, semantic
+embedding metric, quality-approved training corpus or efficiency breakthrough is
+claimed. GitHub About/description/homepage and eight research topics are configured.
+Milestone tag: v0.1.0, first-pass research foundation. Main-only development.
+Next decision: the DEV prompt-format control described in reports/first-pass.md.

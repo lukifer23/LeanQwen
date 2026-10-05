@@ -15,6 +15,10 @@ from qwenlean.scoring.exact import SCORING_VERSION
 from qwenlean.utils.io import read_jsonl, write_json
 
 
+def percent_ci(values):
+    return f"{values[0]:.1%}–{values[1]:.1%}"
+
+
 def table_row(name, s):
     t = s["reasoning_tokens"]
     return (
@@ -64,7 +68,7 @@ def main():
         "",
         table([("A: official thinking", sa)]),
         "",
-        f"Accuracy 95% Wilson interval: {sa['accuracy_wilson_ci95']}.",
+        f"Accuracy 95% Wilson interval: {percent_ci(sa['accuracy_wilson_ci95'])}.",
         f"Reasoning mean/p75/p90/p99: {sa['reasoning_tokens']['mean']:.1f} / {sa['reasoning_tokens']['p75']:.1f} / {sa['reasoning_tokens']['p90']:.1f} / {sa['reasoning_tokens']['p99']:.1f}.",
         f"Aggregate output throughput (including prefill): {sa['aggregate_output_tokens_per_second']:.2f} tokens/s.",
         f"MLX allocator peak: {sa['mlx_peak_bytes'] / 1e9:.3f} GB. Sampled process RSS peak: {sa['rss_peak_observed_bytes'] / 1e9:.3f} GB.",
@@ -203,7 +207,8 @@ def main():
                 "",
                 table([("A official", sa), ("B candidate", sb)]),
                 "",
-                f"Paired accuracy change: {pair['accuracy_delta']:+.1%}; 95% bootstrap interval {pair['paired_accuracy_delta_ci95']}. Gained {pair['gained']}, lost {pair['lost']}.",
+                f"Paired accuracy change: {pair['accuracy_delta']:+.1%}; 95% bootstrap interval {percent_ci(pair['paired_accuracy_delta_ci95'])}. Gained {pair['gained']}, lost {pair['lost']}.",
+                f"Exact paired McNemar two-sided p={pair['mcnemar_exact_two_sided_p']:.3f}; small discordant counts require interpreting the discrete paired bootstrap interval alongside this exact test.",
                 f"Token-identical pilot repeats: {sweep['repeatability']['identical_token_sequences']}/{sweep['repeatability']['repeated_pilot_samples']}.",
                 "",
             ]

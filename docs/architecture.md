@@ -37,7 +37,8 @@ establish that the 0.8B model will fail on this machine.
 
 ## Backend boundary
 
-Only `qwenlean/inference/mlx_backend.py` imports MLX. The runner consumes a backend
+Within the `qwenlean` package, only `inference/mlx_backend.py` imports MLX.
+Diagnostic scripts import the frameworks they probe directly. The runner consumes a backend
 with `generate(prompt, seed, config)` and `tokenizer`. Scoring, provenance, procedural
 tasks and statistics are independent of device and model framework. A future
 Transformers/CUDA backend can implement that interface; macOS/Linux process

@@ -84,5 +84,177 @@
       "seed": 20261005
     },
     "sample_count": 60
+  },
+  "runs/20261005T175251-pilot-cooler-f98807ab": {
+    "config": {
+      "backend": "mlx",
+      "enable_thinking": true,
+      "loop_guard": {
+        "check_every": 16,
+        "enabled": false,
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "cooler",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+        "temperature": 0.6,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261005
+    },
+    "sample_count": 12
+  },
+  "runs/20261005T175851-pilot-presence-zero-f07365a5": {
+    "config": {
+      "backend": "mlx",
+      "enable_thinking": true,
+      "loop_guard": {
+        "check_every": 16,
+        "enabled": false,
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "presence-zero",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 0.0,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261005
+    },
+    "sample_count": 12
+  },
+  "runs/20261005T180526-pilot-repetition-105-d3173dd2": {
+    "config": {
+      "backend": "mlx",
+      "enable_thinking": true,
+      "loop_guard": {
+        "check_every": 16,
+        "enabled": false,
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "repetition-105",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.05,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261005
+    },
+    "sample_count": 12
+  },
+  "runs/20261005T181544-B-candidate-repetition-105-c5b80339": {
+    "config": {
+      "backend": "mlx",
+      "enable_thinking": true,
+      "loop_guard": {
+        "check_every": 16,
+        "enabled": false,
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "B-candidate-repetition-105",
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.05,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261005
+    },
+    "sample_count": 60
   }
 }

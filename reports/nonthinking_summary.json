@@ -1,18 +1,18 @@
 {
-  "accuracy": 0.31666666666666665,
+  "accuracy": 0.4,
   "accuracy_bootstrap_ci95": [
-    0.2,
-    0.43333333333333335
+    0.2833333333333333,
+    0.5333333333333333
   ],
-  "accuracy_over_median_reasoning_tokens": 0.31666666666666665,
+  "accuracy_over_median_reasoning_tokens": 0.4,
   "accuracy_wilson_ci95": [
-    0.21305867552366523,
-    0.44233767026176773
+    0.2856949053488255,
+    0.5263394650795924
   ],
   "aggregate_output_tokens_per_second": 65.76352048535391,
   "by_family": {
     "algebra": {
-      "accuracy": 0.6,
+      "accuracy": 0.9,
       "n": 10,
       "reasoning_tokens": {
         "mean": 0.0,
@@ -36,7 +36,7 @@
       }
     },
     "boolean_logic": {
-      "accuracy": 0.4,
+      "accuracy": 0.6,
       "n": 10,
       "reasoning_tokens": {
         "mean": 0.0,
@@ -148,7 +148,7 @@
   },
   "rss_peak_observed_bytes": 360153088,
   "scoring_versions": [
-    "terminal_answers_v4"
+    "terminal_numeric_conclusions_v5"
   ],
   "strict_final_accuracy": 0.25,
   "termination_counts": {
