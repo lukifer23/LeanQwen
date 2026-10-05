@@ -43,15 +43,17 @@ def main():
         if config.get("backend") != "mlx":
             parser.error("This milestone implements only the validated MLX backend")
         from qwenlean.inference.mlx_backend import MLXBackend
+        from qwenlean.utils.process_lock import model_process_lock
 
-        backend = MLXBackend(config)
-        if args.command == "eval":
-            tasks = read_jsonl(args.dataset)
-            if args.limit:
-                tasks = tasks[: args.limit]
-            evaluate(backend, tasks, config, root=args.runs_dir)
-        else:
-            write_json(args.output, backend.generate(args.prompt, config["seed"]))
+        with model_process_lock():
+            backend = MLXBackend(config)
+            if args.command == "eval":
+                tasks = read_jsonl(args.dataset)
+                if args.limit:
+                    tasks = tasks[: args.limit]
+                evaluate(backend, tasks, config, root=args.runs_dir)
+            else:
+                write_json(args.output, backend.generate(args.prompt, config["seed"]))
     elif args.command == "analyze":
         summary = summarize(read_jsonl(Path(args.run) / "samples.jsonl"))
         write_json(Path(args.run) / "summary.json", summary)

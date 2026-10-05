@@ -139,3 +139,19 @@ def test_run_serialization(tmp_path):
     write_jsonl(run / "samples.jsonl", data)
     assert read_jsonl(run / "samples.jsonl") == data
     assert json.loads((run / "run.json").read_text())["config_hash"] == digest({"seed": 7})
+
+
+def test_process_lock_rejects_duplicate_and_recovers_stale_owner(tmp_path):
+    from qwenlean.utils.process_lock import model_process_lock
+
+    path = tmp_path / "model.lock"
+    with model_process_lock(path):
+        with pytest.raises(RuntimeError, match="already holds"):
+            with model_process_lock(path):
+                pass
+    # A released lease permits the next sequential workload.
+    with model_process_lock(path):
+        pass
+    path.write_text(json.dumps({"pid": 99999999, "create_time": 0, "active": True}))
+    with model_process_lock(path):
+        pass

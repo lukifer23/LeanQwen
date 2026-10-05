@@ -97,4 +97,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    from qwenlean.utils.process_lock import model_process_lock
+
+    with model_process_lock():
+        main()

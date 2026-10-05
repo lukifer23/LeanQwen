@@ -11,6 +11,11 @@ from huggingface_hub import snapshot_download
 from mlx_lm import load, stream_generate
 from mlx_lm.sample_utils import make_sampler
 
+from qwenlean.utils.process_lock import model_process_lock
+
+_process_lock = model_process_lock()
+_process_lock.__enter__()
+
 meta = json.loads(Path("reports/environment.json").read_text())
 path = snapshot_download(
     meta["model"],
@@ -66,3 +71,5 @@ for thinking in [False, True]:
     print(raw, flush=True)
     print("Elapsed", elapsed, "Tokens", len(responses), flush=True)
 Path("reports/smoke_generations.json").write_text(json.dumps(records, indent=2) + "\n")
+
+_process_lock.__exit__(None, None, None)

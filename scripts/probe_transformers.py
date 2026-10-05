@@ -9,6 +9,11 @@ import torch
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+from qwenlean.utils.process_lock import model_process_lock
+
+_process_lock = model_process_lock()
+_process_lock.__enter__()
+
 meta = json.loads(Path("reports/environment.json").read_text())
 report = {"model": meta["model"], "revision": meta["revision"]}
 start = time.perf_counter()
@@ -53,3 +58,5 @@ except Exception as exc:
     report.update(status="failed", error=repr(exc), traceback=traceback.format_exc())
 Path("reports/transformers_probe.json").write_text(json.dumps(report, indent=2) + "\n")
 print(json.dumps(report, indent=2))
+
+_process_lock.__exit__(None, None, None)

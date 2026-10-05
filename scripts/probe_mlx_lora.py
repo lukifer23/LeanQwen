@@ -11,6 +11,11 @@ from mlx.utils import tree_flatten
 from mlx_lm import load
 from mlx_lm.tuner.utils import linear_to_lora_layers
 
+from qwenlean.utils.process_lock import model_process_lock
+
+_process_lock = model_process_lock()
+_process_lock.__enter__()
+
 meta = json.loads(Path("reports/environment.json").read_text())
 report = {
     "model": meta["model"],
@@ -67,3 +72,5 @@ except Exception as exc:
     report.update(status="failed", error=repr(exc), traceback=traceback.format_exc())
 Path("reports/mlx_lora_probe.json").write_text(json.dumps(report, indent=2) + "\n")
 print(json.dumps(report, indent=2))
+
+_process_lock.__exit__(None, None, None)
