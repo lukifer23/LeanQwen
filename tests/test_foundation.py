@@ -266,3 +266,14 @@ def test_comparison_rejects_different_scoring_definitions():
 
     with pytest.raises(ValueError, match="scoring version"):
         paired_comparison([{"scoring_version": "v1"}], [{"scoring_version": "v3"}])
+
+
+def test_numeric_markers_in_ongoing_planning_do_not_receive_task_credit():
+    text = 'Example: `FINAL: 43`. Maybe just `FINAL: 43`. Given typical "'
+    result = score(text, "43")
+    assert not result["correct"] and result["strict_final_correct"]
+    assert result["scoring_method"] == "nonterminal_final_marker"
+    assert not score("FINAL: 43. Let me reconsider.", "43")["correct"]
+    assert not score(r"\boxed{43} but I will check again", "43")["correct"]
+    assert score("Work above. FINAL: 43.", "43")["correct"]
+    assert score(r"Therefore $\boxed{43}$.", "43")["correct"]

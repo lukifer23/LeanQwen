@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from qwenlean.evaluation.summary import paired_comparison, summarize
+from qwenlean.scoring.exact import SCORING_VERSION
 from qwenlean.utils.io import read_jsonl, write_json
 
 
@@ -221,7 +222,7 @@ def main():
         write_json("reports/nonthinking_summary.json", sc)
         control_extra = (
             f"Task accuracy {sc['accuracy']:.1%}; strict extraction accuracy {sc['strict_final_accuracy']:.1%}; "
-            f"format compliance {sc['format_compliance_rate']:.1%}. Scorer: terminal_final_cues_v3.\n"
+            f"format compliance {sc['format_compliance_rate']:.1%}. Scorer: {SCORING_VERSION}.\n"
         )
         Path("reports/nonthinking_control.md").write_text(
             "# Official default-mode control\n\n"
@@ -264,6 +265,10 @@ def main():
                     "sample_id",
                     "family",
                     "correct",
+                    "strict_final_correct",
+                    "format_compliant",
+                    "scoring_version",
+                    "scoring_method",
                     "reasoning_tokens",
                     "final_tokens",
                     "total_output_tokens",

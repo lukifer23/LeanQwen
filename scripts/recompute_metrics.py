@@ -14,7 +14,7 @@ from qwenlean.evaluation.summary import summarize
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.metrics.answer_distance import conclusion_distance
 from qwenlean.metrics.repetition import repetition_metrics
-from qwenlean.scoring.exact import score
+from qwenlean.scoring.exact import SCORING_VERSION, score
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 
 
@@ -53,7 +53,7 @@ def recompute(run):
                 "answer_distance": conclusion_distance(
                     p.reasoning, p.reasoning_ids, r["expected"], t
                 ),
-                "metric_revision": "terminal_conclusion_scoring_v3",
+                "metric_revision": SCORING_VERSION,
             }
         )
     write_jsonl(run / "samples.jsonl", records)

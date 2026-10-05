@@ -3,6 +3,8 @@
 import re
 from fractions import Fraction
 
+SCORING_VERSION = "terminal_answers_v4"
+
 NUMBER = r"[-+]?\d[\d,]*(?:\.\d+)?(?:/\d+)?"
 
 
@@ -18,6 +20,24 @@ def extract_answer(final):
         return boxed[-1], "boxed"
     plain = re.fullmatch(r"\s*(" + NUMBER + r")\s*[.!]?\s*", final)
     return (plain.group(1), "plain") if plain else (None, "unscorable_final")
+
+
+def extract_terminal_answer(final):
+    # Keep historical extraction separately; planning examples are not answers.
+    answer, method = extract_answer(final)
+    if method == "conflicting_final_markers":
+        return None, method
+    if method == "final_marker":
+        matches = list(re.finditer(r"FINAL\s*:\s*(" + NUMBER + r")(?![\d/]|[.]\d)", final, re.I))
+        if re.fullmatch(r"[\s.!]*", final[matches[-1].end() :]):
+            return answer, method
+        return None, "nonterminal_final_marker"
+    if method == "boxed":
+        matches = list(re.finditer(r"\\boxed\{(" + NUMBER + r")\}", final))
+        if re.fullmatch(r"[\s.!$]*", final[matches[-1].end() :]):
+            return answer, method
+        return None, "nonterminal_boxed_answer"
+    return answer, method
 
 
 def normalize(value):
@@ -50,8 +70,8 @@ def score(final, expected):
     if target is None:
         raise ValueError("Exact-answer ground truth must be a valid rational number")
     strict_answer, strict_method = extract_answer(final)
-    answer, method = strict_answer, strict_method
-    if answer is None and strict_method == "unscorable_final":
+    answer, method = extract_terminal_answer(final)
+    if answer is None and method == "unscorable_final":
         answer, method = extract_conclusion(final)
     compliant = re.search(r"FINAL\s*:\s*(" + NUMBER + r")\s*$", final, re.I)
     return {
@@ -60,5 +80,5 @@ def score(final, expected):
         "format_compliant": compliant is not None,
         "extracted_answer": answer,
         "scoring_method": method,
-        "scoring_version": "terminal_final_cues_v3",
+        "scoring_version": SCORING_VERSION,
     }
