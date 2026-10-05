@@ -183,3 +183,12 @@ not an aggregate prompt-effect estimate. Source-linked DEV annotations and 24
 curated chunk-pair judgments are recorded with training permission false. They
 will calibrate local lexical/semantic measurement; actual embedding inference is
 pending until Qwen releases the exclusive lease.
+
+### Phase 2 — documentation and historical-preservation checkpoint
+
+Full Mac unit suite: 70 passed; Ruff passed. README now distinguishes implemented
+interfaces from pending real validation and keeps first-pass findings explicitly
+historical/censored. All report builders write new destinations; first-pass report
+and split hashes remain unchanged. Four completed P3 replicate-zero controls
+reproduce the historical emitted token IDs exactly. Remote CI is queued, so no
+remote pass is claimed. Substantial SFT remains gated and TEST has no responses.
