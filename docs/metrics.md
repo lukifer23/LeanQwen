@@ -3,7 +3,8 @@
 Final task correctness is programmatic, with strict numeric/boxed/plain answers
 preferred. If those are absent, accept a unique terminal numeric conclusion after explicit
 final-channel cues such as "integer solution is", "answer is", or "Total True
-Expressions:". Conflicting markers/cues are rejected. The extraction never uses
+Expressions:". Conflicting numeric FINAL markers are rejected; nonterminal calculation cues
+are not treated as final answers. The extraction never uses
 ground truth to select an output number and never scores the thinking channel.
 Labels must be valid exact rational values. This conservative grammar cannot
 score every natural-language answer; its method/version are saved per record.

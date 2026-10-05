@@ -259,3 +259,10 @@ def test_conclusion_recovery_does_not_credit_continued_reconsideration():
     ]
     assert score("Result: 3. Answer: 4.", "4")["correct"]
     assert not score("Final answer: 3. But I am unsure and will recalculate.", "3")["correct"]
+
+
+def test_comparison_rejects_different_scoring_definitions():
+    from qwenlean.evaluation.summary import paired_comparison
+
+    with pytest.raises(ValueError, match="scoring version"):
+        paired_comparison([{"scoring_version": "v1"}], [{"scoring_version": "v3"}])

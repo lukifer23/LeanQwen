@@ -219,6 +219,10 @@ def main():
             "config": json.loads((control / "config.json").read_text()),
         }
         write_json("reports/nonthinking_summary.json", sc)
+        control_extra = (
+            f"Task accuracy {sc['accuracy']:.1%}; strict extraction accuracy {sc['strict_final_accuracy']:.1%}; "
+            f"format compliance {sc['format_compliance_rate']:.1%}. Scorer: terminal_final_cues_v3.\n"
+        )
         Path("reports/nonthinking_control.md").write_text(
             "# Official default-mode control\n\n"
             + table([("A thinking", sa), ("A0 non-thinking", sc)])
@@ -227,6 +231,8 @@ def main():
             + f"{sa['total_output_tokens']['p50']:.0f} for A and {sc['total_output_tokens']['p50']:.0f} for A0. "
             + "This control does not establish that harder reasoning tasks can dispense with thinking.\n"
         )
+        with Path("reports/nonthinking_control.md").open("a") as handle:
+            handle.write("\n" + control_extra)
     fig, axes = plt.subplots(1, 2, figsize=(11, 4))
     for label, rows, s in entries:
         x = np.sort([r["reasoning_tokens"] for r in rows])

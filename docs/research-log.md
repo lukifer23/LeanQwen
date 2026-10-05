@@ -102,3 +102,25 @@ Interpretation: mode changes bounded accuracy and output compute substantially,
 while many very short answers are wrong. This is a control, not an optimized
 reasoning-preserving model; no claim about uncapped capability or TEST performance.
 Next decision: finish the predeclared thinking sampler pilots before dataset selection.
+
+## SCORE-008 — correctness versus format, manual calibration
+
+Hypothesis: strict FINAL extraction can conflate task accuracy and format compliance.
+Evidence: a completed repetition-penalty response correctly concludes "Total True
+Expressions: 3" but leaves `FINAL:` empty. Another completes with `ANSWER: 2006`.
+Decision: separate task correctness, strict extraction correctness and numeric
+FINAL compliance. Accept only terminal explicit conclusion cues, independent of
+label matching. Reject values followed by continued reconsideration. Test all
+observed edge cases. Preserve original metrics and versioned scoring backups.
+Result: baseline A remains 0/60. A0 is 19/60 task-correct, 15/60 strict-correct.
+Manual review rejects a capped intermediate-correct total and accepts a terminal
+state answer after earlier incorrect computations. All four A0 recoveries are EOS.
+Pilot task accuracy: cooler 1/12, presence-zero 0/12, repetition-1.05 2/12; the
+last two successes are format-noncompliant but have correct terminal answers.
+Interrupted the controller after 11/12 repetition samples to fix scoring;
+resumed only the final pending sample, with identical config/hash/ordered dataset.
+No model generation was fabricated or replaced. Candidate selection remains
+repetition-1.05 under the corrected definition; full DEV confirmation is running.
+Interpretation: report format separately from reasoning ability, and inspect
+intermediate reasoning quality separately from final-answer accuracy.
+Next decision: rescore full confirmation under the same v3 scorer before comparison.

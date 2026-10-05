@@ -56,7 +56,12 @@ def summarize(records):
         "accuracy": sum(correct) / n,
         "strict_final_accuracy": sum(r.get("strict_final_correct", r["correct"]) for r in records)
         / n,
-        "format_compliance_rate": sum(r.get("format_compliant", False) for r in records) / n,
+        "format_compliance_rate": (
+            sum(r["format_compliant"] for r in records) / n
+            if all("format_compliant" in r for r in records)
+            else None
+        ),
+        "scoring_versions": sorted({r.get("scoring_version", "legacy") for r in records}),
         "accuracy_bootstrap_ci95": bootstrap_mean_ci(correct),
         "accuracy_wilson_ci95": wilson_interval(sum(correct), n),
         "reasoning_tokens": distribution(reasoning),
@@ -100,6 +105,12 @@ def summarize(records):
 
 
 def paired_comparison(a, b):
+    if {r.get("scoring_version", "legacy") for r in a} != {
+        r.get("scoring_version", "legacy") for r in b
+    }:
+        raise ValueError(
+            "Paired comparison requires the same scoring version; reanalyze raw outputs first"
+        )
     if {r["sample_id"] for r in a} != {r["sample_id"] for r in b}:
         raise ValueError("Paired comparison requires exactly the same sample IDs")
     lookup = {r["sample_id"]: r for r in b}

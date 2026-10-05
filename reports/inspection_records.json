@@ -23,6 +23,7 @@
     "final": "",
     "final_tokens": 0,
     "first_token_latency_s": 0.06441700000141282,
+    "format_compliant": false,
     "formatted_prompt": "<|im_start|>user\nCalculate (50 * 41) - 44. End your response with FINAL: followed by just the integer answer.<|im_end|>\n<|im_start|>assistant\n<think>\n",
     "generation_parameters": {
       "backend": "mlx",
@@ -67,7 +68,7 @@
     "generator_seed": 22061,
     "latency_s": 35.946466875000624,
     "loop_guard_evidence": null,
-    "metric_revision": "sentence_punctuation_fix_20261005",
+    "metric_revision": "terminal_conclusion_scoring_v3",
     "mlx_peak_bytes": 1613150729,
     "model_identifier": {
       "backend": "mlx",
@@ -132,9 +133,11 @@
     "rss_peak_observed_bytes": 1577795584,
     "sample_id": "dev-arithmetic-c61a2e941069",
     "scoring_method": "unscorable_final",
+    "scoring_version": "terminal_final_cues_v3",
     "seed": 1152895734,
     "split": "dev",
     "stop_token_id": null,
+    "strict_final_correct": false,
     "system_available_ram_bytes": 3955032064,
     "termination_reason": "max_output_tokens",
     "token_ids": [
@@ -2213,6 +2216,7 @@
     "final": "",
     "final_tokens": 0,
     "first_token_latency_s": 0.05697520800458733,
+    "format_compliant": false,
     "formatted_prompt": "<|im_start|>user\nCalculate (49 * 57) - 58. End your response with FINAL: followed by just the integer answer.<|im_end|>\n<|im_start|>assistant\n<think>\n",
     "generation_parameters": {
       "backend": "mlx",
@@ -2257,7 +2261,7 @@
     "generator_seed": 22061,
     "latency_s": 30.898457832998247,
     "loop_guard_evidence": null,
-    "metric_revision": "sentence_punctuation_fix_20261005",
+    "metric_revision": "terminal_conclusion_scoring_v3",
     "mlx_peak_bytes": 1613134381,
     "model_identifier": {
       "backend": "mlx",
@@ -2338,9 +2342,11 @@
     "rss_peak_observed_bytes": 1581809664,
     "sample_id": "dev-arithmetic-0e6e42cd6282",
     "scoring_method": "unscorable_final",
+    "scoring_version": "terminal_final_cues_v3",
     "seed": 1689776313,
     "split": "dev",
     "stop_token_id": null,
+    "strict_final_correct": false,
     "system_available_ram_bytes": 5185470464,
     "termination_reason": "max_output_tokens",
     "token_ids": [
@@ -4444,6 +4450,7 @@
     "final": "",
     "final_tokens": 0,
     "first_token_latency_s": 0.0755113750055898,
+    "format_compliant": false,
     "formatted_prompt": "<|im_start|>user\nStart with state 46, reduce it modulo 64. Apply in order: subtract 8, add 3, add 4, add 8, multiply 6, add 2. After EVERY operation reduce modulo 64 to a nonnegative remainder. What is the final state? End your response with FINAL: followed by just the integer answer.<|im_end|>\n<|im_start|>assistant\n<think>\n",
     "generation_parameters": {
       "backend": "mlx",
@@ -4488,7 +4495,7 @@
     "generator_seed": 22061,
     "latency_s": 35.211810708002304,
     "loop_guard_evidence": null,
-    "metric_revision": "sentence_punctuation_fix_20261005",
+    "metric_revision": "terminal_conclusion_scoring_v3",
     "mlx_peak_bytes": 1678457594,
     "model_identifier": {
       "backend": "mlx",
@@ -4584,9 +4591,11 @@
     "rss_peak_observed_bytes": 1573142528,
     "sample_id": "dev-state_machine-2a23df54f658",
     "scoring_method": "unscorable_final",
+    "scoring_version": "terminal_final_cues_v3",
     "seed": 2588160835,
     "split": "dev",
     "stop_token_id": null,
+    "strict_final_correct": false,
     "system_available_ram_bytes": 4008804352,
     "termination_reason": "max_output_tokens",
     "token_ids": [

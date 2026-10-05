@@ -806,7 +806,7 @@
       "total_output_tokens": 699
     },
     {
-      "correct": false,
+      "correct": true,
       "family": "state_machine",
       "final_tokens": 414,
       "latency_s": 6.905349499997101,
@@ -839,7 +839,7 @@
       "total_output_tokens": 347
     },
     {
-      "correct": false,
+      "correct": true,
       "family": "algebra",
       "final_tokens": 292,
       "latency_s": 4.854699957999401,
@@ -1081,7 +1081,7 @@
       "total_output_tokens": 2048
     },
     {
-      "correct": false,
+      "correct": true,
       "family": "state_machine",
       "final_tokens": 1930,
       "latency_s": 26.006131707996246,
@@ -1312,7 +1312,7 @@
       "total_output_tokens": 2048
     },
     {
-      "correct": false,
+      "correct": true,
       "family": "boolean_logic",
       "final_tokens": 382,
       "latency_s": 5.163853125006426,

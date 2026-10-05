@@ -24,7 +24,7 @@ no optimizer updates, SFT or preference training have run.
 A tested evaluation harness and 60-problem DEV suite are implemented. The stock
 thinking baseline and default-mode control are complete; staged decoding experiments
 are in progress. At the 2048-token cap, the thinking baseline produced 0/60
-correct final answers and all samples reached the cap (60.4 output tokens/s). The official default-mode control achieved 15/60 correct, median 381.5 total
+correct final answers and all samples reached the cap (60.4 output tokens/s). The official default-mode control achieved 19/60 task-correct (15/60 under strict extraction), median 381.5 total
 output tokens, and 17/60 cap failures. An improved thinking sampler or trained
 model has not been established. Small compatibility measurements are under `reports/`;
 See [baseline measurements](reports/baseline.md) and the
