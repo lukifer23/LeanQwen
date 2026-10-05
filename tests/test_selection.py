@@ -21,7 +21,7 @@ def test_wrong_short_cannot_beat_correct_long_and_invalid_reasoning_rejected():
             candidate('truncated', True, 100, eos=False)]
     _, best, report = select_natural(rows)
     assert best[0]['generation_id'] == 'rigorous'
-    assert report['tier_counts'] == {'D': 1, 'A': 2, 'E': 1}
+    assert report['tier_counts'] == {'D': 1, 'A': 2, 'C': 1}
     assert intermediate_checks(rows[2])['invalid_claims']
     rows[0]['split'] = 'dev'
     with pytest.raises(ValueError, match='TRAIN'):

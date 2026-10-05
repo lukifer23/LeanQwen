@@ -21,7 +21,11 @@ from qwenlean.datasets.prompts import render_task
 from qwenlean.inference.mlx_backend import MLXBackend
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.scoring.exact import score
-from qwenlean.training.quality import supervision_range, validate_training_pool
+from qwenlean.training.quality import (
+    supervision_range,
+    validate_parent_sources,
+    validate_training_pool,
+)
 from qwenlean.utils.environment import environment_manifest
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 from qwenlean.utils.process_lock import model_process_lock
@@ -55,6 +59,7 @@ def train(config, dataset, quality_manifest, output):
     rows = read_jsonl(dataset)
     quality = json.loads(Path(quality_manifest).read_text())
     validate_training_pool(rows, quality, config)
+    validate_parent_sources(rows, quality)
     output = Path(output)
     if output.exists():
         raise ValueError('Refuse existing adapter output; optimizer resume is not implemented')

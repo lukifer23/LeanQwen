@@ -63,10 +63,12 @@ def classify(row, semantic=None):
     rep = row['repetition']
     eos = row['termination_reason'] == 'eos' and row['parse_status'] == 'complete'
     loop = rep.get('loop_evidence') is not None
-    if loop or row['termination_reason'] in {'max_output_tokens', 'runtime_loop_guard'}:
+    if loop:
         tier = 'E'
     elif row['correct'] and not eos:
         tier = 'C'
+    elif row['termination_reason'] in {'max_output_tokens', 'runtime_loop_guard'}:
+        tier = 'E'
     elif not row['correct']:
         tier = 'D'
     else:

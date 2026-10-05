@@ -38,6 +38,16 @@ def main():
         if not (Path('reports') / file).exists():
             raise ValueError(f'Diagnostic gate pending: {file}')
     study = json.loads(Path('reports/prompt_policy_measurements.json').read_text())
+    tail = json.loads(Path('reports/termination_tail_measurements.json').read_text())
+    early = json.loads(Path('reports/early_exit_measurements.json').read_text())
+    calibration = json.loads(Path('reports/metric_calibration.json').read_text())
+    guard = json.loads(Path('reports/runtime_guard_replay.json').read_text())
+    if study['trajectories'] != 144 or tail['selected_trajectories'] != 7 or early['source_trajectories'] != 6:
+        raise ValueError('Incomplete predeclared DEV diagnostic design')
+    if any(not c['exact_prefix'] for c in tail['prefix_checks']) or calibration['calibration_pair_count'] < 24:
+        raise ValueError('Prefix/metric calibration gate failed')
+    if any(t.get('manual_review') == 'pending' for g in guard['configurations'] for t in g['triggers']):
+        raise ValueError('Every offline guard trigger needs individual review')
     cfg = {**study['config'], 'name': 'phase2-train-natural-n4', 'replicates': 4,
            'prompt_policy': study['selected_policy'], 'prompt_policies': [study['selected_policy']],
            'max_output_tokens': 4096}

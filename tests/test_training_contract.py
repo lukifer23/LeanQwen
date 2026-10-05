@@ -41,3 +41,20 @@ def test_provenance_manifest_context_and_revision_fail_closed():
     m['approved_parent_ids'] = []
     with pytest.raises(ValueError, match='parent'):
         validate_training_pool([r], m, cfg)
+
+
+def test_parent_archive_prevents_response_rewriting(tmp_path):
+    from qwenlean.training.quality import validate_parent_sources
+    from qwenlean.utils.io import write_jsonl
+
+    row, _, manifest = contracts()
+    row['prompt'] = 'Compute 2+3.'
+    parent = {**row, 'generation_id': 'p', 'token_ids': row['target_token_ids'],
+              'model_identifier': {'revision':'abc'}}
+    path = tmp_path/'parents.jsonl'
+    write_jsonl(path, [parent])
+    manifest.update(source_records_path=str(path), source_records_hash=digest([parent]))
+    assert validate_parent_sources([row], manifest)
+    row['target_token_ids'] = [9,9]
+    with pytest.raises(ValueError, match='differs'):
+        validate_parent_sources([row], manifest)
