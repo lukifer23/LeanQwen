@@ -52,6 +52,8 @@ def attach_adapters(model, cfg):
         raise RuntimeError('Adapter targeting mismatch; refuse generic fallback')
     return {'target_layer_modules': expected, 'parameter_names': [n for n, _ in leaves],
             'trainable_parameters': sum(p.size for _, p in leaves),
+            'adapter_parameter_dtypes': sorted({str(p.dtype) for _, p in leaves}),
+            'base_parameter_dtypes': sorted({str(p.dtype) for name, p in tree_flatten(model.parameters()) if not name.endswith(('lora_a', 'lora_b'))}),
             'rationale': 'Full-attention q/v and gated-delta combined qkv; MLP, embeddings, recurrence gates and base tensors frozen.'}
 
 

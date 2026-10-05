@@ -60,6 +60,15 @@ class LocalSemanticMetric:
         self.cache = Path(cache) / REVISION
         self.cache.mkdir(parents=True, exist_ok=True)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_):
+        import gc
+
+        self.model = None
+        gc.collect()
+
     def bound_chunks(self, texts):
         # No source trace truncation. Recursively subdivide embedding-only units
         # until all text fits the encoder's advertised 256-wordpiece window.

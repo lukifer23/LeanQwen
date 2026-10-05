@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from qwenlean.datasets.prompts import render_task
-from qwenlean.evaluation.runner import evaluate
+from qwenlean.evaluation.single_job import evaluate_single
 from qwenlean.evaluation.tail import check_prefix, survival_bounds
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 from qwenlean.utils.process_lock import model_process_lock
@@ -51,10 +51,10 @@ def main():
                     write_json(cached, row)
                 else:
                     config = {**cfg, 'max_output_tokens': cap}
-                    # Every generation gets its own durable harness run. If interrupted
-                    # mid-token no row is saved, and that incomplete attempt remains visible.
-                    run, _ = evaluate(backend, [task], config)
-                    row = read_jsonl(run / 'samples.jsonl')[0]
+                    # Dedicated job roots recover durable rows even if interrupted
+                    # between generation fsync and controller-cache publication.
+                    row = evaluate_single(backend, task, config,
+                                          state / 'jobs' / f"{task['task_id']}-{cap}")
                     write_json(cached, row)
                 if row['seed'] != case['seed'] or row['prompt'] != task['prompt']:
                     raise ValueError('Tail cached seed/prompt mismatch')

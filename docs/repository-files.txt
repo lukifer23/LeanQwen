@@ -33,11 +33,13 @@ qwenlean/datasets/prompts.py
 qwenlean/datasets/provenance.py
 qwenlean/evaluation/prompt_comparison.py
 qwenlean/evaluation/runner.py
+qwenlean/evaluation/single_job.py
 qwenlean/evaluation/summary.py
 qwenlean/evaluation/tail.py
 qwenlean/generation/selection.py
 qwenlean/inference/mlx_backend.py
 qwenlean/inference/parsing.py
+qwenlean/inference/prefix.py
 qwenlean/inference/streaming.py
 qwenlean/metrics/answer_distance.py
 qwenlean/metrics/conclusions.py
@@ -60,6 +62,7 @@ reports/baseline_summary.json
 reports/conclusion_calibration_annotations.jsonl
 reports/environment.json
 reports/first-pass.md
+reports/format_meta_calibration.json
 reports/inspection_records.json
 reports/mlx_lora_probe.json
 reports/mlx_lora_probe_eval_mode_failure.json
@@ -83,6 +86,7 @@ reports/smoke_generations.json
 reports/trace_evidence.json
 reports/trace_review.md
 reports/transformers_probe.json
+scripts/approve_natural_dataset.py
 scripts/calibrate_metrics.py
 scripts/create_reports.py
 scripts/early_exit_probe.py
@@ -95,6 +99,7 @@ scripts/recompute_metrics.py
 scripts/sampling_ablation.py
 scripts/smoke_inference.py
 scripts/termination_tail.py
+scripts/train_candidate_semantics.py
 scripts/train_candidates.py
 scripts/validate_environment.py
 tests/test_checkpoint_contract.py

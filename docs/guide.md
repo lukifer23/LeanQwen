@@ -211,3 +211,8 @@ for source-linked TRAIN semantic measurements under the same model lease. These
 are derived analysis records; raw parent responses remain unchanged. Review the
 similarity evidence alongside actual reasoning. Weak DEV calibration does not
 justify automatically penalizing every similar verification step.
+
+Tail-controller recovery uses separate durable job directories for each task/cap.
+A saved generation is reused even if report publication was interrupted; contract
+changes, duplicate attempts and explicit generation failures are refused. Resume
+never appends to a completed single-generation archive.

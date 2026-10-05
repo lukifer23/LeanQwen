@@ -10,8 +10,7 @@ def main():
     if any(r['split'] != 'train' or r['provenance']['response_origin'] != 'qwen_self' for r in rows):
         raise ValueError('Measured Qwen TRAIN archive required')
     results = []
-    with model_process_lock():
-        metric = LocalSemanticMetric()
+    with model_process_lock(), LocalSemanticMetric() as metric:
         for i, r in enumerate(rows):
             results.append({'source_generation_id':r['generation_id'], 'task_id':r['task_id'],
                             'semantic':metric.measure(r['reasoning']), 'training_permitted':False,

@@ -91,8 +91,7 @@ def main():
         print('Guard triggers need individual review before report gate', flush=True)
     if args.guard_only:
         return
-    with model_process_lock():
-        metric = LocalSemanticMetric()
+    with model_process_lock(), LocalSemanticMetric() as metric:
         alltexts = [t for pair in pairs for t in (pair['text_a'], pair['text_b'])]
         if metric.bound_chunks(alltexts) != alltexts:
             raise ValueError('Calibration units subdivide; recreate aligned pair annotations')

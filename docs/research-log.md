@@ -252,3 +252,15 @@ lease. Training explicitly destroys its first instance before reload and closes
 the reloaded instance before unlocking. The currently running prompt study uses
 its original committed code; its process will be fully reaped before another
 model is launched, so this change does not alter its generations or environment.
+
+### Phase 2 — durable diagnostic recovery and CI evidence
+
+Staged-tail jobs now use a dedicated task/cap run directory and recover an already
+fsynced trajectory if interrupted before controller-cache publication. Contract,
+model, seed and scoring mismatches, explicit generation failures and multiple
+attempts are rejected. This avoids regenerating a completed trajectory on resume.
+The local embedding instance is released before its lease is unlocked. The SFT
+interface records actual adapter/base tensor dtypes when executed; no optimizer
+smoke has run yet. Validation: 76 local unit tests and Ruff passed. GitHub Actions
+run 37369683787 passed its weight-free Linux checks for commit 48eb9b7; subsequent
+commits have their own CI status and are not covered by that result.

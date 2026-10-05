@@ -140,6 +140,42 @@ def test_context_budget_is_a_refusal_not_truncation():
         validate_context_budget(262144, 1, 262144)
 
 
+def test_single_job_recovers_fsynced_row_without_completion_publication(tmp_path):
+    from qwenlean.evaluation.single_job import evaluate_single
+
+    task = render_task(generate('dev')[0], 'P0')
+    config = {'name': 'fixture', 'revision': 'pin', 'seed': 7}
+    model = {'revision': 'pin', 'weights_identifier': 'fixture-base'}
+    job = tmp_path / 'one-durable-run'
+    job.mkdir()
+    write_json(job / 'config.json', config)
+    write_json(job / 'dataset.json', {'sha256': digest([task])})
+    write_json(job / 'scoring_contract.json', scoring_contract([task], config))
+    write_json(job / 'model.json', model)
+    row = {'sample_id': task['sample_id'], 'prompt': task['prompt'],
+           'expected': task['expected'], 'replicate': 0,
+           'seed': replicate_seed(7, task, 0), 'config_hash': digest(config),
+           'scoring_version': SCORING_VERSION, 'model_identifier': model,
+           'termination_reason': 'eos'}
+    write_jsonl(job / 'samples.jsonl', [row])
+    # This object has no generate method: durable recovery must not generate.
+    backend = SimpleNamespace(model_info=model)
+    assert evaluate_single(backend, task, config, tmp_path) == row
+    row['termination_reason'] = 'stream_error'
+    write_jsonl(job / 'samples.jsonl', [row])
+    with pytest.raises(ValueError, match='failed'):
+        evaluate_single(backend, task, config, tmp_path)
+
+
+def test_single_job_rejects_multiple_attempts(tmp_path):
+    from qwenlean.evaluation.single_job import evaluate_single
+
+    (tmp_path / 'a').mkdir()
+    (tmp_path / 'b').mkdir()
+    with pytest.raises(ValueError, match='Multiple'):
+        evaluate_single(SimpleNamespace(), {}, {}, tmp_path)
+
+
 def test_prompt_comparison_rejects_extra_interventions_and_clusters_replicates():
     from qwenlean.evaluation.prompt_comparison import intervention_comparison
 
