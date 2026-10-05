@@ -197,3 +197,28 @@ def test_process_lock_recovers_incomplete_dead_owner_metadata(tmp_path):
     path.write_text('{"pid":')
     with model_process_lock(path):
         assert json.loads(path.read_text())["active"] is True
+
+
+def test_summary_does_not_hide_final_channel_loops():
+    from qwenlean.evaluation.summary import summarize
+
+    # Pure schema fixture: a known 32-token cycle in the final channel.
+    record = {
+        "correct": False,
+        "reasoning_tokens": 0,
+        "final_tokens": 96,
+        "total_output_tokens": 96,
+        "family": "unit_fixture",
+        "termination_reason": "max_output_tokens",
+        "parse_status": "complete",
+        "latency_s": 1.0,
+        "mlx_peak_bytes": 1,
+        "rss_peak_observed_bytes": 1,
+        "token_ids": list(range(32)) * 3,
+        "generation_parameters": {"metrics": {}},
+        "repetition": repetition_metrics("", []),
+        "answer_distance": {"tokens_after_candidate": None},
+    }
+    summary = summarize([record])
+    assert summary["loop_rate"] == 0 and summary["output_loop_rate"] == 1
+    assert summary["total_output_tokens"]["mean"] == 96
