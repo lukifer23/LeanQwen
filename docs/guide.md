@@ -189,3 +189,25 @@ sanity. It refuses existing outputs; optimizer resume is not supported. Bounded
 training examples do not change the model context or RoPE, and none are silently
 truncated. The first four-step smoke test remains pending; no substantial run is
 authorized in this phase.
+
+After candidate generation, individual reviews live in a separate JSONL with
+`source_generation_id`, `approved_for_sft`, `intermediate_reasoning_review`
+(`valid` for approval), and a `review_note`. Reviewer prose is measurement metadata,
+not model-training content. Build a tiny approved pool with:
+
+```bash
+uv run --frozen python scripts/approve_natural_dataset.py --reviews reports/<train-reviews>.jsonl --output data/processed/<new-smoke-pool>.jsonl --manifest reports/<new-quality-manifest>.json --max-examples 4 --max-sequence-length 1024
+```
+
+The builder checks actual v2 split signatures, verifies natural measured parents,
+excludes whole oversized examples, and refuses existing output. `train-sft`
+checks that every response/prompt token matches its hashed raw TRAIN archive and
+the pinned official thinking template. A reviewed target is a saved Qwen response;
+no reviewer wording is appended to the supervised target.
+
+After the Qwen candidate process exits, optionally run
+`uv run --frozen --extra semantic python scripts/train_candidate_semantics.py`
+for source-linked TRAIN semantic measurements under the same model lease. These
+are derived analysis records; raw parent responses remain unchanged. Review the
+similarity evidence alongside actual reasoning. Weak DEV calibration does not
+justify automatically penalizing every similar verification step.

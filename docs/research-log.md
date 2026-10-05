@@ -214,3 +214,12 @@ calibration on the eight inspected DEV traces: v1 has three true positives, four
 false positives, one true negative and zero false negatives. Anchored v2 separates
 these eight examples, but was designed on them: this is in-sample evidence, not
 independent validation. Full suite at this checkpoint: 74 passed; Ruff passed.
+
+### Phase 2 — inspectable target approval interface
+
+Added natural dataset assembly from separate individual TRAIN reviews, with
+structural contamination checks, exact parent preservation, length exclusion
+without truncation and a hashed quality manifest. Reviewer prose is excluded from
+supervised responses. Optional TRAIN embedding analysis runs in its own sequential
+process after Qwen generation; it remains diagnostic rather than an automatic
+filter. These interfaces have not yet produced data or optimizer evidence.
