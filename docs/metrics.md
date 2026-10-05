@@ -1,7 +1,7 @@
 # Measurement contract
 
 Final task correctness is programmatic, with strict numeric/boxed/plain answers
-preferred. If those are absent, accept a unique numeric conclusion after explicit
+preferred. If those are absent, accept a unique terminal numeric conclusion after explicit
 final-channel cues such as "integer solution is", "answer is", or "Total True
 Expressions:". Conflicting markers/cues are rejected. The extraction never uses
 ground truth to select an output number and never scores the thinking channel.
@@ -11,7 +11,9 @@ score every natural-language answer; its method/version are saved per record.
 Keep `strict_final_correct` and `format_compliant` separate from task `correct`.
 A response that says "Total True Expressions: 3" and then leaves `FINAL:` empty
 can be task-correct and format-noncompliant. Earlier v1 measurements conflated
-these; preserved raw outputs are rescored with v2 and original metrics retained.
+these; preserved raw outputs are rescored with v3 and original metrics retained. A conclusion must end the final
+channel, with only whitespace/punctuation or an empty FINAL marker afterward;
+ongoing reconsideration after a numeric result is not a terminal answer.
 Missing/truncated answers still count as incorrect unless the final channel
 contains an unambiguous answer. Reasoning-only correct numbers receive no accuracy
 credit. Format compliance requires a trailing numeric FINAL marker.

@@ -33,6 +33,10 @@ def recompute(run):
     backup = run / "samples.original.jsonl"
     if not backup.exists():
         shutil.copyfile(run / "samples.jsonl", backup)
+    before_version = original[0].get("scoring_version", "legacy")
+    version_backup = run / f"samples.before-{before_version}.jsonl"
+    if not version_backup.exists():
+        shutil.copyfile(run / "samples.jsonl", version_backup)
     records = []
     for r in original:
         p = parse_tokens(r["token_ids"], t, config.get("enable_thinking", True))
@@ -49,7 +53,7 @@ def recompute(run):
                 "answer_distance": conclusion_distance(
                     p.reasoning, p.reasoning_ids, r["expected"], t
                 ),
-                "metric_revision": "task_accuracy_format_separation_v2",
+                "metric_revision": "terminal_conclusion_scoring_v3",
             }
         )
     write_jsonl(run / "samples.jsonl", records)

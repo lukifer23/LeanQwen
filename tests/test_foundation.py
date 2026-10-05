@@ -251,3 +251,11 @@ def test_resume_rejects_changed_config_dataset_and_prefix(tmp_path):
     write_jsonl(tmp_path / "samples.jsonl", [{"sample_id": "different"}])
     with pytest.raises(ValueError, match="ordered prefix"):
         evaluate(None, tasks, config, resume=tmp_path)
+
+
+def test_conclusion_recovery_does_not_credit_continued_reconsideration():
+    assert not score("Result: 10454400. Wait, why is it different? Let us test again.", "10454400")[
+        "correct"
+    ]
+    assert score("Result: 3. Answer: 4.", "4")["correct"]
+    assert not score("Final answer: 3. But I am unsure and will recalculate.", "3")["correct"]

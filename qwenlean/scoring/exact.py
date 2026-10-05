@@ -33,15 +33,16 @@ def extract_conclusion(final):
         r"(?:final answer|answer|final result|result|integer solution|solution|final state|"
         r"total true expressions|total number of true expressions|true count|total price)"
     )
-    matches = re.findall(
-        cue + r"\s*(?:is|equals|=|:)\s*(?:[a-z]\s*=\s*)?(" + NUMBER + r")(?![\d/]|[.]\d)",
-        clean,
-        re.I,
-    )
-    # Explicit conclusions only; never search for ground-truth-matching numbers.
+    pattern = cue + r"\s*(?:is|equals|=|:)\s*(?:[a-z]\s*=\s*)?(" + NUMBER + r")(?![\d/]|[.]\d)"
+    matches = []
+    for match in re.finditer(pattern, clean, re.I):
+        # A conclusion must be terminal, allowing an empty requested FINAL marker.
+        tail = clean[match.end() :]
+        if re.fullmatch(r"[\s.!]*(?:FINAL\s*:?[\s.!]*)?", tail, re.I):
+            matches.append(match.group(1))
     if matches and len({normalize(x) for x in matches}) == 1:
-        return matches[-1], "explicit_final_conclusion"
-    return None, "conflicting_conclusion_cues" if matches else "unscorable_final"
+        return matches[-1], "terminal_final_conclusion"
+    return None, "unscorable_final"
 
 
 def score(final, expected):
@@ -59,5 +60,5 @@ def score(final, expected):
         "format_compliant": compliant is not None,
         "extracted_answer": answer,
         "scoring_method": method,
-        "scoring_version": "explicit_final_cues_v2",
+        "scoring_version": "terminal_final_cues_v3",
     }
