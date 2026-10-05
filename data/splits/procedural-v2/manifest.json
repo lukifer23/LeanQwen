@@ -14,10 +14,11 @@
     "test": 64,
     "train": 64
   },
+  "generator_version": "procedural-v2.0.1",
   "hashes": {
-    "dev": "5c6028fedca77acd398d46ddb9b405b36077e53c2544f5a6cfc50f9d2e9a2f33",
-    "test": "9a7b9c76ea20650b5b04716e8fc2e03ded91c9c2c5542c50ba856272cdad538c",
-    "train": "3ac89570b1d496a5097489a8a4fe8fa33e4bdc10d624c74edbb4d27b37ed9959"
+    "dev": "8a26e8178b1f4faf0eee363a985c6b7371d81968f068e8b19c302a00a7dc18cb",
+    "test": "6831029581afa027c282aa885c2dd6da105070e4aa9cd3031229028477999560",
+    "train": "a121599da1bcb879340f83e0d54a5d8be4fef31ac1f60612df713460992f3fd0"
   },
   "per_bin": 2,
   "seeds": {

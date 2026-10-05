@@ -13,6 +13,7 @@ from qwenlean.datasets.provenance import check_contamination
 from qwenlean.utils.io import digest, write_json, write_jsonl
 
 VERSION = 'procedural-v2'
+GENERATOR_VERSION = 'procedural-v2.0.1'
 SPLITS = ('train', 'dev', 'test')
 SEEDS = {'train': 711031, 'dev': 722061, 'test': 733091}
 DIFFICULTIES = ('trivial', 'easy', 'medium', 'harder')
@@ -157,7 +158,7 @@ def make_task(rng, split, family, level):
         expected = order[pos]
         sig = [family, size, 'chain_with_transitive_distractors']
         facts = {'order': order, 'position': pos + 1, 'edges': constraints}
-        body = (f'{size} numbered runners finish in distinct positions. '
+        body = (f'{size} numbered runners finish in distinct positions. Runner numbers are identifiers, not ranks. '
                 + '; '.join(f'{order[i]} precedes {order[j]}' for i, j in constraints)
                 + f'. Which runner is in position {pos+1}, counting from 1?')
     elif family == 'algebra':
@@ -199,7 +200,7 @@ def make_task(rng, split, family, level):
         sig = [family, n, k, restrictions[namespace]]
         facts = {'n': n, 'k': k, 'restriction': restrictions[namespace]}
         body = (f'How many unordered subsets of size {k} from integers 1 through {n} '
-                f'have a {restrictions[namespace]}? Each integer may appear at most once.')
+                f'whose {restrictions[namespace]}? Each integer may appear at most once.')
     else:
         boxes, items, price = a, b, c * 100
         discount = (10, 20, 25, 50)[level]
@@ -234,13 +235,13 @@ def make_task(rng, split, family, level):
     semantic = digest({'family': family, 'facts': facts})
     task_id = f'{split}-{family}-v2-{semantic[:16]}'
     return {'sample_id': task_id, 'task_id': task_id, 'seed_key': task_id,
-            'dataset': VERSION, 'content_version': VERSION, 'split': split, 'family': family,
+            'dataset': VERSION, 'content_version': GENERATOR_VERSION, 'split': split, 'family': family,
             'body': body, 'prompt': body, 'expected': str(int(expected)), 'facts': facts,
             'difficulty': DIFFICULTIES[level], 'generator_seed': SEEDS[split],
             'structural_signature': sig, 'semantic_fingerprint': semantic,
             'provenance': {'source_id': task_id, 'prompt_origin': 'algorithmic',
                            'response_origin': 'algorithmic', 'license': 'Apache-2.0',
-                           'training_permitted': split == 'train', 'generator_version': VERSION}}
+                           'training_permitted': split == 'train', 'generator_version': GENERATOR_VERSION}}
 
 
 def generate(split, per_bin=2):
@@ -293,7 +294,7 @@ def build_pools(destination, per_bin=2):
     checks = check_structural_contamination(pools)
     for split, rows in pools.items():
         write_jsonl(path / f'{split}.jsonl', rows)
-    manifest = {'version': VERSION, 'seeds': SEEDS, 'per_bin': per_bin,
+    manifest = {'version': VERSION, 'generator_version': GENERATOR_VERSION, 'seeds': SEEDS, 'per_bin': per_bin,
                 'counts': {s: len(rows) for s, rows in pools.items()},
                 'hashes': {s: digest(rows) for s, rows in pools.items()}, 'checks': checks,
                 'test_policy': 'No model evaluation or trajectory selection on TEST.'}

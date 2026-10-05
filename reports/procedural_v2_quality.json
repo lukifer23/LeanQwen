@@ -1,5 +1,7 @@
 {
+  "generator_version": "procedural-v2.0.1",
   "scope": "Generator metadata audit only. TEST stimuli checked for contamination, never queried through a model. No claim of conceptual independence.",
+  "stimulus_patch": "Counting clause grammar and explicit runner-identifier meaning, before any v2 model generation; exact labels/signatures unchanged.",
   "test_model_evaluated": false,
   "v1_logic_fixed_formula_template_shared": true,
   "v1_logic_truth_assignment_overlap_counts": {
