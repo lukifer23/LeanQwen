@@ -32,3 +32,10 @@ def test_restricted_arithmetic_is_safe_and_exact():
     assert arithmetic_value('(3 + 5) / 2') == 4
     with pytest.raises(ValueError):
         arithmetic_value('__import__("os")')
+
+
+def test_numeric_checks_handle_latex_without_certifying_symbolic_work():
+    r = candidate('r', True, 100, r'* $6 \times 7 = 43$' + '\n' + r'$$6 \times 7 = 42$$' + '\n' + 'x + 2 = 9')
+    c = intermediate_checks(r)
+    assert len(c['invalid_claims']) == 1
+    assert len(c['verified_claims']) == 1

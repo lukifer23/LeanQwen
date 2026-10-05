@@ -35,7 +35,9 @@ def intermediate_checks(row):
     # chained equalities, and unparsed prose remain unverified, never marked valid.
     pattern = re.compile(r'^\s*([()\d\s+*/.\-]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*[.;]?\s*$')
     for line in text.splitlines():
-        m = pattern.match(line)
+        clean = line.strip().replace('$', '').replace(r'\times', '*').replace(r'\cdot', '*').replace(r'\div', '/')
+        clean = re.sub(r'^\s*(?:[*•]\s+|\d+[.)]\s+)', '', clean)
+        m = pattern.match(clean)
         if not m or not any(x in m.group(1).lstrip('+-') for x in '+-*/'):
             continue
         try:
