@@ -49,12 +49,13 @@ def suffix_loop(ids, min_period=24, max_period=128, repeats=3):
 
 def find_loop(ids, **thresholds):
     # Check every endpoint offline, so detection is independent of runtime polling cadence.
+    window_size = thresholds.get("max_period", 128) * thresholds.get("repeats", 3)
     for endpoint in range(
         thresholds.get("min_period", 24) * thresholds.get("repeats", 3), len(ids) + 1
     ):
-        evidence = suffix_loop(ids[max(0, endpoint - 512) : endpoint], **thresholds)
+        evidence = suffix_loop(ids[max(0, endpoint - window_size) : endpoint], **thresholds)
         if evidence:
-            offset = max(0, endpoint - 512)
+            offset = max(0, endpoint - window_size)
             evidence["evidence_start_token"] += offset
             evidence["end_token"] += offset
             return evidence

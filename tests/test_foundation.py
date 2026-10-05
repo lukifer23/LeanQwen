@@ -180,3 +180,20 @@ def test_uncertainty_and_paired_comparison_are_not_false_certainty():
     assert p["accuracy_delta"] == 1 and p["gained"] == 1 and p["reasoning_median_delta"] == -200
     with pytest.raises(ValueError, match="same sample"):
         paired_comparison(a, [{**b[0], "sample_id": "other"}])
+
+
+def test_loop_thresholds_are_not_limited_to_default_window():
+    from qwenlean.metrics.repetition import find_loop
+
+    block = list(range(200))
+    evidence = find_loop(block * 3, min_period=200, max_period=200, repeats=3)
+    assert evidence["period_tokens"] == 200 and evidence["end_token"] == 600
+
+
+def test_process_lock_recovers_incomplete_dead_owner_metadata(tmp_path):
+    from qwenlean.utils.process_lock import model_process_lock
+
+    path = tmp_path / "model.lock"
+    path.write_text('{"pid":')
+    with model_process_lock(path):
+        assert json.loads(path.read_text())["active"] is True

@@ -27,7 +27,11 @@ def model_process_lock(path=None):
         content = handle.read().strip()
         # This also recognizes a baseline started before lock support was added.
         if content:
-            owner = json.loads(content)
+            try:
+                owner = json.loads(content)
+            except json.JSONDecodeError:
+                # With the OS lease acquired, a half-written dead-owner file is recoverable.
+                owner = {"pid": 99999999, "create_time": 0, "active": False}
             try:
                 process = psutil.Process(owner["pid"])
                 live = abs(process.create_time() - owner["create_time"]) < 0.01
