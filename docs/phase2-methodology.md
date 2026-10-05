@@ -1,5 +1,10 @@
 # Phase 2 — deconfounding before post-training
 
+Current checkpoint (2026-10-05): the matched prompt study is complete and work is
+stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
+remain pending; implemented interfaces are not evidence that those experiments ran.
+
 Starting main: `8f67d3b2a1c217f5cad819ac2b8211b24db57e7d`.
 The first-pass stimuli, original generations, v5 scoring module and reports remain historical.
 The audit is in `reports/phase2_start.json`; environment validation is a separate artifact.
@@ -72,8 +77,9 @@ has not been tested and cannot be inferred from unchanged configuration alone.
 
 ## Remaining gates
 
-The prompt-policy experiment, targeted termination tail, manual metric calibration,
-early-exit probes, semantic redundancy and guard replay must complete before TRAIN
-candidate generation. Procedural-v2 must pass structural contamination checks.
+The prompt-policy experiment is complete. Targeted termination tail, early-exit
+probes, semantic redundancy and guard replay remain pending; source-linked manual
+and lexical calibration is partial. These diagnostic gates must complete before
+TRAIN candidate generation. Procedural-v2 must pass structural contamination checks.
 A real optimizer smoke requires quality-approved TRAIN targets and adapter reload
 verification. No substantial SFT is authorized until the final review gate.

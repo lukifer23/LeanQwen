@@ -1,0 +1,114 @@
+{
+  "controls": [
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-algebra-d5299426b280",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P3-d5299426b280:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-ordering-65ae42610205",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-13276a136d16a0f67643-P3-65ae42610205:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-state_machine-94adcac9b11b",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-89b0e50c1f45613d0cad-P3-94adcac9b11b:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-boolean_logic-ba54ced04433",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-ca26414b3c77cff24de9-P3-ba54ced04433:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-word_problem-1f554c088282",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-6a64c022f1b4aa758836-P3-1f554c088282:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-ordering-5bdf0e8a1441",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-7615394ec2c6c32cca30-P3-5bdf0e8a1441:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-word_problem-0ee2ae3e0f2b",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-28927e6708b1c87004be-P3-0ee2ae3e0f2b:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-boolean_logic-c015e93f8d16",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-e45b3252471eed7b967b-P3-c015e93f8d16:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-state_machine-03bf352695e9",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-99f991a96922ece23f91-P3-03bf352695e9:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-algebra-2bb4d5434fd2",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-8ffe46687043e5360234-P3-2bb4d5434fd2:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-arithmetic-c61a2e941069",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P3-c61a2e941069:replicate-0"
+    },
+    {
+      "exact_emitted_token_match": true,
+      "historical_sample_id": "dev-arithmetic-f0f5389e9780",
+      "historical_scoring_version": "terminal_numeric_conclusions_v5",
+      "new_scoring_version": "terminal_numeric_policies_v6",
+      "same_prompt": true,
+      "same_seed": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-01599d831d90484e1cea-P3-f0f5389e9780:replicate-0"
+    }
+  ],
+  "matched": 12,
+  "scope": "P3 replicate zero; generation reproducibility, not scorer equivalence on arbitrary answers"
+}

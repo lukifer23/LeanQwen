@@ -1,5 +1,10 @@
 # Running QwenLean
 
+Current checkpoint (2026-10-05): the matched prompt study is complete and work is
+stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
+remain pending; implemented interfaces are not evidence that those experiments ran.
+
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.
 Use the status and reports in the README for measured findings.

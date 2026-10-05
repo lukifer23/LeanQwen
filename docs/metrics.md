@@ -1,5 +1,10 @@
 # Measurement contract
 
+Current checkpoint (2026-10-05): the matched prompt study is complete and work is
+stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
+remain pending; implemented interfaces are not evidence that those experiments ran.
+
 Final task correctness is programmatic, using terminal numeric FINAL/boxed/plain answers
 where present. Quoted formatting examples or markers followed by reconsideration
 are not terminal answers. If those are absent, accept a unique terminal numeric conclusion after explicit
@@ -119,43 +124,50 @@ prompt comparison enforces task/label/revision/weights/sampler/seed/cap/scorer/g
 invariants and permits only rendered prompt/policy differences. Its deltas include
 correctness, applicable format compliance, EOS/cap, total/reasoning tokens, latency,
 literal/lexical redundancy and format-meta reasoning. Within-task variability is
-reported separately. The new format-meta line heuristic remains uncalibrated until
-manual review; it is not a semantic redundancy metric.
+reported separately. Format-meta heuristics have a small source-linked manual
+calibration; they are not semantic redundancy metrics or population estimates.
 
 ## Phase 2 local calibration
 
 `conclusions.py` separates correct numeric mentions, conclusion cues, later
 conflicting cues, observed final correctness and unobserved closure. These are
 text categories, not hidden-state claims. Structured DEV annotations reference
-source generation IDs and are forbidden for training. Four complete matched
-algebra traces have been inspected so far; aggregate conclusions await the study.
+source generation IDs and are forbidden for training. Twelve complete DEV traces
+have been inspected, including matched four-policy algebra and arithmetic cases.
+The bare arithmetic trace illustrates recovery followed by renewed contradiction;
+an unclosed trace cannot establish wrong-final-answer degradation.
 
 `semantic.py` implements local MiniLM chunk cosine independently of literal and
 content-word overlap. CPU float32 inference is pinned and cached. Logical text
 units are bounded to the encoder's window without truncating Qwen inputs or
 changing its context. Numeric agreement is reported alongside similarity because
 embeddings can confuse mathematically different statements. Default 0.90 and a
-0.80/0.85/0.90/0.95 sensitivity sweep are pending actual measurement against 24
+0.80/0.85/0.90/0.95 sensitivity sweep are pending actual measurement against 36
 curated repeated-claim/operation pair judgments. These judgments do not certify
-that a repeated step has zero expected value. The calibration is primarily one
-algebra task and one assistant reviewer; no independent human labels are claimed.
+that a repeated step has zero expected value. Pairs span five tasks but are curated,
+partly selected for lexical similarity and judged by one assistant reviewer;
+no independent human labels are claimed.
 
 `guard_replay.py` reproduces the runtime 16-token polling cadence on saved
-reasoning IDs. Trigger position, observed tokens saved, original final correctness
+full emitted token IDs, preserving opening/control-token offsets. Trigger position,
+observed tokens saved, original final correctness
 and continuation text are retained. Every trigger needs individual review before
 a live pilot. No triggers means precision cannot be estimated. Censored savings
 are relative to observed output only.
 
 ### Format-meta calibration correction
 
-Complete inspection of eight saved DEV traces found task-rule ambiguity mistaken
+The initial inspection of eight saved DEV traces found task-rule ambiguity mistaken
 for output-format discussion by v1's generic `instruction`/`interpretation` cues.
 A separate derived v2 metric anchors `FINAL:`, boxing, formatting and final-line
 syntax, with bounded within-paragraph context. Raw run v1 fields are preserved,
 and the predeclared policy-selection tie breaker remains v1; v2 is diagnostic.
 Brief correct adherence to a final-line instruction is not pathological. Manual
-annotation distinguishes presence from extended deliberation. Eight traces and
-one reviewer provide limited calibration, not an oracle or population estimate.
+annotation distinguishes presence from extended deliberation. Four subsequent
+matched arithmetic traces extend the annotation pool to twelve. The original
+eight-trace calibration artifact remains an explicitly scoped development result;
+the checkpoint analysis records the expanded review separately. Neither is an
+oracle or population estimate.
 
 The calibration pair pool now contains 36 judgments across five tasks, rather than
 only algebra. It includes different truth-table rows/variables as hard negatives;

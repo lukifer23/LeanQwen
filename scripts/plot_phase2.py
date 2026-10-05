@@ -24,7 +24,8 @@ def main():
         x = summary['reasoning_tokens']['mean']
         axes[0].errorbar(x, 100*accuracy, yerr=[[100*(accuracy-lo)], [100*(hi-accuracy)]],
                          fmt='o', label=policy, capsize=3)
-        axes[0].annotate(policy, (x, 100*accuracy), xytext=(5, 5), textcoords='offset points')
+        offset = {'P0': (7, 7), 'P3': (-25, -16), 'P1': (-22, 9)}.get(policy, (5, 5))
+        axes[0].annotate(policy, (x, 100*accuracy), xytext=offset, textcoords='offset points')
         values = np.sort([r['reasoning_tokens'] for r in rows if r['prompt_policy'] == policy])
         axes[1].step(values, np.arange(1, len(values)+1)/len(values), where='post', label=policy)
     axes[0].set(xlabel='Mean observed reasoning tokens (cap-censored)',

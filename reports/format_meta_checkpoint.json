@@ -1,0 +1,115 @@
+{
+  "annotations_hash": "a0bb1cae4c49bb4597939b9cebfb62e45e9d850f9fbcd925a029de2ba184126c",
+  "by_policy_v2_word_density": {
+    "P0": 0.0047038073464071625,
+    "P1": 0.018380049762211664,
+    "P2": 0.10033259775118311,
+    "P3": 0.2593578786411393
+  },
+  "independent_validation": false,
+  "interpretation": "Initial eight traces informed v2 development; four subsequent matched arithmetic traces extend review. Curated, one assistant reviewer, no blinded independent human calibration. Presence is not pathological deliberation.",
+  "observed": {
+    "v1": {
+      "fn": 0,
+      "fp": 4,
+      "tn": 1,
+      "tp": 7
+    },
+    "v2": {
+      "fn": 0,
+      "fp": 0,
+      "tn": 5,
+      "tp": 7
+    }
+  },
+  "source_records_hash": "ae85109b43a25ce1a7ea370e3b94eeb0b0efa5d076cb4f42bd18c5cdd29aa3ac",
+  "source_rows": [
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P0-69da8b6657c4:replicate-0",
+      "v1_prediction": false,
+      "v2_prediction": false
+    },
+    {
+      "manual_extended_deliberation": true,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P1-e13cbc5cf54b:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P2-0f17dde45dee:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": true,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P3-d5299426b280:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-13276a136d16a0f67643-P2-cae6b3d778ab:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-89b0e50c1f45613d0cad-P2-460212206c45:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-ca26414b3c77cff24de9-P2-4befaeec5a36:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-6a64c022f1b4aa758836-P2-47fb218dfb09:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P0-d1fdde866643:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P1-4ca84afec13e:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": false,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P2-a4770cd96f27:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_extended_deliberation": true,
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P3-c61a2e941069:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    }
+  ],
+  "traces": 12,
+  "training_permitted": false,
+  "unique_tasks": 6
+}

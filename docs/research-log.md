@@ -277,3 +277,42 @@ not the still-pending full-study aggregate or proof of wrong-final degradation.
 Added measured-report plotting and documented degenerate boundary bootstrap
 intervals. Semantic policy averages now explicitly exclude the uneven selected
 higher-cap cohort. No new model process, TRAIN generation or optimizer steps.
+
+### Phase 2 — completed prompt-policy checkpoint and requested stop
+
+Experiment: `runs/20261005T193609-phase2-prompt-policy-8fdc19d6`, source Git
+`a4cd3d92259a0a4f94d8ad135b3a34ae122c25de`. Completed 144 DEV trajectories:
+twelve balanced historical tasks × three matched seeds × four policies, original
+pinned weights, official thinking sampler, guard off, 2048 total-output cap,
+scoring v6. P0/P1/P2/P3 correct counts: 3/0/7/3 out of 36 each. P2 provisional
+selection reduces mean total output 6.5% versus P3, while median/p95 reasoning
+remain capped at 2048 and 29/36 P2 trajectories truncate. Paired task-bootstrap
+accuracy delta: +11.1 points, interval 0–22.2 points; no established general gain.
+P2 has mixed seed correctness on five of twelve tasks. All twelve P3 replicate-zero
+controls reproduce historical stock token IDs exactly.
+
+Twelve individually reviewed DEV traces and 36 curated lexical pairs are now
+source-linked. Lexical pair cosine @0.90: TP9/FP2/TN15/FN10, limited by curated
+selection and one assistant reviewer. Anchored format-meta v2 remains diagnostic;
+its initial eight-trace development calibration is preserved separately from the
+expanded checkpoint. No semantic encoder inference or complete guard replay ran.
+All thirteen natural EOS completions are correct; intermediate contradiction in
+capped arithmetic does not establish wrong-final degradation.
+
+Aggregate output throughput: 67.60 tokens/s including prefill, with uncontrolled
+interactive timing. Peak recorded MLX allocation 1.684 GB; sampled process RSS
+0.394 GB, overlapping accounting. Context remains native 262144 with unchanged
+RoPE and no truncation; long-context behavioral retention is untested.
+
+Stopped at the user’s requested good milestone. Worker 15712 and launcher 15596
+exited normally and were reaped; no QwenLean model workload remains, OS lease
+available, no follow-on job queued. All starting historical file hashes and six
+run-record digests match. No new TRAIN responses, approved SFT dataset, optimizer
+steps or adapter exist. TEST has no model evaluation. Validation: 76 local tests,
+Ruff and relative document links pass; GitHub CI run 37371123362 passed for
+fd4360e. Subsequent checkpoint publication has its own CI status.
+
+Next decision: resume the seven-case predeclared P2 staged tail, then early-exit
+and semantic/guard calibration. Candidate generation and real optimizer smoke
+remain gated; substantial SFT is not ready to select or launch. Full measured
+status, raw artifact map and exact next command: `reports/phase2_checkpoint.md`.

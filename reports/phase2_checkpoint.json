@@ -1,0 +1,52 @@
+{
+  "commits_before_checkpoint": [
+    "fd4360e Calibrate intermediate contradiction and preserve matched policy metric scope",
+    "ae9e10f Recover durable tail trajectories without duplicate generations",
+    "f864eed Release MLX model instances before unlocking diagnostic workloads",
+    "4ae753c Clarify unqueried v2 counting and runner stimuli before freezing TRAIN data",
+    "48eb9b7 Add zero-prefix counterfactual control and broaden DEV redundancy calibration",
+    "eb3bf4b Add inspectable natural-target approval and sequential TRAIN semantic analysis",
+    "ff2a4d3 Complete candidate quality summaries and record format calibration limits",
+    "f1e9edc Separate task-rule ambiguity from format-meta reasoning in calibrated diagnostics",
+    "93d2189 Require measured diagnostic gates and exact hashed TRAIN parent trajectories",
+    "805bc80 Preserve emitted control tokens in counterfactual reasoning prefixes",
+    "0a6b149 Validate complete numeric equations inside Qwen LaTeX traces",
+    "cd55f03 Refresh concise project status and complete operating documentation",
+    "a19a302 Protect derived reports and preserve full-output runtime guard polling semantics",
+    "ed91b6f Report measured procedural v2 structural diversity and v1 logic overlap",
+    "09369a4 Identify adapter weights explicitly and validate exact supervised token boundaries",
+    "6c4f4a2 Record source-linked DEV judgments and local metric calibration workflow",
+    "71c7eb8 Add structural v2 tasks, staged diagnostics and guarded natural-data SFT infrastructure",
+    "f71d8ab Add weight-free Linux CI and explicit local test markers",
+    "a4cd3d9 Validate Qwen EOS against the complete added-token vocabulary",
+    "5e0df5f Predeclare bounded tail and early-exit cohorts; record user-approved 128K context floor",
+    "38c1167 Audit phase two and harden streaming, resume, task policies and clustered multi-seed evaluation"
+  ],
+  "context_window_tokens": 262144,
+  "early_exit_completed": false,
+  "guard_replay_completed": false,
+  "next_command": "uv run --frozen --no-sync python scripts/termination_tail.py",
+  "prompt_generations": 144,
+  "real_sft_authorized": false,
+  "selected_policy": "P2",
+  "semantic_inference_completed": false,
+  "sft_optimizer_steps": 0,
+  "source_records_hash": "ae85109b43a25ce1a7ea370e3b94eeb0b0efa5d076cb4f42bd18c5cdd29aa3ac",
+  "source_run": "runs/20261005T193609-phase2-prompt-policy-8fdc19d6",
+  "source_run_git_sha": "a4cd3d92259a0a4f94d8ad135b3a34ae122c25de",
+  "starting_git_sha": "8f67d3b2a1c217f5cad819ac2b8211b24db57e7d",
+  "status": "stopped_at_completed_prompt_milestone",
+  "tail_completed": false,
+  "train_candidates_generated": 0,
+  "unique_prompt_tasks": 12,
+  "validation": {
+    "checkpoint_publication_ci": "Not yet observed; check GitHub Actions for the publishing commit.",
+    "last_observed_ci_success": {
+      "commit": "fd4360e",
+      "run_id": 37371123362
+    },
+    "local_pytest_passed": 76,
+    "relative_document_links_passed": true,
+    "ruff_passed": true
+  }
+}

@@ -1,5 +1,10 @@
 # Architecture and compatibility decision
 
+Current checkpoint (2026-10-05): the matched prompt study is complete and work is
+stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
+remain pending; implemented interfaces are not evidence that those experiments ran.
+
 2026-10-05, M3 Pro (11 CPU cores), 18 GiB unified RAM, macOS 27.2.
 See `reports/environment.json` for the measured environment. Python 3.12.12 is
 isolated in `.venv`, dependencies resolved in `uv.lock`. The pre-existing global
@@ -45,7 +50,8 @@ with `generate(prompt, seed, config)` and `tokenizer`. Scoring, provenance, proc
 tasks and statistics are independent of device and model framework. A future
 Transformers/CUDA backend can implement that interface; macOS/Linux process
 locking currently uses POSIX `flock`. Windows is not a validated target. No CUDA implementation
-is claimed in this milestone; do not add unsupported CLI commands for training.
+is claimed in this milestone. The implemented MLX training command awaits its
+actual optimizer/save/reload smoke validation.
 
 ## Thinking and sampler semantics
 

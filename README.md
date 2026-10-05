@@ -10,7 +10,14 @@ all development stays on `main`.
 
 ## Current status
 
-Phase 2 is running a matched prompt-policy study before any substantial training.
+Phase 2 is stopped at the completed **144-trajectory prompt-policy milestone**
+(12 DEV tasks × 3 matched seeds × 4 policies), at the user’s request.
+P2’s integer-only final-line instruction produced **7/36 correct** versus **3/36**
+for legacy `FINAL:` and **0/36** for boxed-answer wording. P2 reduced observed
+mean total output by **6.5%**, but median/p95 reasoning remained capped at **2048**;
+29/36 P2 trajectories still hit the cap. These small DEV results do not establish
+a capability-preserving Pareto improvement. See the [prompt study](reports/prompt_policy_ablation.md)
+and [checkpoint / next steps](reports/phase2_checkpoint.md). No model worker remains active.
 The audited harness now supports explicit stream failures, safe resume, independent
 task/prompt identities, four output policies and task-clustered multi-seed analysis.
 Procedural-v2 has eight families, four structural difficulty bins and 64 tasks per
@@ -35,8 +42,8 @@ been applied. Long-context behavior has not been empirically validated.
 These completed DEV results used a **2048 total-output-token cap** and historical
 `FINAL:` prompts/scorer v5. Thinking lengths are right-censored, not natural
 completion lengths. The prompt wording itself can provoke format deliberation;
-Phase 2 is measuring its contribution separately from seed variance and ordinary
-mistakes.
+The completed Phase 2 prompt pilot measures its contribution alongside seed
+variance and ordinary mistakes; higher-cap diagnosis remains pending.
 
 | Variant | Task-correct / 60 | Median / P95 thinking tokens | Cap failures |
 |---|---:|---:|---:|
