@@ -1,0 +1,32 @@
+name: A0-official-nonthinking
+backend: mlx
+model: Qwen/Qwen3.5-0.8B
+revision: 2fc06364715b967f1860aea9cf38778875588b17
+seed: 20261005
+enable_thinking: false
+max_output_tokens: 2048
+sampling:
+  temperature: 1.0
+  top_p: 1.0
+  top_k: 20
+  min_p: 0.0
+  presence_penalty: 2.0
+  repetition_penalty: 1.0
+loop_guard:
+  enabled: false
+  min_period: 24
+  max_period: 128
+  repeats: 3
+  check_every: 16
+metrics:
+  ngrams:
+  - 5
+  - 8
+  - 12
+  loop:
+    min_period: 24
+    max_period: 128
+    repeats: 3
+  lexical:
+    threshold: 0.9
+    min_words: 10
