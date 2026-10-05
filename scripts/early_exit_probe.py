@@ -8,6 +8,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from qwenlean.inference.parsing import parse_tokens
+from qwenlean.inference.prefix import reasoning_prefix
 from qwenlean.scoring.exact import score
 from qwenlean.utils.environment import environment_manifest
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
@@ -69,9 +70,11 @@ def main():
             raise ValueError('Counterfactual close is not an atomic reasoning control token')
         with (state / 'probes.jsonl').open('a') as handle:
             for r, n, reason in plan[len(saved):]:
-                parsed = parse_tokens(r['token_ids'], backend.tokenizer, True)
-                # Reuse prompt and emitted IDs verbatim: never retokenize the prefix.
-                prefix = r['prompt_token_ids'] + parsed.reasoning_ids[:n] + close
+                # Preserve every emitted control token as well as reasoning units.
+                emitted_prefix = reasoning_prefix(r['token_ids'], n,
+                    opening=backend.tokenizer.convert_tokens_to_ids('<think>'),
+                    closing=backend.tokenizer.convert_tokens_to_ids('</think>'), eos_ids=backend.eos_ids)
+                prefix = r['prompt_token_ids'] + emitted_prefix + close
                 g = backend.generate_tokens(prefix, r['seed'], cfg, thinking=False)
                 p = parse_tokens(g['token_ids'], backend.tokenizer, False)
                 fields = asdict(p)
@@ -79,10 +82,11 @@ def main():
                 row = {**g, **fields, **score(p.final, r['expected'], r['prompt_policy']),
                        'probe_id': f"{r['generation_id']}:counterfactual-{n}",
                        'source_generation_id': r['generation_id'], 'task_id': r['task_id'],
-                       'cutoff_token': n, 'cutoff_reason': reason, 'expected': r['expected'],
+                       'cutoff_token': n, 'cutoff_reason': reason, 'source_output_cutoff_index':len(emitted_prefix),
+                       'forced_close_token_ids':close, 'expected': r['expected'],
                        'source_correct': r['correct'], 'source_eos': r['termination_reason'] == 'eos',
                        'source_reasoning_tokens': r['reasoning_tokens'],
-                       'observed_generated_tokens_saved': r['total_output_tokens'] - n - p.total_output_tokens,
+                       'observed_generated_tokens_saved': r['total_output_tokens'] - len(emitted_prefix) - len(close) - p.total_output_tokens,
                        'natural_completion_savings_known': r['termination_reason'] == 'eos',
                        'generation_parameters': cfg, 'counterfactual': True,
                        'provenance': {'source_id': f"{r['generation_id']}:probe-{n}",

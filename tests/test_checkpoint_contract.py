@@ -62,3 +62,18 @@ def test_eos_validation_includes_added_special_tokens(tokenizer):
 
     assert tokenizer.vocab_size <= min(tokenizer.eos_token_ids)
     assert validate_eos_ids(tokenizer.eos_token_ids, len(tokenizer)) == {248044, 248046}
+
+
+def test_counterfactual_exact_controls_and_token_boundary(tokenizer):
+    from qwenlean.inference.prefix import reasoning_prefix
+
+    raw = '<think>2 + 3 = 5.\n</think>\n57<|im_end|>'
+    ids = tokenizer.encode(raw, add_special_tokens=False)
+    close = tokenizer.convert_tokens_to_ids('</think>')
+    opening = tokenizer.convert_tokens_to_ids('<think>')
+    reasoning_ids = parse_tokens(ids, tokenizer, True).reasoning_ids
+    prefix = reasoning_prefix(ids, len(reasoning_ids), opening=opening, closing=close,
+                              eos_ids=tokenizer.eos_token_ids)
+    assert prefix == ids[:ids.index(close)]
+    assert prefix[0] == opening
+    assert tokenizer.encode('</think>\n\n', add_special_tokens=False)[0] == close
