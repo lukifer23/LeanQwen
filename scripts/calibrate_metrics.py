@@ -124,7 +124,8 @@ def main():
     result={'calibration_pair_count':len(pairs),'independent_annotated_tasks':len({sources[p['source_generation_id']]['task_id'] for p in pairs}),
             'semantic_by_threshold':calibration,'lexical_threshold_0.90':lexical,
             'format_meta_presence_calibration':{'historical_v1':fmt,'anchored_v2':fmt2},'manual_annotation_count':len(annotations),
-            'by_policy_semantic_density': {p:float(np.mean([r['semantic']['density'] for r in semantic_rows if r['policy']==p])) for p in ('P0','P1','P2','P3')},
+            'by_policy_semantic_density': {p:float(np.mean([r['semantic']['density'] for r in augmented if r['prompt_policy']==p])) for p in ('P0','P1','P2','P3')},
+            'policy_density_scope':'Matched 144-trajectory prompt study only; selected higher-cap tail observations excluded from policy averages',
             'default_threshold':.90,'threshold_selection':'retain conservative preregistered 0.90; sweep characterizes sensitivity, no optimality claim',
             'model':'sentence-transformers/all-MiniLM-L6-v2',
             'limitations':'Curated DEV pairs across five tasks, including four matched algebra policies; one assistant reviewer, no independent human labels or held-out calibration. Pair selection includes high lexical similarity and is not representative. Similarity does not establish uselessness. Not a training filter.'}

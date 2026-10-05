@@ -12,11 +12,13 @@ score every natural-language answer; its method/version are saved per record.
 
 The historical `strict_final_correct` extractor searches numeric FINAL markers
 anywhere in the final channel; it is retained only for audit and can credit
-nonterminal formatting examples. Main task accuracy uses the terminal v5 contract.
+nonterminal formatting examples. Historical first-pass accuracy uses terminal v5;
+new prompt-policy experiments use the separately frozen v6 contract documented below.
 Keep `strict_final_correct` and `format_compliant` separate from task `correct`.
 A response that says "Total True Expressions: 3" and then leaves `FINAL:` empty
 can be task-correct and format-noncompliant. Earlier v1 measurements conflated
-these; preserved raw outputs are rescored with v5 and original metrics retained. A conclusion must end the final
+these; first-pass raw outputs were rescored with v5 and original metrics retained.
+Those measurement histories are now preserved unchanged. A conclusion must end the final
 channel, with only whitespace/punctuation or an empty FINAL marker afterward;
 ongoing reconsideration after a numeric result is not a terminal answer.
 Terminal standalone numeric lines and numeric equation results are accepted,
@@ -162,3 +164,12 @@ probes include a predeclared zero-prefix control. A success at 128 tokens provid
 weaker evidence if the same final decoder also succeeds without saved reasoning.
 Forced closure and greedy/no-penalty final decoding remain combined interventions;
 these results cannot isolate their causal contributions or prove internal certainty.
+
+## Uncertainty at the boundary
+
+Task-cluster bootstrap intervals can collapse to zero width when every observed
+task has zero successes (or all succeed). Such an interval describes resampling
+this small observed set; it does not establish that population accuracy is exactly
+zero or one. The twelve-task prompt pilot has limited power, and its seed outcomes
+are nested within tasks. Avoid interpreting boundary bootstrap intervals as strong
+evidence of absence or guaranteed performance.

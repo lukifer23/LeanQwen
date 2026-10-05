@@ -216,3 +216,9 @@ Tail-controller recovery uses separate durable job directories for each task/cap
 A saved generation is reused even if report publication was interrupted; contract
 changes, duplicate attempts and explicit generation failures are refused. Resume
 never appends to a completed single-generation archive.
+
+Once the completed prompt report exists, export measured figures with
+`uv run --frozen python scripts/plot_phase2.py`. It reads completed report artifacts;
+the optional tail figure distinguishes known survivors from earlier-censored
+unknowns. Prompt lengths are observed capped lengths, not natural completion
+lengths. Boundary task-bootstrap intervals can be degenerate on this small pilot.

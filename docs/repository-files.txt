@@ -90,6 +90,7 @@ scripts/approve_natural_dataset.py
 scripts/calibrate_metrics.py
 scripts/create_reports.py
 scripts/early_exit_probe.py
+scripts/plot_phase2.py
 scripts/probe_backend_parity.py
 scripts/probe_logits.py
 scripts/probe_mlx_lora.py

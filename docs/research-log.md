@@ -264,3 +264,16 @@ interface records actual adapter/base tensor dtypes when executed; no optimizer
 smoke has run yet. Validation: 76 local unit tests and Ruff passed. GitHub Actions
 run 37369683787 passed its weight-free Linux checks for commit 48eb9b7; subsequent
 commits have their own CI status and are not covered by that result.
+
+### Phase 2 — matched arithmetic trace review
+
+Individually reviewed replicate-zero arithmetic under all four policies, extending
+conclusion annotations to twelve source-linked DEV traces. Bare P0 recovers 2006
+then returns to incorrect subtraction without finalizing. P1 reaches 2006 early,
+reconsiders arithmetic and operand interpretations, and remains capped. P2 answers
+2006 and reaches EOS after a shorter trace. P3 derives 2006 then spends most of its
+remaining budget reinterpreting FINAL syntax. These are qualitative matched cases,
+not the still-pending full-study aggregate or proof of wrong-final degradation.
+Added measured-report plotting and documented degenerate boundary bootstrap
+intervals. Semantic policy averages now explicitly exclude the uneven selected
+higher-cap cohort. No new model process, TRAIN generation or optimizer steps.
