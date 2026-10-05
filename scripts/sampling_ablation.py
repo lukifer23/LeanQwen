@@ -63,9 +63,31 @@ def main():
             r["summary"]["reasoning_tokens"]["p50"],
         ),
     )
-    finalist = ranked[0]
-    config = finalist["config"]
-    config["name"] = f"B-candidate-{finalist['name']}"
+    report = {
+        "baseline_run": str(baseline),
+        "pilot_A": summarize(pilot_a),
+        "pilot_sample_ids": [t["sample_id"] for t in selected],
+        "pilot_dataset_hash": digest(selected),
+        "pilot_candidates": runs,
+        "selection_rule": "Require nonzero pilot accuracy at least as high as A; then accuracy descending, cap rate ascending, median reasoning ascending",
+        "finalist_run": None,
+        "test_evaluated": False,
+    }
+    eligible = [
+        r
+        for r in ranked
+        if r["summary"]["accuracy"] > 0
+        and r["summary"]["accuracy"] >= report["pilot_A"]["accuracy"]
+    ]
+    if not eligible:
+        report["decision"] = (
+            "No eligible finalist: do not promote shortening when every candidate lacks correct final answers"
+        )
+        write_json("reports/sampling_measurements.json", report)
+        print(report["decision"], flush=True)
+        return
+    finalist = eligible[0]
+    config = {**finalist["config"], "name": f"B-candidate-{finalist['name']}"}
     Path("configs/sampling/finalist.yaml").write_text(yaml.safe_dump(config, sort_keys=False))
     run, summary = evaluate(backend, tasks, config)
     records = read_jsonl(run / "samples.jsonl")
@@ -73,25 +95,20 @@ def main():
         r["sample_id"]: r["token_ids"] for r in read_jsonl(Path(finalist["path"]) / "samples.jsonl")
     }
     repeated = [r for r in records if r["sample_id"] in original]
-    reproducibility = {
-        "repeated_pilot_samples": len(repeated),
-        "identical_token_sequences": sum(
-            r["token_ids"] == original[r["sample_id"]] for r in repeated
-        ),
-    }
-    report = {
-        "baseline_run": str(baseline),
-        "pilot_A": summarize(pilot_a),
-        "pilot_sample_ids": [t["sample_id"] for t in selected],
-        "pilot_dataset_hash": digest(selected),
-        "pilot_candidates": runs,
-        "selection_rule": "accuracy descending, cap rate ascending, median reasoning ascending",
-        "finalist_run": str(run),
-        "finalist_summary": summary,
-        "full_paired_against_A": paired_comparison(baseline_records, records),
-        "repeatability": reproducibility,
-        "test_evaluated": False,
-    }
+    report.update(
+        {
+            "decision": "Promote best eligible pilot to full DEV evaluation",
+            "finalist_run": str(run),
+            "finalist_summary": summary,
+            "full_paired_against_A": paired_comparison(baseline_records, records),
+            "repeatability": {
+                "repeated_pilot_samples": len(repeated),
+                "identical_token_sequences": sum(
+                    r["token_ids"] == original[r["sample_id"]] for r in repeated
+                ),
+            },
+        }
+    )
     write_json("reports/sampling_measurements.json", report)
     print("FINALIST", run, flush=True)
 

@@ -153,20 +153,10 @@ def main():
     entries = [("A", a, sa)]
     if Path(args.sampling).exists():
         sweep = json.loads(Path(args.sampling).read_text())
-        bpath = Path(sweep["finalist_run"])
-        verify_complete(bpath)
-        b = read_jsonl(bpath / "samples.jsonl")
-        sb = summarize(b)
-        pair = paired_comparison(a, b)
-        entries.append(("B candidate", b, sb))
-        source[str(bpath)] = {
-            "sample_count": len(b),
-            "config": json.loads((bpath / "config.json").read_text()),
-        }
         report = [
             "# Initial sampling ablation",
             "",
-            "Predeclared staged DEV-only design. Broad stage: 12 balanced problems (two per family) selected before inspecting results. Baseline pilot measurements reuse the corresponding original A samples. Change one parameter at a time; everything else stays fixed.",
+            "Staged DEV-only design: 12 balanced problems, two per family. Baseline pilot reuses original A samples. Each candidate changes one parameter.",
             "",
             table(
                 [
@@ -175,17 +165,38 @@ def main():
                 ]
             ),
             "",
-            f"Selection rule: {sweep['selection_rule']}. Selected {sweep['finalist_run']}.",
-            "The selected candidate was then evaluated on all 60 DEV problems. This is sampler selection evidence, not an untouched TEST result.",
+            f"Selection rule: {sweep['selection_rule']}. {sweep['decision']}",
             "",
-            table([("A official", sa), ("B candidate", sb)]),
-            "",
-            f"Paired accuracy change: {pair['accuracy_delta']:+.1%}; 95% paired bootstrap interval {pair['paired_accuracy_delta_ci95']}. Gained {pair['gained']}, lost {pair['lost']}.",
-            f"Token-identical pilot repeats: {sweep['repeatability']['identical_token_sequences']}/{sweep['repeatability']['repeated_pilot_samples']}.",
-            "",
+        ]
+        if sweep["finalist_run"]:
+            bpath = Path(sweep["finalist_run"])
+            verify_complete(bpath)
+            b = read_jsonl(bpath / "samples.jsonl")
+            sb = summarize(b)
+            pair = paired_comparison(a, b)
+            entries.append(("B candidate", b, sb))
+            source[str(bpath)] = {
+                "sample_count": len(b),
+                "config": json.loads((bpath / "config.json").read_text()),
+            }
+            report += [
+                "The eligible candidate was evaluated on all 60 DEV problems. This is sampler selection, not untouched TEST evidence.",
+                "",
+                table([("A official", sa), ("B candidate", sb)]),
+                "",
+                f"Paired accuracy change: {pair['accuracy_delta']:+.1%}; 95% bootstrap interval {pair['paired_accuracy_delta_ci95']}. Gained {pair['gained']}, lost {pair['lost']}.",
+                f"Token-identical pilot repeats: {sweep['repeatability']['identical_token_sequences']}/{sweep['repeatability']['repeated_pilot_samples']}.",
+                "",
+            ]
+        else:
+            report += [
+                "No BASELINE B is selected. Zero-accuracy configurations cannot demonstrate preservation of reasoning capability. Establish termination/accuracy at higher budgets or with format controls before scaling up sampler tuning.",
+                "",
+            ]
+        report += [
             "## Interpretation",
             "",
-            "Inspect correctness, cap rate, task-family regressions and actual traces together. Shortening a capped wrong trace does not preserve capability. No model weights were changed. Broad pilots are too small for stable claims; full DEV results still require an independent confirmation set and multiple generation seeds.",
+            "Inspect correctness, cap rate and traces together. Shortening wrong capped traces is not evidence of preserved capability. No weights changed. Pilots are too small for stable claims; full DEV results also need independent confirmation and multiple generation seeds.",
             "",
             "## Reproduction",
             "",
