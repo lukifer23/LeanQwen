@@ -156,3 +156,27 @@ def test_process_lock_rejects_duplicate_and_recovers_stale_owner(tmp_path):
     path.write_text(json.dumps({"pid": 99999999, "create_time": 0, "active": True}))
     with model_process_lock(path):
         pass
+
+
+def test_uncertainty_and_paired_comparison_are_not_false_certainty():
+    from qwenlean.evaluation.summary import paired_comparison, wilson_interval
+
+    lo, hi = wilson_interval(0, 60)
+    assert lo == 0 and 0.05 < hi < 0.07
+    lo, hi = wilson_interval(60, 60)
+    assert 0.93 < lo < 0.95 and hi == pytest.approx(1)
+    a = [
+        {
+            "sample_id": "x",
+            "prompt": "p",
+            "expected": "1",
+            "seed": 42,
+            "correct": False,
+            "reasoning_tokens": 500,
+        }
+    ]
+    b = [{**a[0], "correct": True, "reasoning_tokens": 300}]
+    p = paired_comparison(a, b)
+    assert p["accuracy_delta"] == 1 and p["gained"] == 1 and p["reasoning_median_delta"] == -200
+    with pytest.raises(ValueError, match="same sample"):
+        paired_comparison(a, [{**b[0], "sample_id": "other"}])

@@ -51,8 +51,10 @@ must be inspected. `candidate_correct_then_wrong_final` excludes capped/guarded
 traces; even EOS cases require human verification before claiming overthinking
 caused answer damage. This metric uses labels for evaluation only.
 
-Accuracy uncertainty: deterministic-seed nonparametric sample bootstrap, 5000
-resamples, 95% percentile intervals. Comparisons use paired sample IDs and seeds.
+Accuracy uncertainty: Wilson binomial intervals provide a non-degenerate boundary
+interval even for zero/all correct. Also save deterministic-seed nonparametric sample bootstrap, 5000
+resamples, 95% percentile intervals. Bootstrap intervals are degenerate at zero/all correct
+and must not be interpreted as proof of zero population uncertainty. Comparisons use paired sample IDs and seeds.
 These reflect sample uncertainty, not multiple generation-seed variation.
 Discrete 60-sample accuracy changes and six small families warrant cautious claims.
 Primary comparisons remain accuracy versus reasoning compute; the supplementary

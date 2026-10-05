@@ -1,5 +1,6 @@
 """Measured aggregates, bootstrap uncertainty, and paired sampler comparisons."""
 
+import math
 from collections import Counter
 
 import numpy as np
@@ -18,6 +19,15 @@ def bootstrap_mean_ci(values, seed=90210, n=5000):
     rng = np.random.default_rng(seed)
     means = values[rng.integers(0, len(values), size=(n, len(values)))].mean(axis=1)
     return list(map(float, np.percentile(means, [2.5, 97.5])))
+
+
+def wilson_interval(correct, n):
+    z = 1.959963984540054
+    p = correct / n
+    denom = 1 + z * z / n
+    center = (p + z * z / (2 * n)) / denom
+    radius = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
+    return [max(0.0, center - radius), min(1.0, center + radius)]
 
 
 def summarize(records):
@@ -39,6 +49,7 @@ def summarize(records):
         "n": n,
         "accuracy": sum(correct) / n,
         "accuracy_bootstrap_ci95": bootstrap_mean_ci(correct),
+        "accuracy_wilson_ci95": wilson_interval(sum(correct), n),
         "reasoning_tokens": distribution(reasoning),
         "final_tokens": distribution([r["final_tokens"] for r in records]),
         "total_output_tokens": distribution([r["total_output_tokens"] for r in records]),

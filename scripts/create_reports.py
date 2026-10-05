@@ -63,7 +63,7 @@ def main():
         "",
         table([("A: official thinking", sa)]),
         "",
-        f"Accuracy 95% sample-bootstrap interval: {sa['accuracy_bootstrap_ci95']}.",
+        f"Accuracy 95% Wilson interval: {sa['accuracy_wilson_ci95']}.",
         f"Reasoning mean/p75/p90/p99: {sa['reasoning_tokens']['mean']:.1f} / {sa['reasoning_tokens']['p75']:.1f} / {sa['reasoning_tokens']['p90']:.1f} / {sa['reasoning_tokens']['p99']:.1f}.",
         f"Aggregate output throughput (including prefill): {sa['aggregate_output_tokens_per_second']:.2f} tokens/s.",
         f"MLX allocator peak: {sa['mlx_peak_bytes'] / 1e9:.3f} GB. Sampled process RSS peak: {sa['rss_peak_observed_bytes'] / 1e9:.3f} GB.",
@@ -220,7 +220,7 @@ def main():
     for label, rows, s in entries:
         x = np.sort([r["reasoning_tokens"] for r in rows])
         axes[0].step(x, np.arange(1, len(x) + 1) / len(x), where="post", label=label)
-        ci = s["accuracy_bootstrap_ci95"]
+        ci = s["accuracy_wilson_ci95"]
         axes[1].errorbar(
             s["total_output_tokens"]["mean"],
             s["accuracy"],
