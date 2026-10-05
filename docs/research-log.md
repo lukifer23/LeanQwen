@@ -204,3 +204,13 @@ never reaches its expected discounted price; ordering never assembles the chain.
 Logic trace corrects initially wrong XOR/NOT definitions but truncates before an
 aggregate final count. Long continuation includes both necessary error recovery
 and redundant reconsideration; it cannot all be labeled waste.
+
+### Phase 2 — dataset-quality report completeness
+
+Candidate summaries now include measured raw/selected length distributions,
+correctness, exact response duplicate counts, family/difficulty distributions and
+source/license distributions. No candidate measurements exist yet. Format-meta
+calibration on the eight inspected DEV traces: v1 has three true positives, four
+false positives, one true negative and zero false negatives. Anchored v2 separates
+these eight examples, but was designed on them: this is in-sample evidence, not
+independent validation. Full suite at this checkpoint: 74 passed; Ruff passed.

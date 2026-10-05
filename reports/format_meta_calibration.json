@@ -1,0 +1,71 @@
+{
+  "annotations_hash": "9d61a0796465fd46802984598b56f916e6a9b84f9eac7ba904871a465cfac2fa",
+  "independent_validation": false,
+  "interpretation": "v2 was designed using these eight inspected DEV traces; apparent perfect separation here is in-sample only. No training use.",
+  "observed": {
+    "v1": {
+      "fn": 0,
+      "fp": 4,
+      "tn": 1,
+      "tp": 3
+    },
+    "v2": {
+      "fn": 0,
+      "fp": 0,
+      "tn": 5,
+      "tp": 3
+    }
+  },
+  "source_rows": [
+    {
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P0-69da8b6657c4:replicate-0",
+      "v1_prediction": false,
+      "v2_prediction": false
+    },
+    {
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P1-e13cbc5cf54b:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P2-0f17dde45dee:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_format_present": true,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P3-d5299426b280:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": true
+    },
+    {
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-13276a136d16a0f67643-P2-cae6b3d778ab:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-89b0e50c1f45613d0cad-P2-460212206c45:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-ca26414b3c77cff24de9-P2-4befaeec5a36:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    },
+    {
+      "manual_format_present": false,
+      "source_generation_id": "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-6a64c022f1b4aa758836-P2-47fb218dfb09:replicate-0",
+      "v1_prediction": true,
+      "v2_prediction": false
+    }
+  ],
+  "traces": 8,
+  "unique_tasks": 5
+}

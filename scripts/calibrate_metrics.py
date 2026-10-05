@@ -127,7 +127,7 @@ def main():
             'format_meta_presence_calibration':{'historical_v1':fmt,'anchored_v2':fmt2},'manual_annotation_count':len(annotations),
             'by_policy_semantic_density': {p:float(np.mean([r['semantic']['density'] for r in semantic_rows if r['policy']==p])) for p in ('P0','P1','P2','P3')},
             'default_threshold':.90,'threshold_selection':'retain conservative preregistered 0.90; sweep characterizes sensitivity, no optimality claim',
-            'model':metric.model.model_card_data.model_id if hasattr(metric.model, 'model_card_data') else 'all-MiniLM-L6-v2',
+            'model':'sentence-transformers/all-MiniLM-L6-v2',
             'limitations':'Curated DEV pairs, mainly one algebra task, one assistant reviewer, no independent human labels or held-out calibration. Similarity does not establish uselessness. Not a training filter.'}
     # Avoid library-owned metadata object in serialized schema.
     result['model']='sentence-transformers/all-MiniLM-L6-v2'

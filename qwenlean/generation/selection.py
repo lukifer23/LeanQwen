@@ -9,6 +9,8 @@ from fractions import Fraction
 import numpy as np
 
 from qwenlean.datasets.provenance import validate_provenance
+from qwenlean.evaluation.summary import distribution
+from qwenlean.utils.io import digest
 
 OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
        ast.Div: operator.truediv, ast.USub: operator.neg, ast.UAdd: operator.pos}
@@ -109,6 +111,14 @@ def select_natural(rows):
                'selected_count': len(selected),
                'selected_reasoning_tokens': [r['reasoning_tokens'] for r in selected],
                'median_candidate_minus_selected_tokens': [medians[r['task_id']] - r['reasoning_tokens'] for r in selected],
+               'raw_reasoning_length_distribution': distribution([r['reasoning_tokens'] for r in rows]),
+               'selected_reasoning_length_distribution': distribution([r['reasoning_tokens'] for r in selected]) if selected else None,
+               'raw_correctness_rate': sum(r['correct'] for r in rows)/max(1,len(rows)),
+               'duplicate_response_count': len(rows)-len({digest(r['reasoning']) for r in rows}),
+               'family_candidate_counts': dict(Counter(r.get('family','unit-test') for r in rows)),
+               'difficulty_candidate_counts': dict(Counter(r.get('difficulty','unit-test') for r in rows)),
+               'source_distribution': dict(Counter(r['provenance']['response_origin'] for r in rows)),
+               'license_distribution': dict(Counter(r['provenance']['license'] for r in rows)),
                'natural_only': True, 'compression_applied': False,
                'selection_requires_manual_review': True}
     return enriched, selected, summary
