@@ -97,5 +97,5 @@ def validate_context_budget(prompt_tokens, output_budget, context_window):
         raise ValueError("Missing/invalid model context-window metadata")
     if prompt_tokens + output_budget > context_window:
         raise ValueError(
-            "Prompt plus output budget exceeds the original model context window; no truncation is performed"
+            "Prompt plus output budget exceeds the effective context window; no truncation is performed"
         )

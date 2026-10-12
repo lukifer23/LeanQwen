@@ -11,6 +11,7 @@ from qwenlean.datasets.prompts import POLICIES, render_task
 from qwenlean.evaluation.prompt_comparison import intervention_comparison
 from qwenlean.evaluation.runner import evaluate, validate_resume
 from qwenlean.evaluation.summary import paired_comparison, summarize
+from qwenlean.inference.context import PROFILES
 from qwenlean.utils.io import read_jsonl, write_json
 
 
@@ -36,6 +37,9 @@ def main():
     gen.add_argument("--config", required=True)
     gen.add_argument("--prompt", required=True)
     gen.add_argument("--output", required=True)
+    for command in (ev, gen):
+        command.add_argument("--context-profile", choices=list(PROFILES))
+        command.add_argument("--prefill-step-size", type=int)
     analyze = subs.add_parser("analyze")
     analyze.add_argument("run")
     analyze.add_argument("--output", help="Save a new summary explicitly; default only prints")
@@ -74,6 +78,10 @@ def main():
         print(json.dumps(result, indent=2))
     elif args.command in {"eval", "generate"}:
         config = yaml.safe_load(Path(args.config).read_text())
+        if args.context_profile is not None:
+            config["context_profile"] = args.context_profile
+        if args.prefill_step_size is not None:
+            config["prefill_step_size"] = args.prefill_step_size
         if config.get("backend") != "mlx":
             parser.error("This milestone implements only the validated MLX backend")
         if args.command == "eval":

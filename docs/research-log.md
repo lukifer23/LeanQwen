@@ -337,3 +337,27 @@ The user confirmed PonderScope PID 23131 is the competing Qwen3.5-4B GPU workloa
 It is still active during CPU-only preparation. No LeanQwen model experiment has
 started or unrelated process been terminated. macOS observed swap use was
 4825.50 MiB during that competing workload; this is not a LeanQwen measurement.
+
+### Phase 3 — reversible context implementation and CPU restoration audit
+
+Implemented mac-128k/mac-100k/native-262k runtime admission profiles with native
+checkpoint metadata preserved. Generations now record actual input, reserved
+output, emitted/combined tokens and context fingerprint; prefill chunk selection
+uses the inspected MLX-LM API. No lossy cache or quantization is introduced.
+CPU SHA256 checks of actual pinned checkpoint, config, tokenizer and template
+files before and after profile selection all match. This verifies configuration
+reversibility, not 262K inference or memory savings. No adapter exists yet.
+Initial offline audit resolution failed because unrelated cached model-card/license
+files were absent; the exact runtime file patterns fixed it, with the failure
+retained. See `phase3_context_configuration.json` and
+`phase3_metadata_initial_failure.json`.
+
+The evaluation-only document suite constructs exact 2K/8K/32K combined envelopes,
+with 256 reserved output tokens and five retrieval/reasoning questions per length.
+Offline official-tokenizer tests verify construction, labels and fact positions.
+No model context benchmark has run while PonderScope is active. Restoration,
+training/inference budget distinctions, backend/cache limits and real commands
+are documented in `docs/context-management.md`. Historical v1/v5 and all 144
+prompt-study records remain unchanged. Current local tests: 92 passed; Ruff passed
+including pending training-integrity changes. The retried original CI and fresh
+CI for `91a0bb9` both passed.

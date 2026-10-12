@@ -12,7 +12,8 @@ from huggingface_hub import snapshot_download
 from mlx_lm import load, stream_generate
 from mlx_lm.sample_utils import apply_min_p, apply_top_k, apply_top_p
 
-from qwenlean.inference.streaming import consume_stream, validate_context_budget, validate_eos_ids
+from qwenlean.inference.context import context_contract, request_context
+from qwenlean.inference.streaming import consume_stream, validate_eos_ids
 from qwenlean.utils.io import digest
 
 
@@ -73,6 +74,8 @@ class MLXBackend:
             if token_id is not None:
                 self.tokenizer.add_eos_token(self.tokenizer.convert_ids_to_tokens(token_id))
         text_config = model_config.get("text_config", model_config)
+        self.original_text_config = text_config
+        self.context_contract = context_contract(config, text_config)
         self.context_window = text_config.get("max_position_embeddings")
         self.eos_ids = validate_eos_ids(self.tokenizer.eos_token_ids, len(self.tokenizer))
         self.model_info = {
@@ -144,13 +147,16 @@ class MLXBackend:
         if config["max_output_tokens"] <= 0:
             raise ValueError("max_output_tokens must be positive")
         thinking = config.get("enable_thinking", True) if thinking is None else thinking
-        validate_context_budget(len(prompt_ids), config["max_output_tokens"], self.context_window)
+        contract = context_contract(config, self.original_text_config)
+        request_context(contract, len(prompt_ids), config["max_output_tokens"])
         mx.random.seed(seed)
         sampler = make_sampler(config["sampling"])
         penalties = make_penalties(len(prompt_ids), config["sampling"])
         mx.reset_peak_memory()
         start = time.perf_counter()
         rss_peak = psutil.Process().memory_info().rss
+        available_start = psutil.virtual_memory().available
+        swap_start = psutil.swap_memory()._asdict()
         first_token_s = None
 
         def observe(count):
@@ -168,6 +174,7 @@ class MLXBackend:
                 max_tokens=config["max_output_tokens"],
                 sampler=sampler,
                 logits_processors=[penalties],
+                prefill_step_size=contract["prefill_step_size"],
             )
 
         iterator = responses()
@@ -203,13 +210,27 @@ class MLXBackend:
             "prompt_tokens": len(prompt_ids),
             "prompt_token_ids": list(prompt_ids),
             "formatted_prompt": formatted_prompt,
+            "context": request_context(contract, len(prompt_ids), config["max_output_tokens"], len(ids)),
             "latency_s": elapsed,
             "first_token_latency_s": first_token_s,
             "output_tokens_per_second": len(ids) / elapsed if elapsed > 0 else None,
             "backend_decode_tokens_per_second": getattr(response, "generation_tps", None),
+            "backend_prefill_duration_s": (
+                len(prompt_ids) / response.prompt_tps
+                if response is not None and response.prompt_tps > 0 else None
+            ),
+            "backend_decode_duration_s": (
+                response.generation_tokens / response.generation_tps
+                if response is not None and response.generation_tps > 0 else None
+            ),
             "stop_token_id": ids[-1] if ids and result["termination_reason"] == "eos" else None,
             "mlx_peak_bytes": mx.get_peak_memory(),
             "rss_peak_observed_bytes": max(rss_peak, psutil.Process().memory_info().rss),
             "system_available_ram_bytes": psutil.virtual_memory().available,
+            "system_available_ram_start_bytes": available_start,
+            "swap_start": swap_start,
+            "swap_end": psutil.swap_memory()._asdict(),
+            "mlx_active_end_bytes": mx.get_active_memory(),
+            "mlx_cache_end_bytes": mx.get_cache_memory(),
             "model_identifier": self.model_info,
         }

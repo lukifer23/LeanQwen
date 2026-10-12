@@ -1,7 +1,9 @@
 # Running QwenLean
 
-Current checkpoint (2026-10-05): the matched prompt study is complete and work is
-stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Current Phase 3 work resumes the completed prompt-study checkpoint. Model runs
+wait for the user's PonderScope workload to finish naturally. See
+[current progress](../reports/phase3-progress.md), [historical checkpoint](../reports/phase2_checkpoint.md)
+and [reversible context profiles](context-management.md).
 Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
 remain pending; implemented interfaces are not evidence that those experiments ran.
 
@@ -128,7 +130,9 @@ default; use `--output` for a new summary without changing historical artifacts.
 
 Read [Phase 2 methodology](phase2-methodology.md) for stream/resume/scoring contracts
 and context-window preservation. The 262144-token architectural window is retained;
-output budgets and bounded smoke-training sequence lengths do not change it.
+the default runtime combined input/output ceiling is 131072. Select `mac-100k` or
+`native-262k` explicitly when needed. Output budgets and bounded smoke-training
+sequence lengths do not change architecture or RoPE. See [context commands](context-management.md).
 
 ## Automated checks
 
@@ -192,8 +196,8 @@ AdamW and explicit mixed-attention LoRA modules. It masks prompt loss, saves
 adapter-only checkpoints and reloads a fresh base instance for DEV pipeline
 sanity. It refuses existing outputs; optimizer resume is not supported. Bounded
 training examples do not change the model context or RoPE, and none are silently
-truncated. The first four-step smoke test remains pending; no substantial run is
-authorized in this phase.
+truncated. The first four-step smoke test remains pending. Phase 3 authorizes one
+bounded real pilot only after diagnostic, dataset and optimizer gates pass.
 
 After candidate generation, individual reviews live in a separate JSONL with
 `source_generation_id`, `approved_for_sft`, `intermediate_reasoning_review`

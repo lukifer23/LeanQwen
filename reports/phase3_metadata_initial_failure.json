@@ -1,0 +1,13 @@
+{
+  "command": "uv run --frozen --no-sync python scripts/context_metadata.py --verify-weight-files --output reports/phase3_context_configuration.json",
+  "error_type": "IncompleteSnapshotError",
+  "explanation": "Unfiltered offline snapshot resolution required uncached repository documentation. Restrict audit resolution to the same checkpoint/tokenizer patterns as the runtime; do not download unrelated files or load weights.",
+  "missing_files": [
+    ".gitattributes",
+    "LICENSE",
+    "README.md"
+  ],
+  "model_loaded": false,
+  "resolution": "Rerun with explicit allow_patterns succeeded; see phase3_context_configuration.json.",
+  "stage": "offline_snapshot_resolution"
+}

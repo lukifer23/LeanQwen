@@ -11,5 +11,5 @@
 - No Docker. No long training until baseline/decoding diagnosis and dataset quality gates.
 - Verify changes with `uv run --frozen pytest -q` and Ruff as appropriate.
 
-- Keep the original context window by default; an explicitly documented limit may be lowered to 131072 tokens (128K), never below. Preserve RoPE/position settings; refuse excess input instead of silently truncating. Output and smoke-training sequence budgets are separately documented.
+- Preserve the native 262144-token model/position/RoPE configuration. Reversible runtime profiles are mac-128k (131072, default), mac-100k (102400, explicitly authorized fallback), and native-262k (262144). Refuse excess combined input/output budgets; never truncate. Output and training sequence budgets are separate.
 - Preserve historical v1/v5 artifacts; new prompt experiments use independent IDs/scoring contracts and task-clustered replicate statistics.

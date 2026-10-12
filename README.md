@@ -10,14 +10,20 @@ all development stays on `main`.
 
 ## Current status
 
-Phase 2 is stopped at the completed **144-trajectory prompt-policy milestone**
-(12 DEV tasks × 3 matched seeds × 4 policies), at the user’s request.
+Phase 3 is active, with model work waiting for the user's PonderScope GPU run to
+finish naturally. CPU preparation implements reversible context profiles and
+checks the unchanged pinned checkpoint files. See [current progress](reports/phase3-progress.md)
+and [context management / restoration](docs/context-management.md). No Phase 3
+model results or improved adapter are claimed yet.
+
+Phase 2 completed the **144-trajectory prompt-policy milestone**
+(12 DEV tasks × 3 matched seeds × 4 policies).
 P2’s integer-only final-line instruction produced **7/36 correct** versus **3/36**
 for legacy `FINAL:` and **0/36** for boxed-answer wording. P2 reduced observed
 mean total output by **6.5%**, but median/p95 reasoning remained capped at **2048**;
 29/36 P2 trajectories still hit the cap. These small DEV results do not establish
 a capability-preserving Pareto improvement. See the [prompt study](reports/prompt_policy_ablation.md)
-and [checkpoint / next steps](reports/phase2_checkpoint.md). No model worker remains active.
+and [historical checkpoint / next steps](reports/phase2_checkpoint.md).
 The audited harness now supports explicit stream failures, safe resume, independent
 task/prompt identities, four output policies and task-clustered multi-seed analysis.
 Procedural-v2 has eight families, four structural difficulty bins and 64 tasks per
@@ -33,9 +39,11 @@ The [guide](docs/guide.md) distinguishes implemented interfaces from validated r
 
 Original unquantized bf16 text inference works on an M3 Pro with 18 GiB unified
 memory using MLX-LM. The native 262144-token context and RoPE remain unchanged;
-inputs are never silently truncated. Output caps and bounded training examples
-are separate budgets. A documented 128K floor is allowed, but no reduction has
-been applied. Long-context behavior has not been empirically validated.
+inputs are never silently truncated. Runtime profiles select a combined input/output
+ceiling: `mac-128k` (131072, default), `mac-100k` (102400, fallback) or `native-262k`
+(262144). Checkpoint/RoPE/tokenizer file hashes are unchanged across profile selection.
+Output caps and bounded training examples are separate budgets. Long-context
+behavior and memory savings have not been empirically validated.
 
 ## Historical first-pass evidence
 
@@ -102,11 +110,12 @@ require new derived destinations.
 | Measurement calibration | Source-linked DEV judgments, local embeddings and exact guard replay |
 | TRAIN natural best-of-N | N=4; correctness, reasoning validity and clean closure precede length |
 | Optimizer smoke | Approved TRAIN targets, actual LoRA steps, save/reload/inference verification |
-| Real SFT | Later user review; no substantial run in this phase |
+| Real SFT | One bounded Phase 3 pilot authorized conditionally on diagnosis, data and optimizer gates |
 
 TEST stays sealed from model evaluation and training selection. Generator-only
-contamination audits inspect split metadata. All response training targets must
-come from Qwen itself; no proprietary closed-model teacher outputs. DEV reviewer
+contamination audits inspect split metadata. Natural response targets come from
+Qwen itself; Phase 3 also authorizes distinctly labeled solver-verified reasoning
+if natural coverage is poor. No proprietary closed-model teacher outputs. DEV reviewer
 annotations are explicitly forbidden for training. Procedural code/stimuli and
 this repository are Apache-2.0. No external benchmark dataset has been imported.
 

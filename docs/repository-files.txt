@@ -19,6 +19,7 @@ data/splits/procedural-v2/train.jsonl
 data/splits/test.jsonl
 data/splits/train.jsonl
 docs/architecture.md
+docs/context-management.md
 docs/guide.md
 docs/metrics.md
 docs/phase2-methodology.md
@@ -27,6 +28,7 @@ docs/research-log.md
 pyproject.toml
 qwenlean/__init__.py
 qwenlean/cli.py
+qwenlean/datasets/context_suite.py
 qwenlean/datasets/procedural.py
 qwenlean/datasets/procedural_v2.py
 qwenlean/datasets/prompts.py
@@ -37,6 +39,7 @@ qwenlean/evaluation/single_job.py
 qwenlean/evaluation/summary.py
 qwenlean/evaluation/tail.py
 qwenlean/generation/selection.py
+qwenlean/inference/context.py
 qwenlean/inference/mlx_backend.py
 qwenlean/inference/parsing.py
 qwenlean/inference/prefix.py
@@ -81,6 +84,10 @@ reports/phase2_initial_launch_failure.json
 reports/phase2_protocol.json
 reports/phase2_start.json
 reports/phase2_stop_audit.json
+reports/phase3-progress.md
+reports/phase3_ci_initial_failure.json
+reports/phase3_context_configuration.json
+reports/phase3_metadata_initial_failure.json
 reports/procedural_v2_quality.json
 reports/procedural_v2_quality.md
 reports/process_audit.json
@@ -100,6 +107,8 @@ reports/trace_review.md
 reports/transformers_probe.json
 scripts/approve_natural_dataset.py
 scripts/calibrate_metrics.py
+scripts/context_benchmark.py
+scripts/context_metadata.py
 scripts/create_reports.py
 scripts/early_exit_probe.py
 scripts/plot_phase2.py
@@ -116,6 +125,8 @@ scripts/train_candidate_semantics.py
 scripts/train_candidates.py
 scripts/validate_environment.py
 tests/test_checkpoint_contract.py
+tests/test_context.py
+tests/test_context_suite.py
 tests/test_foundation.py
 tests/test_local_metrics.py
 tests/test_phase2_harness.py

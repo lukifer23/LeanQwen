@@ -1,7 +1,9 @@
 # Architecture and compatibility decision
 
-Current checkpoint (2026-10-05): the matched prompt study is complete and work is
-stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
+Phase 3 resumes the completed prompt-study checkpoint; GPU work waits for the
+user's PonderScope run to finish naturally. See [current progress](../reports/phase3-progress.md)
+and [reversible runtime context contracts](context-management.md). The backend
+and compatibility evidence below remain historical unless explicitly updated.
 Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
 remain pending; implemented interfaces are not evidence that those experiments ran.
 
@@ -102,5 +104,6 @@ pinned to `1110a243fdf4706b3f48f1d95db1a4f5529b4d41`, CPU float32 and one thread
 Its model card discloses public sentence-pair training sources. It is used only
 as a local measurement encoder, not a response teacher or source of training
 content. Encoder-sized chunk subdivision is separate from Qwen context handling.
-The Qwen context remains 262144; the documented acceptable floor is 131072.
-Long-context behavior after any future adapter is unmeasured.
+Qwen's native positional context remains 262144. Phase 3's reversible runtime
+ceilings are 131072 by default, 102400 as an authorized fallback, and 262144 for
+restoration. Long-context behavior after any future adapter is unmeasured.
