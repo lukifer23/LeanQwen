@@ -42,6 +42,8 @@ def main():
     early = json.loads(Path('reports/early_exit_measurements.json').read_text())
     calibration = json.loads(Path('reports/metric_calibration.json').read_text())
     guard = json.loads(Path('reports/runtime_guard_replay.json').read_text())
+    if guard.get('full_diagnostic_gate_complete') is not True:
+        raise ValueError('Full prompt-and-tail guard replay required; partial prompt-only replay is not a gate')
     if study['trajectories'] != 144 or tail['selected_trajectories'] != 7 or early['source_trajectories'] != 6:
         raise ValueError('Incomplete predeclared DEV diagnostic design')
     if any(not c['exact_prefix'] for c in tail['prefix_checks']) or calibration['calibration_pair_count'] < 24:

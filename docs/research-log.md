@@ -394,3 +394,20 @@ end-state bytes and unused allocator cache are distinguished in the docs. Profil
 validation runs before loading weights. No resource savings, prefix reproducibility
 or long-context behavior is claimed before native execution. PonderScope remains
 active; all verification continues on CPU only (98 tests, Ruff passed).
+
+### Phase 3 — saved-trajectory exact-guard replay (CPU only)
+
+Reused existing replay logic on all 144 archived prompt trajectories, at all three
+predeclared settings and the live 16-token polling cadence. Zero triggers and zero
+observed savings at every threshold. Precision/recall remain unidentified; these
+trajectories have no independent exact-cycle labels, and semantic rederivation
+can evade literal matching. Guard stays off. No source trajectory or historical
+result was changed, no model was loaded, and this partial replay cannot satisfy
+the full diagnostic gate before tail/semantic evidence. Source hash matches the
+completed prompt-study checkpoint. New source-linked outputs live in
+`reports/phase3-prompt-replay/`.
+
+Reproduce into a new protected destination:
+`uv run --frozen --no-sync python scripts/calibrate_metrics.py --guard-only --prompt-only --output-dir reports/<new-prompt-replay>`.
+The full default command still requires tail records and runs semantic analysis
+under the existing process lease. PonderScope is active and untouched.

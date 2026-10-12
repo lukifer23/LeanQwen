@@ -87,6 +87,10 @@ reports/phase2_protocol.json
 reports/phase2_start.json
 reports/phase2_stop_audit.json
 reports/phase3-progress.md
+reports/phase3-prompt-replay/conclusion_state_measurements.jsonl
+reports/phase3-prompt-replay/format_meta_v2_records.jsonl
+reports/phase3-prompt-replay/runtime_guard_calibration.md
+reports/phase3-prompt-replay/runtime_guard_replay.json
 reports/phase3_ci_initial_failure.json
 reports/phase3_context_configuration.json
 reports/phase3_metadata_initial_failure.json

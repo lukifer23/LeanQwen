@@ -69,6 +69,14 @@ Ruff passes. No GPU test or model run starts while PonderScope is active.
 
 ## Pending model evidence
 
+CPU-only guard replay of the saved 144 prompt trajectories is now measured:
+zero triggers at all three predeclared threshold settings, using the actual
+16-token polling cadence. Observed token savings are zero; precision/recall remain
+unidentified. This rules out a benefit from these literal-cycle guards on those
+saved trajectories, while saying nothing about paraphrased redundant reasoning.
+It is explicitly a partial prompt-only result; tail replay and semantic calibration
+remain pending. See [partial replay](phase3-prompt-replay/runtime_guard_calibration.md).
+
 1. After PonderScope exits naturally and memory is suitable: stock 2K/8K/32K
    capability checks and bounded prefill comparison.
 2. Existing seven-case termination-tail protocol, own-prefix early exit including

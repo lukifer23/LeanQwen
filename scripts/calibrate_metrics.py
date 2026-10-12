@@ -34,9 +34,20 @@ def lexical_pair(a, b):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--guard-only', action='store_true')
+    p.add_argument('--prompt-only', action='store_true', help='Partial offline replay before tail completion; never satisfies the full diagnostic gate')
+    p.add_argument('--output-dir', default='reports')
     args = p.parse_args()
+    if args.output_dir != 'reports' and not args.guard_only:
+        p.error('--output-dir is currently supported only with --guard-only')
+    if args.prompt_only and (not args.guard_only or args.output_dir == 'reports'):
+        p.error('--prompt-only requires --guard-only and a separate --output-dir')
+    output = Path(args.output_dir)
+    if args.output_dir != 'reports':
+        output.mkdir(parents=True, exist_ok=False)
     study = json.loads(Path('reports/prompt_policy_measurements.json').read_text())
-    rows = read_jsonl('reports/prompt_policy_records.jsonl') + read_jsonl('reports/termination_tail_records.jsonl')
+    rows = read_jsonl('reports/prompt_policy_records.jsonl')
+    if not args.prompt_only:
+        rows += read_jsonl('reports/termination_tail_records.jsonl')
     unique = {r['generation_id']: r for r in rows}
     rows = list(unique.values())
     pairs = read_jsonl('reports/redundancy_calibration_pairs.jsonl')
@@ -47,19 +58,18 @@ def main():
     derived = [{ 'source_generation_id':r['generation_id'], 'task_id':r['task_id'], 'policy':r['prompt_policy'],
                  'conclusion_states': conclusion_states(r['reasoning'], r['expected'], r['correct'], r['termination_reason'])}
                for r in rows]
-    write_jsonl('reports/conclusion_state_measurements.jsonl', derived)
+    write_jsonl(output/'conclusion_state_measurements.jsonl', derived)
     meta_labels = [a['format_meta_present'] for a in annotations]
     meta_pred = [sources[a['source_generation_id']]['format_meta']['flagged_lines'] > 0 for a in annotations]
     fmt = confusion(meta_labels, meta_pred)
     format_v2 = {r['generation_id']:format_meta_reasoning_v2(r['reasoning']) for r in rows}
     fmt2 = confusion(meta_labels,[format_v2[a['source_generation_id']]['flagged_lines']>0 for a in annotations])
-    write_jsonl('reports/format_meta_v2_records.jsonl',[{'source_generation_id':k,'format_meta':v} for k,v in format_v2.items()])
-    from mlx_lm.tokenizer_utils import TokenizerWrapper
+    write_jsonl(output/'format_meta_v2_records.jsonl',[{'source_generation_id':k,'format_meta':v} for k,v in format_v2.items()])
     from transformers import AutoTokenizer
 
-    tokenizer = TokenizerWrapper(AutoTokenizer.from_pretrained(study['config']['model'],
-                                     revision=study['config']['revision'], local_files_only=True))
-    tokenizer.add_eos_token('<|endoftext|>')
+    tokenizer = AutoTokenizer.from_pretrained(study['config']['model'],
+                                             revision=study['config']['revision'], local_files_only=True)
+    eos_ids = {tokenizer.convert_tokens_to_ids(t) for t in ('<|im_end|>', '<|endoftext|>')}
     configs = [{'min_period':24, 'max_period':128, 'repeats':3},
                {'min_period':16, 'max_period':256, 'repeats':3},
                {'min_period':48, 'max_period':512, 'repeats':2}]
@@ -69,7 +79,7 @@ def main():
         for r in rows:
             ids = r['token_ids']
             evidence = replay(ids, config, opening=tokenizer.convert_tokens_to_ids('<think>'),
-                              closing=tokenizer.convert_tokens_to_ids('</think>'), eos_ids=tokenizer.eos_token_ids)
+                              closing=tokenizer.convert_tokens_to_ids('</think>'), eos_ids=eos_ids)
             if evidence:
                 n = evidence['trigger_output_token']
                 triggers.append({'source_generation_id':r['generation_id'], **evidence,
@@ -80,13 +90,17 @@ def main():
         guard_results.append({'thresholds':config, 'check_every':16,'replayed_trajectories':len(rows),
                               'triggers':triggers,'trigger_count':len(triggers),
                               'observed_saved_reasoning_tokens':sum(t['observed_reasoning_tokens_saved'] for t in triggers)})
-    write_json('reports/runtime_guard_replay.json', {'configurations':guard_results,
-               'source_hash':digest(rows), 'live_pilot_run':False, 'training_permitted':False})
+    write_json(output/'runtime_guard_replay.json', {'configurations':guard_results,
+               'source_hash':digest(rows), 'live_pilot_run':False, 'training_permitted':False,
+               'source_scope': 'prompt_study_only' if args.prompt_only else 'prompt_study_and_tail',
+               'full_diagnostic_gate_complete': not args.prompt_only})
     if not any(g['triggers'] for g in guard_results):
-        Path('reports/runtime_guard_calibration.md').write_text(
+        (output/'runtime_guard_calibration.md').write_text(
             '# Runtime exact-cycle guard replay\n\n'
             f"Replayed {len(rows)} saved DEV trajectories at three threshold settings and the actual 16-token polling cadence. No configuration triggered. Estimated observed token savings: zero. Precision/recall are unidentified because there were no triggers and these traces are not independently cycle-labeled.\n\n"
-            'No live guard pilot was justified. Guard stays off. Exact-cycle failure to detect paraphrased reconsideration is an expected limitation, not evidence of healthy reasoning. Details: runtime_guard_replay.json. Reproduce: `uv run --frozen python scripts/calibrate_metrics.py --guard-only`.\n')
+            'No live guard pilot was justified. Guard stays off. Exact-cycle failure to detect paraphrased reconsideration is an expected limitation, not evidence of healthy reasoning. Details: runtime_guard_replay.json.\n'
+            + ('\nScope: prompt study only; tail replay and full diagnostic gate remain pending. Reproduce into a NEW directory: `uv run --frozen python scripts/calibrate_metrics.py --guard-only --prompt-only --output-dir reports/<new-prompt-replay>`.\n'
+               if args.prompt_only else '\nReproduce: `uv run --frozen python scripts/calibrate_metrics.py --guard-only`.\n'))
     else:
         print('Guard triggers need individual review before report gate', flush=True)
     if args.guard_only:

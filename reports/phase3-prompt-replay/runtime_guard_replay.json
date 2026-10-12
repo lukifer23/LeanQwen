@@ -1,0 +1,45 @@
+{
+  "configurations": [
+    {
+      "check_every": 16,
+      "observed_saved_reasoning_tokens": 0,
+      "replayed_trajectories": 144,
+      "thresholds": {
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "check_every": 16,
+      "observed_saved_reasoning_tokens": 0,
+      "replayed_trajectories": 144,
+      "thresholds": {
+        "max_period": 256,
+        "min_period": 16,
+        "repeats": 3
+      },
+      "trigger_count": 0,
+      "triggers": []
+    },
+    {
+      "check_every": 16,
+      "observed_saved_reasoning_tokens": 0,
+      "replayed_trajectories": 144,
+      "thresholds": {
+        "max_period": 512,
+        "min_period": 48,
+        "repeats": 2
+      },
+      "trigger_count": 0,
+      "triggers": []
+    }
+  ],
+  "full_diagnostic_gate_complete": false,
+  "live_pilot_run": false,
+  "source_hash": "ae85109b43a25ce1a7ea370e3b94eeb0b0efa5d076cb4f42bd18c5cdd29aa3ac",
+  "source_scope": "prompt_study_only",
+  "training_permitted": false
+}
