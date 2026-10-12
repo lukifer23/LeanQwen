@@ -21,6 +21,7 @@ from qwenlean.inference.mlx_backend import MLXBackend
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.scoring.exact import score
 from qwenlean.training.integrity import frozen_base_fingerprint, tensor_fingerprint
+from qwenlean.training.mlx_loss import response_loss
 from qwenlean.training.quality import (
     load_approved_training_inputs,
     supervision_range,
@@ -72,11 +73,15 @@ def train(config, dataset, quality_manifest, output):
         write_json(output/'quality_manifest.json', quality)
         write_json(output/'environment.json', environment_manifest())
         write_json(output/'completion.json', {'status': 'initializing'})
+        previous_cache_limit = mx.set_cache_limit(config.get('mlx_cache_limit_bytes', 64*1024**2))
         try:
             return _train(config, rows, output)
         except BaseException as exc:
             write_json(output/'completion.json', {'status': 'failed', 'error_type': type(exc).__name__, 'error': str(exc)})
             raise
+        finally:
+            mx.clear_cache()
+            mx.set_cache_limit(previous_cache_limit)
 
 
 def _train(cfg, rows, output):
@@ -120,8 +125,7 @@ def _train(cfg, rows, output):
     rng.shuffle(order)
 
     def loss_fn(model, tokens, begin, end):
-        logits = model(tokens[:, :-1])[:, begin:end, :].astype(mx.float32)
-        return nn.losses.cross_entropy(logits, tokens[:, 1:][:, begin:end], reduction='mean')
+        return response_loss(model, tokens, begin, end, cfg.get('loss_chunk_size', 32))
 
     value_grad = nn.value_and_grad(model, loss_fn)
     logs, training_start = [], time.perf_counter()
@@ -140,7 +144,8 @@ def _train(cfg, rows, output):
                 'min_available_ram_bytes': cfg.get('min_available_ram_bytes', 0),
                 'swap': swap._asdict(), 'swap_out_delta_bytes': swap.sout-swap_start,
                 'mlx_active_bytes': mx.get_active_memory(), 'mlx_peak_bytes': mx.get_peak_memory(),
-                'rss_bytes': process.memory_info().rss})
+                'mlx_cache_bytes': mx.get_cache_memory(), 'rss_bytes': process.memory_info().rss,
+                'training_elapsed_s': time.perf_counter()-training_start})
             raise RuntimeError(error)
     with (output/'loss.jsonl').open('w') as handle:
         for step in range(1, cfg['steps']+1):
@@ -155,8 +160,15 @@ def _train(cfg, rows, output):
                     rng.shuffle(order)
                 tokens = mx.array([r['prompt_token_ids'] + r['target_token_ids']], dtype=mx.int32)
                 begin, end = supervision_range(r['prompt_token_ids'], r['target_token_ids'])
+                write_json(output/'active-microbatch.json', {'step': step, 'task_id': r['task_id'],
+                    'sequence_length': tokens.shape[1], 'supervised_tokens': end-begin,
+                    'supervision_begin': begin, 'supervision_end': end,
+                    'loss_chunk_size': cfg.get('loss_chunk_size', 32)})
                 loss, gradients = value_grad(model, tokens, begin, end)
                 mx.eval(loss, gradients)
+                # Release reusable allocator buffers before checking current RAM.
+                # Live loss/gradient arrays and recorded peak allocation stay intact.
+                mx.clear_cache()
                 memory_gate()
                 if not bool(mx.isfinite(loss).item()) or not all(bool(mx.all(mx.isfinite(v)).item()) for _, v in tree_flatten(gradients)):
                     raise RuntimeError('Non-finite training loss/gradients')
@@ -176,7 +188,10 @@ def _train(cfg, rows, output):
                    'supervised_tokens_per_second': supervised/elapsed,
                    'mlx_peak_bytes': mx.get_peak_memory(), 'rss_peak_observed_bytes': rss_peak}
             log.update(system_available_ram_bytes=psutil.virtual_memory().available,
-                       swap=psutil.swap_memory()._asdict(), finite_gradients=True)
+                       swap=psutil.swap_memory()._asdict(), finite_gradients=True,
+                       sequence_length=tokens.shape[1], task_id=r['task_id'],
+                       loss_chunk_size=cfg.get('loss_chunk_size', 32),
+                       mlx_active_bytes=mx.get_active_memory(), mlx_cache_bytes=mx.get_cache_memory())
             logs.append(log)
             handle.write(json.dumps(log)+'\n')
             handle.flush()
@@ -256,6 +271,7 @@ def _train(cfg, rows, output):
               'config': cfg, **targets, 'examples': len(rows), 'dataset_hash': digest(rows),
               'sequence_lengths': [len(r['prompt_token_ids'])+len(r['target_token_ids']) for r in rows],
               'prompt_masked': True, 'loss_history': logs, 'training_s': training_time,
+              'loss_contract': 'response-only-full-vocabulary-checkpointed-chunks-v1',
               'mlx_peak_bytes': max(r['mlx_peak_bytes'] for r in logs), 'rss_peak_observed_bytes': rss_peak,
               'adapter_hash_before': before_hash, 'adapter_hash_after': after_hash,
               'adapter_hash_reloaded': reload_hash, 'changed_parameter_names': changed,

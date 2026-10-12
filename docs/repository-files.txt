@@ -10,6 +10,7 @@ configs/sampling/cooler.yaml
 configs/sampling/finalist.yaml
 configs/sampling/presence-zero.yaml
 configs/sampling/repetition-105.yaml
+configs/training/external-human-smoke-memory-efficient.yaml
 configs/training/external-human-smoke.yaml
 configs/training/phase4-smoke.yaml
 configs/training/smoke.yaml
@@ -63,6 +64,7 @@ qwenlean/scoring/legacy_v5.py
 qwenlean/training/__init__.py
 qwenlean/training/external_contract.py
 qwenlean/training/integrity.py
+qwenlean/training/mlx_loss.py
 qwenlean/training/mlx_sft.py
 qwenlean/training/quality.py
 qwenlean/training/solver_contract.py
@@ -218,6 +220,7 @@ tests/test_external_reasoning.py
 tests/test_foundation.py
 tests/test_integrity.py
 tests/test_local_metrics.py
+tests/test_mlx_loss.py
 tests/test_phase2_harness.py
 tests/test_procedural_v2.py
 tests/test_sampling.py

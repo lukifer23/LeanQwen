@@ -113,6 +113,24 @@ campaign. Native 262144 position/context, RoPE, tokenizer and original weights
 remain unchanged. Runtime profiles mac-128k/mac-100k/native-262k are reversible;
 training sequence bounds are separate. Adapters stay unfused and removable.
 
+## Training loss memory update
+
+`training/mlx_loss.py` now calls the unchanged Qwen text decoder on the complete
+input, selects only supervised hidden states, and projects the frozen vocabulary
+head in checkpointed 32-token chunks. It retains full-vocabulary float32 cross
+entropy, sums token losses before averaging, masks all prompt targets and includes
+the first response token and final EOS. No target cropping, sampled softmax, weight
+quantization, architecture or context changes. The audited path rejects a trainable
+head or unsupported model type. CPU tests compare dense/chunked loss and hidden
+and LoRA gradients, tied/untied heads, uneven chunks, float32 and bf16 inputs.
+
+Training bounds MLX's reusable cache to64 MiB and releases unused cache before
+checking current RAM, retaining peak allocation measurements and live gradients.
+The original4 GiB RAM floor and512 MiB swap-out limit are unchanged. Resource
+stops now save cache size, elapsed time and the exact active example. The new
+`external-human-smoke-memory-efficient.yaml` preserves rank/layers/optimizer/seed
+and the same intact approved pool. Historical failure/config/raw data are retained.
+
 ## Measured technical smoke stop
 
 The first external-human smoke reached backward computation but stopped before

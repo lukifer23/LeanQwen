@@ -836,3 +836,19 @@ swap and completed-update count. Qwen exited and released the lease; no unrelate
 application was killed and no floor was relaxed. Stop model work at the resource
 gate. Same bounded smoke is the next technical action once memory permits; no
 external review/teacher call is needed for this retry. No SFT efficacy conclusion.
+
+### Local training memory fixes
+
+Starting main65c03dd, clean. Replaced the full-sequence vocabulary projection with
+complete response-only hidden-state projection and checkpointed32-token head/loss
+chunks. Same float32 full-vocabulary token-level objective, prompt mask, first
+response/EOS supervision and frozen head; no target truncation or base changes.
+Twelve small CPU MLX equivalence/contract tests pass, including actual tiny Qwen
+mixed-attention LoRA gradients and tied/untied heads. Initial checkpoint test found
+integer-label VJP attempted; fixed with stop_gradient on labels within the chunk.
+This was a unit-test failure, not a model training run or teacher example.
+
+Bound reusable MLX cache64 MiB and clear unused buffers before RAM admission checks;
+keep4 GiB RAM/512 MiB swap-out gates unchanged. Active example, chunk size, live/cache
+allocation and elapsed-stop time are now saved. Full suite152 passed before four
+additional invalid-config cases were added. New measured retry follows separately.
