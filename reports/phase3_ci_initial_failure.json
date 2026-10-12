@@ -1,0 +1,12 @@
+{
+  "action": "Retry workflow, pin ubuntu-24.04 and Python 3.12, and verify fresh completed CI; no test-code failure inferred.",
+  "check_annotation": "The job was not acquired by Runner of type hosted even after multiple attempts",
+  "classification": "hosted_runner_allocation_failure",
+  "commit": "3d32475d660a9f2ac4c8d157f7794bb0c35392d6",
+  "job_steps": [],
+  "local_checks": {
+    "pytest_passed_at_start": 76,
+    "ruff": "passed"
+  },
+  "run_id": 37372433674
+}

@@ -316,3 +316,24 @@ Next decision: resume the seven-case predeclared P2 staged tail, then early-exit
 and semantic/guard calibration. Candidate generation and real optimizer smoke
 remain gated; substantial SFT is not ready to select or launch. Full measured
 status, raw artifact map and exact next command: `reports/phase2_checkpoint.md`.
+
+### Phase 3 — repository health and resumed authorization (2026-10-12)
+
+Local and fetched remote main matched `3d32475d660a9f2ac4c8d157f7794bb0c35392d6`
+at start; clean checkout. All 76 starting local tests and Ruff passed. GitHub run
+37372433674 had no executed steps: its failure annotation says the job was not
+acquired by a hosted runner after multiple attempts. Retried that run and pinned
+the next workflow to Ubuntu 24.04/Python 3.12 with a bounded job timeout. Fresh
+remote CI must be observed before claiming recovery. Raw failure classification:
+`reports/phase3_ci_initial_failure.json`.
+
+The user authorizes reversible mac-128k/mac-100k/native-262k profiles, sequential
+diagnostics, reviewed solver targets if natural coverage is poor, the optimizer
+smoke, and one conditional real SFT pilot. This supersedes the prior requested
+stop and previous natural-target-only/128K-floor restrictions for this phase.
+Historical findings and protocols remain preserved.
+
+The user confirmed PonderScope PID 23131 is the competing Qwen3.5-4B GPU workload.
+It is still active during CPU-only preparation. No LeanQwen model experiment has
+started or unrelated process been terminated. macOS observed swap use was
+4825.50 MiB during that competing workload; this is not a LeanQwen measurement.
