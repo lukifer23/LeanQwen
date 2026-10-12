@@ -764,3 +764,54 @@ generation ran for LeanQwen, and no LM Studio/Qwen output entered the new TRAIN
 pool. Added an explicit rule forbidding even LM Studio status commands and new
 Qwen self-distillation. Direct Python/MLX runs benchmark/train Qwen as the student;
 all512 target proofs originate in independently verified deterministic solvers.
+
+### Phase 4 — external teacher correction and human-source pilot
+
+The critical user addendum supersedes natural/self-distillation and solver-primary
+strategies. Starting main SHA0a62326, clean before work. Preserved historical raw
+Qwen results, solvers, corpora and reports; current SFT rejects all their targets.
+No LM Studio/LFM or Qwen teacher/rewrite/judge is allowed. Coding-agent solutions
+cannot be relabeled algorithmic or human. Permission validation precedes training
+record/tensor loading at all SFT entrypoints, with exact source/template checks.
+
+Investigated original GSM8K, OpenR1-Math-220k, OpenMathInstruct-2 and DeepMath-103K.
+Actual bounded sampling:64 problems per large source,7,554,902 response bytes;
+measured full original GSM8K TRAIN. Preserved raw pages, immutable card pins,
+permission snapshots and hashes. Large viewer samples are diagnostic only, with
+no immutable row-revision attestation. OpenR1/DeepMath underlying source rights
+remain pending; OpenMathInstruct upstream Llama output-trained-model obligations
+prevent automatic enabling. No paid calls. Current DeepSeek API models are V4,
+so do not assume an attested R1 provider endpoint from the R1 model license.
+
+User directed selection and execution. Chose768 intact original human GSM8K TRAIN
+solutions under MIT, plus64 reserved DEV questions. Approval uses documented
+published human worker-agreement QA and exact screening, not invented fresh
+individual review or formal proof of prose semantics. Human-only source100%;
+Qwen/LFM/solver-authored/paid generation0%. Annotated operation bins256 each;
+reasoning min33/median124/max346, full sequences97–499; no cropping. All annotations
+recognized and consistent, final-label linked; unrecognized/unlinked/flagged rows
+excluded. Limited contamination checks passed, with paraphrase/all-benchmark and
+pretraining exposure explicitly outside scope. Eight human targets approved for
+technical smoke. Original candidate manifest remains pending as import evidence;
+the new separately hashed approved manifest records the actual approval basis.
+
+Frozen56-task DEV protocol:24 source questions across three operation-count bins
+plus existing32 procedural retention tasks, identical stock/adapter tasks, both
+modes,2048 output cap,one matched seed,guard off. Relative to GSM8K, procedural
+cohorts test retention/domain shift; old solver-ID/OOD names do not define current
+training generalization. No model outcomes used for cohort/target selection.
+First CPU freeze failed because source tasks lacked prompt-renderer facts; fixed
+with source identity/annotation-count metadata, then froze successfully. Raw source
+and historical cohorts were not modified. Audit records the failure and hashes.
+
+No optimizer step or adapter exists at this corpus milestone. The four-step MLX
+technical smoke is configured, then integrity/reload, actual capacity and complete
+stock baseline remain prerequisites for a bounded improvement pilot. No reduction
+in overthinking or capability retention can yet be claimed. See external source
+comparison, corpus audit and training-data strategy for reproducible commands.
+
+Corpus milestone validation:140 local tests pass;124 device-free CI-equivalent
+tests pass (16 device/tokenizer tests deselected); Ruff and diff whitespace checks
+pass. Historical tracked reports/split files match starting Git objects exactly;
+counts and hashes are saved in external-source-start-audit.json. Raw datasets,
+permission archives and weights remain ignored. Remote CI is verified after push.

@@ -1,6 +1,7 @@
 import pytest
 
-from qwenlean.training.quality import supervision_range, validate_training_pool
+from qwenlean.training.quality import supervision_range
+from qwenlean.training.quality import validate_historical_training_pool as validate_training_pool
 from qwenlean.utils.io import digest
 
 
@@ -44,7 +45,9 @@ def test_provenance_manifest_context_and_revision_fail_closed():
 
 
 def test_parent_archive_prevents_response_rewriting(tmp_path):
-    from qwenlean.training.quality import validate_parent_sources
+    from qwenlean.training.quality import (
+        validate_historical_parent_sources as validate_parent_sources,
+    )
     from qwenlean.utils.io import write_jsonl
 
     row, _, manifest = contracts()

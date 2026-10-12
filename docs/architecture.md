@@ -5,8 +5,9 @@ finished naturally before LeanQwen model work. See [current progress](../reports
 and [reversible runtime context contracts](context-management.md). The backend
 and compatibility evidence below remain historical unless explicitly updated.
 Higher-cap diagnosis, DEV semantic measurement and natural TRAIN generation
-completed. No optimizer ran in Phase 3. Phase 4 solver development and gated training are
-explicitly authorized;
+completed. No optimizer ran in Phase 3. Phase 4 now uses licensed external human/strong-model reference solutions;
+Qwen is exclusively the student/evaluation target and historical solver/natural
+approvals cannot authorize current SFT;
 see [generation review](../reports/phase3-natural-pilot-review.md) and
 [data strategy](training-data-strategy.md).
 
@@ -84,13 +85,15 @@ configuration hashes, dependency versions, dataset hashes and Git revision.
 
 ## Data provenance
 
-Only deterministic code-generated problems are included in this milestone.
-No externally licensed benchmark or proprietary model response enters a data
-pool. The generators and generated stimuli use this repository's Apache-2.0
-license. Responses originate from pinned Qwen weights. DEV/TEST permissions are
-false for training. Unknown or closed-model origins fail the future training
-gate; derived records must retain parent IDs. Numerical labels are algorithmic.
-A future imported dataset must be reviewed individually before import.
+Current teacher data consists of original human-written GSM8K TRAIN under MIT,
+with its own source permission, immutable revision and exact source/template/hash
+contract. Permission is checked before tokenized data or model tensors are loaded.
+Published human QA plus exact screening is a bounded approval basis with prose
+semantics explicitly unverified. Individual human/frontier reviews are a separate
+contract. No Qwen/LFM/student/weak-local targets, coding-agent solutions or unapproved
+closed-model outputs. Historical natural exact-parent and solver proof contracts
+are retained for offline reproduction, excluded from current SFT. DEV/TEST responses
+are forbidden as targets. See [current data strategy](training-data-strategy.md).
 
 ## Phase 2 implementation boundaries
 

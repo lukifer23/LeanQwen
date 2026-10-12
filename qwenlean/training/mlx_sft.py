@@ -22,6 +22,7 @@ from qwenlean.inference.parsing import parse_tokens
 from qwenlean.scoring.exact import score
 from qwenlean.training.integrity import frozen_base_fingerprint, tensor_fingerprint
 from qwenlean.training.quality import (
+    load_approved_training_inputs,
     supervision_range,
     validate_parent_sources,
     validate_training_pool,
@@ -61,14 +62,11 @@ def attach_adapters(model, cfg):
 
 
 def train(config, dataset, quality_manifest, output):
-    rows = read_jsonl(dataset)
-    quality = json.loads(Path(quality_manifest).read_text())
-    validate_training_pool(rows, quality, config)
+    rows, quality = load_approved_training_inputs(config, dataset, quality_manifest)
     output = Path(output)
     if output.exists():
         raise ValueError('Refuse existing adapter output; optimizer resume is not implemented')
     with model_process_lock():
-        validate_parent_sources(rows, quality)
         output.mkdir(parents=True, exist_ok=False)
         write_json(output/'config.json', config)
         write_json(output/'quality_manifest.json', quality)
@@ -82,6 +80,10 @@ def train(config, dataset, quality_manifest, output):
 
 
 def _train(cfg, rows, output):
+    # Private calls must also pass the external-only permission/record contract.
+    quality = json.loads((output/'quality_manifest.json').read_text())
+    validate_training_pool(rows, quality, cfg)
+    validate_parent_sources(rows, quality, cfg)
     mx.random.seed(cfg['seed'])
     rng = random.Random(cfg['seed'])
     backend = MLXBackend(cfg)

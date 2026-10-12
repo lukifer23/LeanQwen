@@ -1,4 +1,4 @@
-"""Conservative natural-trajectory ranking; correctness always precedes length."""
+"""Historical CPU natural-trajectory analysis. Outputs cannot authorize current SFT."""
 
 import ast
 import operator

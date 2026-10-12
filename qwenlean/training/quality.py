@@ -1,13 +1,16 @@
 """Training entrypoint contracts, independent of device/framework."""
 
+import json
 import math
 from collections import Counter
+from pathlib import Path
 
 from qwenlean.datasets.provenance import validate_provenance
 from qwenlean.utils.io import digest, read_jsonl
 
 
-def validate_training_pool(rows, manifest, config):
+def validate_historical_training_pool(rows, manifest, config):
+    """Frozen natural/solver contracts for offline reproduction, never SFT admission."""
     if not rows:
         raise ValueError('Empty training pool')
     if manifest.get('status') != 'quality_approved' or manifest.get('dataset_hash') != digest(rows):
@@ -50,6 +53,10 @@ def validate_training_pool(rows, manifest, config):
             raise ValueError('Training token IDs must be nonnegative integers')
         if len(r['prompt_token_ids']) + len(r['target_token_ids']) > config['max_sequence_length']:
             raise ValueError('Example exceeds training sequence bound; truncation is forbidden')
+    return validate_optimizer_config(config)
+
+
+def validate_optimizer_config(config):
     for key in ('steps', 'batch_size', 'gradient_accumulation', 'max_sequence_length', 'num_layers'):
         if type(config[key]) is not int or config[key] < 1:
             raise ValueError(f'Positive {key} required')
@@ -85,7 +92,7 @@ def supervision_range(prompt_ids, target_ids):
     return len(prompt_ids)-1, len(prompt_ids)+len(target_ids)-1
 
 
-def validate_parent_sources(rows, manifest):
+def validate_historical_parent_sources(rows, manifest):
     solver = [r for r in rows if r['provenance']['response_origin'] == 'solver_verified_reasoning']
     if solver:
         from qwenlean.training.solver_contract import validate_solver_sources
@@ -112,3 +119,56 @@ def validate_parent_sources(rows, manifest):
             or parent['model_identifier']['revision'] != row['model_revision']):
             raise ValueError('Target differs from its exact natural measured TRAIN parent')
     return True
+
+
+def validate_training_pool(rows, manifest, config):
+    from qwenlean.training.external_contract import (
+        authorize_training_manifest,
+        reject_prohibited_teacher,
+    )
+    authorize_training_manifest(manifest, config)
+    if not rows or digest(rows) != manifest.get('dataset_hash'):
+        raise ValueError('Nonempty matching approved external dataset required')
+    if manifest.get('record_count') != len(rows) or manifest.get('quality_approved_count') != len(rows):
+        raise ValueError('Approved record counts must equal the actual pool')
+    if manifest.get('model_revision') != config['revision']:
+        raise ValueError('Student model revision pin mismatch')
+    if len({r['task_id'] for r in rows}) != len(rows):
+        raise ValueError('Duplicate external task identities')
+    counts = dict(Counter(r['provenance']['response_origin'] for r in rows))
+    if (manifest.get('source_distribution') != counts
+        or manifest.get('source_sampling_proportions') != {k: v/len(rows) for k, v in counts.items()}):
+        raise ValueError('Exact external source counts and sampling proportions required')
+    if manifest.get('contamination_checks', {}).get('passed') is not True:
+        raise ValueError('Source/benchmark contamination checks required')
+    for row in rows:
+        reject_prohibited_teacher(row['provenance'])
+        validate_provenance(row, for_training=True)
+        if row.get('correct') is not True or row.get('termination_reason') != 'eos':
+            raise ValueError('Correct source-reviewed complete terminal target required')
+        if row.get('model_revision') != config['revision']:
+            raise ValueError('Target student/tokenizer revision differs')
+        if not row.get('prompt_token_ids') or not row.get('target_token_ids'):
+            raise ValueError('Exact prompt and complete supervised response IDs required')
+        tokens = row['prompt_token_ids']+row['target_token_ids']
+        if any(type(token) is not int or token < 0 for token in tokens):
+            raise ValueError('Training token IDs must be nonnegative integers')
+        if len(tokens) > config['max_sequence_length']:
+            raise ValueError('Whole external example exceeds sequence bound; truncation forbidden')
+    return validate_optimizer_config(config)
+
+
+def validate_parent_sources(rows, manifest, config=None):
+    from qwenlean.training.external_contract import validate_external_sources
+    return validate_external_sources(rows, manifest, config or {})
+
+
+def load_approved_training_inputs(config, dataset, manifest_path):
+    """Source permission first, then JSON records, then exact source/review checks."""
+    from qwenlean.training.external_contract import authorize_training_manifest
+    manifest = json.loads(Path(manifest_path).read_text())
+    authorize_training_manifest(manifest, config)
+    rows = read_jsonl(dataset)
+    validate_training_pool(rows, manifest, config)
+    validate_parent_sources(rows, manifest, config)
+    return rows, manifest

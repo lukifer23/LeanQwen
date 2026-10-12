@@ -71,9 +71,11 @@ def main():
             pools = build_pools(args.output, args.per_family)
         print({s: len(r) for s, r in pools.items()})
     elif args.command == "train-sft":
+        from qwenlean.training.external_contract import authorize_training_manifest
+        config = yaml.safe_load(Path(args.config).read_text())
+        authorize_training_manifest(json.loads(Path(args.quality_manifest).read_text()), config)
         from qwenlean.training.mlx_sft import train
 
-        config = yaml.safe_load(Path(args.config).read_text())
         result = train(config, args.dataset, args.quality_manifest, args.output)
         print(json.dumps(result, indent=2))
     elif args.command in {"eval", "generate"}:

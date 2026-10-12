@@ -2,7 +2,7 @@
 
 from qwenlean.utils.io import digest
 
-PERMITTED_ORIGINS = {"algorithmic", "qwen_self", "licensed_dataset", "algorithmic_transform", "solver_verified_reasoning"}
+PERMITTED_ORIGINS = {"algorithmic", "qwen_self", "licensed_dataset", "algorithmic_transform", "solver_verified_reasoning", "licensed_external_reasoning", "authorized_frontier_reasoning"}
 
 
 def validate_provenance(record, for_training=False):

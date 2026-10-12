@@ -15,7 +15,9 @@ from qwenlean.generation.selection import classify
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 
 
-def build(review_path, output, manifest_path, max_sequence_length=1024, max_examples=4):
+def build(review_path, output, manifest_path, max_sequence_length=1024, max_examples=4, historical_reproduction=False):
+    if historical_reproduction is not True:
+        raise ValueError('Natural-Qwen target assembly is historical reproduction only; no current SFT approval')
     archive = 'reports/train_candidate_records.jsonl'
     parents = read_jsonl(archive)
     lookup = {r['generation_id']:r for r in parents}
@@ -64,7 +66,7 @@ def build(review_path, output, manifest_path, max_sequence_length=1024, max_exam
     if len(revisions) != 1:
         raise ValueError('Mixed parent revisions')
     write_jsonl(output, targets)
-    manifest={'status':'quality_approved','dataset_hash':digest(targets),
+    manifest={'status':'historical_reproduction_only','dataset_hash':digest(targets),
               'source_records_path':archive,'source_records_hash':digest(parents),
               'approved_parent_ids':[r['parent_generation_id'] for r in targets],
               'review_file':str(review_path),'review_hash':digest(reviews),
@@ -90,10 +92,11 @@ def main():
     p.add_argument('--manifest',required=True)
     p.add_argument('--max-sequence-length',type=int,default=1024)
     p.add_argument('--max-examples',type=int,default=4)
+    p.add_argument('--historical-reproduction',action='store_true')
     a=p.parse_args()
     if a.max_examples < 1 or a.max_sequence_length < 1:
         p.error('Positive example/sequence bounds required')
-    print(json.dumps(build(a.reviews,a.output,a.manifest,a.max_sequence_length,a.max_examples),indent=2))
+    print(json.dumps(build(a.reviews,a.output,a.manifest,a.max_sequence_length,a.max_examples,a.historical_reproduction),indent=2))
 
 
 if __name__=='__main__':

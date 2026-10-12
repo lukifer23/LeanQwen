@@ -81,7 +81,9 @@ def distribution(values):
             'values': values}
 
 
-def build(output, per_family):
+def build(output, per_family, historical_reproduction=False):
+    if historical_reproduction is not True:
+        raise ValueError('Solver target generation is no longer the primary teacher route; only explicit historical reproduction is enabled')
     output = Path(output)
     if output.exists():
         raise ValueError('Refuse to overwrite existing corpus')
@@ -132,7 +134,7 @@ def build(output, per_family):
                   'id_structure_overlap_expected': len(dev_id), 'historical_prompt_overlap': 0,
                   'test_model_or_target_use': False,
                   'limitation': 'Normalized shape uniqueness does not prove conceptual diversity; word baskets and ordering transitive edges may share algorithms. ID intentionally shares topology.'}
-        manifest = {'status': 'quality_approved', 'dataset_version': VERSION,
+        manifest = {'status': 'historical_reproduction_only', 'dataset_version': VERSION,
             'dataset_hash': digest(rows), 'solver_records_path': str(output/'solver-records.jsonl'),
             'solver_records_hash': digest(train), 'generator_recipe': {'namespace': 'train', 'per_family': per_family},
             'source_hashes': source_hashes(), 'generator_version': GENERATOR_VERSION,
@@ -166,6 +168,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--output', required=True)
     p.add_argument('--per-family', type=int, default=64)
+    p.add_argument('--historical-reproduction', action='store_true')
     a = p.parse_args()
-    report = build(a.output, a.per_family)
+    report = build(a.output, a.per_family, a.historical_reproduction)
     print(json.dumps({k: report[k] for k in ('distinct_train_problems', 'family_distribution', 'difficulty_distribution', 'sequence_fit_counts')}))

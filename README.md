@@ -10,18 +10,27 @@ all development stays on `main`.
 
 ## Current status
 
-Phase 4 is active, explicitly authorized after reviewed commit `160f7e0`. A new
-CPU-verified corpus contains 512 distinct TRAIN problems and structures across
-eight families. It preserves complete productive derivations, independently checks
-every intermediate state, and has a separate hashed approval path. Qwen is the student; all new targets are solver computations. Inference and
-training use the direct Python/MLX pipeline. The matched
-32-task stock/adapter DEV protocol is frozen. The stock baseline is incomplete:
-one incorrect non-thinking EOS response, then a hardware stop below the configured
-4 GiB available-memory floor. Eight complete solver targets are approved
-for smoke, but optimizer steps remain zero. See the
-[measured checkpoint and next action](reports/phase4-verified-reasoning.md). No improved model is claimed. See
-[corpus audit](reports/phase4_solver_corpus_v1_1.json) and
-[proof/data contract](docs/phase4-verified-reasoning.md).
+Phase 4 now uses independently sourced external reasoning. The first pilot contains
+**768 distinct original human-written GSM8K TRAIN solutions**, with 64 reserved
+DEV questions. The source is pinned and MIT licensed; original reasoning is
+preserved. Exact annotated arithmetic, final-label linkage, completion, template
+and contamination checks pass. Approval uses published human QA plus screening;
+prose semantics are not formally verified and no fresh individual review is claimed.
+See the [source comparison](reports/external-source-comparison.md),
+[corpus audit](reports/external-human-pilot.json) and
+[training-data strategy](docs/training-data-strategy.md).
+
+Qwen is exclusively the student/evaluation target. Qwen-family, LFM and weak local
+models cannot author, rewrite or judge targets. Historical natural and solver
+corpora remain preserved and excluded from current SFT. Direct Python/MLX is the
+model engine; no LM Studio. A separate source-aware gate validates licensing
+before training data/tensor loading and reproduces exact source/template/token IDs.
+Eight external human targets are approved for the four-step technical smoke;
+**optimizer steps remain zero and no adapter or improvement result exists**.
+A new [56-task matched DEV protocol](reports/external-human-dev-protocol.json)
+combines 24 human-source questions and the existing 32 procedural retention tasks.
+The earlier stock baseline remains partial after memory stops. A complete matched baseline, actual smoke and capacity measurements remain
+required before an improvement pilot.
 
 Historical Phase 3: PonderScope finished naturally before LeanQwen model work.
 Stock context probes scored 3/5 at 2K and 4/5 at 8K/32K envelopes, with all
@@ -138,16 +147,17 @@ require new derived destinations.
 | Targeted tail | Seven predeclared cases, staged 2K/4K/8K; at most two at 16K |
 | Early exit | Explicit forced-close probes on saved own-prefix tokens; separate from natural stopping |
 | Measurement calibration | Source-linked DEV judgments, local embeddings and exact guard replay |
-| TRAIN natural best-of-N | N=4; correctness, reasoning validity and clean closure precede length |
+| Historical natural best-of-N | Completed negative result; offline reproduction only, excluded from SFT |
 | Optimizer smoke | Approved TRAIN targets, actual LoRA steps, save/reload/inference verification |
-| Real SFT | One bounded Phase 4 pilot authorized only after solver data, matched baseline, optimizer and capacity gates |
+| External reference data | Pinned licensed human solutions, published QA, exact screening and source-preserving targets |
+| Real SFT | One bounded pilot only after external quality, complete matched baseline, optimizer and capacity gates |
 
-TEST stays sealed from model evaluation and training selection. Generator-only
-contamination audits inspect split metadata. Natural response targets come from
-Qwen itself; Phase 3 also authorizes distinctly labeled solver-verified reasoning
-if natural coverage is poor. No proprietary closed-model teacher outputs. DEV reviewer
-annotations are explicitly forbidden for training. Procedural code/stimuli and
-this repository are Apache-2.0. No external benchmark dataset has been imported.
+TEST stays sealed from model evaluation and training selection. Import contamination
+checks hash official GSM8K TEST questions only; no TEST solutions are tokenized or
+used as targets. TRAIN/DEV are distinct and source proportions are explicit.
+Procedural code/stimuli and this repository are Apache-2.0; imported GSM8K human
+solutions retain their separate MIT notice. No paid API generation or proprietary
+closed-model targets are used. DEV reviewer annotations stay outside training.
 
 ## Layout and documentation
 
@@ -158,7 +168,7 @@ qwenlean/
   evaluation/      # durable runs, comparisons, task-clustered statistics, censoring
   inference/       # MLX backend, token partitioning, defensive streaming
   metrics/         # literal/lexical/semantic proxies, conclusions, guard replay
-  generation/      # correctness-first natural target selection
+  generation/      # historical natural selection, reproduction only
   training/        # quality contracts and isolated MLX LoRA optimizer
   scoring/         # frozen v5 and prompt-policy v6 terminal scoring
   utils/           # hashes, environment manifests, single-model lease

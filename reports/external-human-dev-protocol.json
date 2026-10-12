@@ -1,0 +1,170 @@
+{
+  "budget_frontier": "Additional matched budgets only after primary results; not measured yet.",
+  "cohort_path": "data/generated/external-human-v1-frozen-dev",
+  "configs": {
+    "nonthinking": {
+      "backend": "mlx",
+      "context_profile": "mac-128k",
+      "enable_thinking": false,
+      "loop_guard": {
+        "enabled": false
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "min_available_ram_bytes": 4294967296,
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "external-human-v1-matched-nonthinking",
+      "prefill_step_size": 512,
+      "prompt_policy": "P2",
+      "replicates": 1,
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 2.0,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 1.0
+      },
+      "seed": 20261012
+    },
+    "thinking": {
+      "backend": "mlx",
+      "context_profile": "mac-128k",
+      "enable_thinking": true,
+      "loop_guard": {
+        "enabled": false
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "min_available_ram_bytes": 4294967296,
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "external-human-v1-matched-thinking",
+      "prefill_step_size": 512,
+      "prompt_policy": "P2",
+      "replicates": 1,
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261012
+    }
+  },
+  "configs_hash": "6ec8d7bf260dcea0d867aa3a5b589fdf18b441afec7937845668dbd3aaa7acbe",
+  "generalization_questions": {
+    "gsm8k_within_source_dev": "Human word-problem source generalization across distinct normalized structures.",
+    "procedural_retention_domain_shift": "Retain prior eight-family procedural skills after human-word-problem SFT; historical solver ID/OOD labels are not current training labels."
+  },
+  "paired_statistics": "Cluster by task; one matched seed per task/mode, sampler variance remains unestimated.",
+  "primary_budget": 2048,
+  "retention_count": 32,
+  "retention_protocol_hash": "238b6cb729b8f12551a365324d0dcc79c2eb0bdc466e24fc316816d6677201c3",
+  "selection_rule": "Eight per annotation-count bin, immutable question hash ordering. Existing 32 procedural tasks unchanged. No model outcomes used.",
+  "source_dev_count": 24,
+  "source_difficulty_operation_counts": {
+    "2": 8,
+    "3": 7,
+    "4": 1,
+    "5": 4,
+    "6": 2,
+    "7": 2
+  },
+  "source_import_manifest_hash": "23aad4c092874ac349bcf083bcc663f97cebefb04da821e396ab77b7ad957783",
+  "status": "frozen_before_any_optimizer",
+  "task_count": 56,
+  "task_hash": "871ac0862005ed764c094282d6829c7e00f6aa8d83aaa0a149792fb306c11e10",
+  "task_ids": [
+    "gsm8k-human-train-07290-2749705acc896e5c",
+    "gsm8k-human-train-06040-527ee1b70e35e705",
+    "gsm8k-human-train-06386-a6dcb54fda8fed82",
+    "gsm8k-human-train-01155-031c58da0a1ecd59",
+    "gsm8k-human-train-04248-3740e6bdcbcdaee0",
+    "gsm8k-human-train-00049-75c9ba6c88d37dc0",
+    "gsm8k-human-train-01763-558c5ee14b6f52c8",
+    "gsm8k-human-train-03358-de58466b661143fc",
+    "gsm8k-human-train-02225-caa013844bc5ee4c",
+    "gsm8k-human-train-01067-8b52959972973d1d",
+    "gsm8k-human-train-02323-b93a091525cee4d5",
+    "gsm8k-human-train-04658-db51803a5bac10c6",
+    "gsm8k-human-train-04845-3f0632a6928c4dd8",
+    "gsm8k-human-train-00574-4b840a9b156887c2",
+    "gsm8k-human-train-07360-cbeaa0fcb6338a15",
+    "gsm8k-human-train-02688-51010778b8a45e8a",
+    "gsm8k-human-train-07145-a534993b3b3288de",
+    "gsm8k-human-train-01829-bf0d9ea07337b3c3",
+    "gsm8k-human-train-05193-9d7020978f72a437",
+    "gsm8k-human-train-05111-a9032f4c6275dd3a",
+    "gsm8k-human-train-04293-13dc4f5ed9913f3a",
+    "gsm8k-human-train-05480-eb20af8d251a12b6",
+    "gsm8k-human-train-01436-1c55179b2b1e7f71",
+    "gsm8k-human-train-07128-0e0476ae5992699d",
+    "dev_id-solver-reasoning-v1.1-arithmetic-5c8572dfd22cd025cd3b",
+    "dev_id-solver-reasoning-v1.1-arithmetic-439d872787597b0afa68",
+    "dev_id-solver-reasoning-v1.1-word_problem-6abb58cf6fe88179d68f",
+    "dev_id-solver-reasoning-v1.1-word_problem-c26dfbed84d70c3f7c8e",
+    "dev_id-solver-reasoning-v1.1-algebra-c8d10efffd8ae7d98313",
+    "dev_id-solver-reasoning-v1.1-algebra-a5712ee28115c3397e1a",
+    "dev_id-solver-reasoning-v1.1-boolean_logic-b102c17d4f339e865f8f",
+    "dev_id-solver-reasoning-v1.1-boolean_logic-39bb28ef2b47a65f72d5",
+    "dev_id-solver-reasoning-v1.1-ordering-1a6b69d226e139d1367a",
+    "dev_id-solver-reasoning-v1.1-ordering-f91affde2990035542ed",
+    "dev_id-solver-reasoning-v1.1-state_machine-52ad96d72761a7fcd85a",
+    "dev_id-solver-reasoning-v1.1-state_machine-8facd7ad755eca27b173",
+    "dev_id-solver-reasoning-v1.1-counting-335d6cdb8c0442bbb618",
+    "dev_id-solver-reasoning-v1.1-counting-3a3eeee47b77a032a05d",
+    "dev_id-solver-reasoning-v1.1-sequence-458c81a494fa1f7a0b5a",
+    "dev_id-solver-reasoning-v1.1-sequence-95a21ad1527bf97d0b40",
+    "dev_ood-solver-reasoning-v1.1-arithmetic-3df61dc452ae3e268d19",
+    "dev_ood-solver-reasoning-v1.1-arithmetic-0118910493dd5faf86f2",
+    "dev_ood-solver-reasoning-v1.1-word_problem-1f4bb911378fffe10064",
+    "dev_ood-solver-reasoning-v1.1-word_problem-bbd1c165ba4c8ed99126",
+    "dev_ood-solver-reasoning-v1.1-algebra-2977c86c167900818131",
+    "dev_ood-solver-reasoning-v1.1-algebra-0fe814e141e4944f7540",
+    "dev_ood-solver-reasoning-v1.1-boolean_logic-a8b2503b4f900a44a522",
+    "dev_ood-solver-reasoning-v1.1-boolean_logic-26953f4eeea27a5825ee",
+    "dev_ood-solver-reasoning-v1.1-ordering-efe182e872896a40dbff",
+    "dev_ood-solver-reasoning-v1.1-ordering-b65dd002e61c45fc2b95",
+    "dev_ood-solver-reasoning-v1.1-state_machine-ced851c472fd2744f89a",
+    "dev_ood-solver-reasoning-v1.1-state_machine-ca79eeecd56d86fa484e",
+    "dev_ood-solver-reasoning-v1.1-counting-556e05b209ff7a2e0eed",
+    "dev_ood-solver-reasoning-v1.1-counting-d6149f543c79c4e97633",
+    "dev_ood-solver-reasoning-v1.1-sequence-e2c08cb96d370199fbb4",
+    "dev_ood-solver-reasoning-v1.1-sequence-0974e7f18e9f078b1c21"
+  ],
+  "test_used": false
+}

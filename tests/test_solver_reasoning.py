@@ -58,7 +58,12 @@ def test_solver_approval_requires_reproducible_archive_and_exact_tokens(tmp_path
 
     import yaml
 
-    from qwenlean.training.quality import validate_parent_sources, validate_training_pool
+    from qwenlean.training.quality import (
+        validate_historical_parent_sources as validate_parent_sources,
+    )
+    from qwenlean.training.quality import (
+        validate_historical_training_pool as validate_training_pool,
+    )
     from qwenlean.training.solver_contract import (
         REVISION,
         pinned_tokenizer,

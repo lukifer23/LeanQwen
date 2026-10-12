@@ -1,4 +1,9 @@
-# Phase 4 verified reasoning contract
+# Historical Phase 4 solver reasoning contract
+
+**Superseded source strategy.** The critical teacher correction makes licensed
+external worked solutions primary. This document describes the preserved solver
+implementation, not current SFT authorization. Solver/natural corpora cannot enter
+current SFT. See [current strategy](training-data-strategy.md).
 
 The goal is useful reasoning per token with correctness and capability retention.
 Natural-only best-of-four coverage failed in Phase 3; that evidence remains intact.
@@ -26,7 +31,8 @@ independent expected answer, solver/verifier versions, full proof and certificat
 hash, rendered prompt/response, exact token IDs, model/tokenizer/template pins,
 Apache-2.0 permission, split/namespace, source-file hashes and source-archive hash.
 Approval reproduces the entire archive from the seed and recipe. Natural Qwen
-records retain their exact-parent approval path. External sources remain disabled.
+records retain their historical exact-parent path. This historical contract does not
+authorize current external-only training.
 Uniform solver sampling is explicitly recorded as 100% solver / 0% natural.
 
 Pinned Qwen thinking template ends with `<think>\n`. The supervised suffix starts
@@ -48,10 +54,10 @@ when their signatures differ. TEST remains a reserved seed/bucket namespace; no
 TEST proof/answer/tokenized pool or model evaluation is emitted.
 
 ```bash
-uv run --frozen python scripts/build_solver_corpus.py --output data/generated/<new-corpus> --per-family 64
+uv run --frozen python scripts/build_solver_corpus.py --historical-reproduction --output data/generated/<new-corpus> --per-family 64
 uv run --frozen python scripts/phase4_dev.py --freeze --corpus data/generated/<new-corpus> --cohort data/generated/<new-cohort>
 uv run --frozen python scripts/phase4_dev.py --cohort data/generated/<new-cohort> --output runs/<stock-baseline>
-uv run --frozen python scripts/approve_solver_pool.py --corpus data/generated/<new-corpus> --output data/processed/<new-pool> --config configs/training/smoke.yaml --selection smoke
+uv run --frozen python scripts/approve_solver_pool.py --historical-reproduction --corpus data/generated/<new-corpus> --output data/processed/<new-pool> --config configs/training/smoke.yaml --selection smoke
 ```
 
 All data generation and model work holds `model_process_lock`. New destinations

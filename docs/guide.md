@@ -1,17 +1,12 @@
 # Running QwenLean
 
-Current Phase 3 work resumes the completed prompt-study checkpoint. PonderScope
-finished naturally before the stock context probes. Tail diagnosis was held for
-the audit addendum's missing preflights; those checks passed and the seven-case
-tail, 34 early-exit probes and semantic calibration have now completed. See
-[current progress](../reports/phase3-progress.md), [historical checkpoint](../reports/phase2_checkpoint.md)
-and [reversible context profiles](context-management.md).
-The sixteen-task × four-trajectory TRAIN pass completed: four correct natural
-responses from one task, sixty capped/unclosed traces. No optimizer ran; the
-project is idle for user/independent-agent review. See
-[generation review](../reports/phase3-natural-pilot-review.md),
-[data strategy and safeguards](training-data-strategy.md) and the
-[measured diagnosis](../reports/phase3-reasoning-diagnosis.md) for completed evidence.
+Current work uses licensed external human reasoning, starting with 768 original
+GSM8K TRAIN solutions. Qwen is the student/evaluation target only. No Qwen/LFM
+teacher or rewrite/judge pipeline and no LM Studio commands. The completed natural
+pilot and later solver corpus are preserved as historical evidence, excluded from
+current SFT. See [source comparison](../reports/external-source-comparison.md),
+[data strategy](training-data-strategy.md) and [corpus audit](../reports/external-human-pilot.json).
+Optimizer smoke and matched before/after results remain pending.
 
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.
@@ -181,81 +176,79 @@ uses a separately labeled greedy 128-token final budget. It does not modify the
 source traces or demonstrate that ordinary Qwen would stop at those positions.
 Controllers retain individual generations and validate saved contracts on restart.
 
-## Candidate and optimizer interfaces — awaiting real validation
+## External ingestion and optimizer interfaces
+
+The first source is original human GSM8K TRAIN at the revision specified in
+`qwenlean/datasets/external_reasoning.py`. Archive exact original TRAIN, TEST and
+MIT license files under names `gsm8k-train.jsonl`, `gsm8k-test.jsonl` and
+`gsm8k-LICENSE`. The importer validates registered hashes; TEST questions are
+used for contamination metadata only. Every output destination must be new.
 
 ```bash
-uv run --frozen python scripts/train_candidates.py
-uv run --frozen qwenlean train-sft --config configs/training/<explicit-config>.yaml --dataset data/processed/<approved-train>.jsonl --quality-manifest reports/<approved-quality-manifest>.json --output adapters/<new-directory>
+uv run --frozen python scripts/audit_external_sources.py --gsm-archive data/raw/<pinned-source> --output data/raw/<new-bounded-audit>
+uv run --frozen python scripts/import_external_reasoning.py --archive data/raw/<pinned-source> --output data/generated/<new-external-pilot> --count 768 --dev-count 64
+uv run --frozen python scripts/approve_external_dataset.py --corpus data/generated/<new-external-pilot> --published-human-qa data/raw/<pinned-human-qa-publication>.html --output data/processed/<new-approved-pool> --config configs/training/external-human-smoke.yaml
 ```
 
-Candidate generation refuses to proceed until the prompt, tail, early-exit, metric
-and runtime-guard reports exist. Its predeclared pilot is sixteen TRAIN tasks,
-N=4, with a 4096 total-output cap. Selection requires correct clean EOS responses;
-length only breaks quality ties. Detected invalid numeric equations disqualify
-an otherwise correct final answer. Narrow step validation leaves much reasoning
-unverified, so selected targets need individual inspection.
-
-The completed pilot is `runs/20261012T184117-phase2-train-natural-n4-1af34da1`.
-Its completion manifest confirms 64 samples/16 tasks; the controller published
-data/quality reports and exited without an optimizer. Do not resume or rerun this
-completed pilot. For a future genuinely incomplete eligible run, after new user
-instructions, inspect its completion state before using the existing contract:
+The QA publication is the exact archived `2110.14168v2` HTML registered in
+`external_contract.py`. Published human QA is an explicit bounded reference-data
+approval basis, not formal verification of unannotated prose or fresh individual
+inspection. Arithmetic/completion/repetition flags fail this route. An alternative
+`--reviews <jsonl>` accepts actual individual human or permitted independent
+frontier judgments. The importer's review bundle starts with every checkbox unset;
+no coding-agent prose or rewritten response may enter targets.
 
 ```bash
-uv run --frozen --no-sync python scripts/train_candidates.py --resume runs/<actual-eligible-incomplete-run>
+uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke.yaml --dataset data/processed/<actual-approved-pool>/train.jsonl --quality-manifest data/processed/<actual-approved-pool>/manifest.json --output adapters/<new-external-smoke>
 ```
 
-Resume applies only to an eligible incomplete run, never a completed run.
-At this checkpoint, stop for the user's continuation decision after independent
-review. No new model job or data-source implementation should begin.
-Solver/external/teacher options and retention safeguards are discussed
-in [training data strategy](training-data-strategy.md); they are not implemented
-or silently enabled by these commands.
-
-SFT requires exact source prompt/response token IDs, natural Qwen parent IDs,
-TRAIN permission and a matching approved dataset-quality manifest. The current
-implementation uses batch size one with configurable gradient accumulation,
-AdamW and explicit mixed-attention LoRA modules. It masks prompt loss, saves
-adapter-only checkpoints and reloads a fresh base instance for DEV pipeline
-sanity. It refuses existing outputs; optimizer resume is not supported. Bounded
-training examples do not change the model context or RoPE, and none are silently
-truncated. The first four-step smoke test remains pending. Phase 3 authorizes one
-bounded real pilot only after diagnostic, dataset and optimizer gates pass.
-The implemented four-step configuration is `configs/training/smoke.yaml`:
+Freeze DEV before model training; this CPU operation does not generate responses:
 
 ```bash
-uv run --frozen --no-sync qwenlean train-sft --config configs/training/smoke.yaml --dataset data/processed/<actual-approved-pool>.jsonl --quality-manifest reports/<actual-quality-manifest>.json --output adapters/<new-smoke-directory>
+uv run --frozen python scripts/freeze_external_dev.py --corpus data/generated/<external-pilot> --retention data/generated/<existing-procedural-cohort> --output data/generated/<new-frozen-dev> --report reports/<new-protocol>.json
+uv run --frozen python scripts/phase4_dev.py --cohort data/generated/<frozen-dev> --output runs/<new-stock-baseline>
 ```
 
-Adapter attachment checks exact layer/module names. Integrity hashes all current
-frozen base tensors, including embeddings, norms and unadapted layers, before
-training, afterward and after a fresh reload. Hashes include names, shapes, dtypes
-and raw bytes using bounded host chunks, without a second full base copy. Empty
-verification sets fail. Saved copies of old array references are not used to
-certify a mutated/replaced parameter. Targets must close reasoning and supervise
-their final EOS, and reload generation failures cannot become smoke success.
+The frozen external-human-v1 cohort has 24 source DEV questions (eight per
+operation-count bin) plus the existing 32 procedural retention tasks. Both modes
+use the same task identities and respective fixed samplers; no TEST evaluation.
+Run stock and adapter separately with the identical cohort; `--adapter` selects
+a saved unfused adapter. A baseline stop stays partial evidence, never accuracy.
 
-After candidate generation, individual reviews live in a separate JSONL with
-`source_generation_id`, `approved_for_sft`, `intermediate_reasoning_review`
-(`valid` for approval), and a `review_note`. Reviewer prose is measurement metadata,
-not model-training content. Build a tiny approved pool with:
+Only run after source/quality and resource gates pass, one workload under the lease.
+This is four real optimizer steps for technical validation, not an improvement
+experiment. The maximum training sequence is 1024; actual human pilot sequences
+are all under 512, complete and never truncated. Completion of this smoke will
+not establish longer-sequence capacity. Current optimizer measurements remain zero.
+
+SFT checks permission before reading tokenized records or loading tensors, then
+reproduces exact source text, official thinking prefill, first supervised token,
+closing think, final answer and EOS. Prompt tokens are loss masked. Batch size one,
+AdamW, accumulation and explicit mixed-attention LoRA modules are implemented.
+All frozen live base tensors are fingerprinted before/after and after fresh reload,
+including unadapted layers, embeddings and norms. Adapter logits must match after
+save/reload and fresh inference must succeed. Existing destinations are refused;
+optimizer resume is not implemented. Native context/RoPE/tokenizer remain unchanged.
+
+No improvement pilot starts until the matched stock baseline is complete and
+hardware feasibility is measured. Do not use training loss or earlier EOS as a
+substitute for paired correctness/efficiency and capability-retention evaluation.
+The earlier procedural DEV cohort is a retention/domain-shift check relative to
+GSM8K; its historical solver ID/OOD labels do not describe the new teacher corpus.
+
+## Historical natural/solver reproduction only
+
+The 16×4 Qwen pilot is complete. No new teacher generation/resume is permitted.
+Offline reanalysis requires an explicit completed archive and new destination:
 
 ```bash
-uv run --frozen python scripts/approve_natural_dataset.py --reviews reports/<train-reviews>.jsonl --output data/processed/<new-smoke-pool>.jsonl --manifest reports/<new-quality-manifest>.json --max-examples 4 --max-sequence-length 1024
+uv run --frozen python scripts/train_candidates.py --publish-run runs/<completed-natural-pilot> --output data/generated/<new-historical-analysis>
 ```
 
-The builder checks actual v2 split signatures, verifies natural measured parents,
-excludes whole oversized examples, and refuses existing output. `train-sft`
-checks that every response/prompt token matches its hashed raw TRAIN archive and
-the pinned official thinking template. A reviewed target is a saved Qwen response;
-no reviewer wording is appended to the supervised target.
-
-After the Qwen candidate process exits, optionally run
-`uv run --frozen --extra semantic python scripts/train_candidate_semantics.py`
-for source-linked TRAIN semantic measurements under the same model lease. These
-are derived analysis records; raw parent responses remain unchanged. Review the
-similarity evidence alongside actual reasoning. Weak DEV calibration does not
-justify automatically penalizing every similar verification step.
+Natural and solver approval/build scripts require `--historical-reproduction`
+and emit reproduction-only manifests. Current SFT rejects them; original validators
+retain their exact-parent/proof checks. Do not relabel historical targets external.
+The [solver contract](phase4-verified-reasoning.md) records the superseded experiment.
 
 Tail-controller recovery uses separate durable job directories for each task/cap.
 A saved generation is reused even if report publication was interrupted; contract
@@ -267,3 +260,14 @@ Once the completed prompt report exists, export measured figures with
 the optional tail figure distinguishes known survivors from earlier-censored
 unknowns. Prompt lengths are observed capped lengths, not natural completion
 lengths. Boundary task-bootstrap intervals can be degenerate on this small pilot.
+
+## Publish compact data evidence
+
+```bash
+uv run --frozen python scripts/summarize_external_sources.py --archive data/raw/<bounded-audit> --output reports/<new-derived-source-measurements>.json
+uv run --frozen python scripts/report_external_pilot.py --candidates data/generated/<pilot> --approved data/processed/<approved-pool> --smoke data/processed/<approved-smoke> --config configs/training/external-human-smoke.yaml --output reports/<new-corpus-audit>.json
+```
+
+The corpus report reproduces both approval/source contracts and tokenization;
+its zero-step status is scoped to the corpus milestone. Future optimizer results
+must be recorded in a separate measured report.
