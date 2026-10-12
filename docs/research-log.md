@@ -852,3 +852,24 @@ Bound reusable MLX cache64 MiB and clear unused buffers before RAM admission che
 keep4 GiB RAM/512 MiB swap-out gates unchanged. Active example, chunk size, live/cache
 allocation and elapsed-stop time are now saved. Full suite152 passed before four
 additional invalid-config cases were added. New measured retry follows separately.
+
+### First real optimizer update and further bounded-prefix fix
+
+Memory-fix commit0c219d5 pushed; GitHub CI for the exact0c219d5 commit succeeded. Retried eight approved human targets with32-token
+checkpointed head chunks and64 MiB reusable cache. One real AdamW update executed:
+loss1.066536665, finite gradients,1.215982 seconds,171 supervised tokens,281 complete
+sequence tokens, MLX peak2,810,513,840 bytes; sampled RAM4,533,387,264 bytes. Second
+backward (146 complete tokens) stopped before update2 at4,033,495,040 bytes available,
+below the unchanged4 GiB floor. The failed run has no saved adapter or full integrity/
+reload approval. Loss/source/raw hashes are preserved in the separate attempt1 report.
+No efficiency or capability claim follows this optimizer-only evidence.
+
+Added bounded execution of the frozen prefix: reproduce the pinned complete-input
+Qwen core with unchanged training-mode recurrence, masks, layers and final norm;
+materialize and detach only layers before the first trainable block. Embeddings
+must be frozen; multi-device pipelines are rejected. No mathematical shortening,
+inference-kernel substitution or architecture/weight changes. CPU tests compare
+loss and every LoRA gradient against the original full decoder with two frozen and
+two adapted layers, tied/untied heads. Per-step adapter hashes and failed-run tiny
+adapter preservation are added for exact update evidence. New bounded-prefix
+config retains all original resource gates and exact human targets.

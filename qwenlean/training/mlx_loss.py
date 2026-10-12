@@ -9,6 +9,34 @@ gradients while recomputing their large intermediates during backward.
 import mlx.core as mx
 import mlx.nn as nn
 from mlx.utils import tree_flatten
+from mlx_lm.models.base import create_attention_mask, create_ssm_mask
+
+
+def decoder_hidden(text, inputs, materialize_frozen_prefix):
+    if not materialize_frozen_prefix:
+        return text.model(inputs)
+    core = text.model
+    if core.pipeline_size != 1 or core.pipeline_rank != 0:
+        raise ValueError('Bounded frozen-prefix execution requires a single-device decoder')
+    if tree_flatten(core.embed_tokens.trainable_parameters()):
+        raise ValueError('Frozen-prefix execution requires frozen input embeddings')
+    # Reproduce the pinned Qwen core's complete-input/no-cache forward exactly.
+    # Keep its training-mode recurrence and masks; no inference-kernel substitution.
+    hidden = core.embed_tokens(inputs)
+    fa_mask = create_attention_mask(hidden, None) if core.fa_idx is not None else None
+    ssm_mask = create_ssm_mask(hidden, None) if core.ssm_idx is not None else None
+    trainable_reached = False
+    for layer in core.pipeline_layers:
+        trainable_reached |= bool(tree_flatten(layer.trainable_parameters()))
+        mask = ssm_mask if layer.is_linear else fa_mask
+        hidden = layer(hidden, mask=mask, cache=None)
+        if not trainable_reached:
+            # These blocks have no trainable ancestors. Materialize constant
+            # features and release temporaries before constructing adapter VJPs.
+            hidden = mx.stop_gradient(hidden)
+            mx.eval(hidden)
+            mx.clear_cache()
+    return core.norm(hidden)
 
 
 def chunked_head_loss(hidden, labels, project, chunk_size):
@@ -31,7 +59,7 @@ def chunked_head_loss(hidden, labels, project, chunk_size):
     return total / labels.size
 
 
-def response_loss(model, tokens, begin, end, chunk_size=32):
+def response_loss(model, tokens, begin, end, chunk_size=32, materialize_frozen_prefix=False):
     if tokens.ndim != 2 or not 0 <= begin < end <= tokens.shape[1]-1:
         raise ValueError('Invalid causal supervision range')
     text = getattr(model, 'language_model', None)
@@ -40,6 +68,6 @@ def response_loss(model, tokens, begin, end, chunk_size=32):
     head = text.model.embed_tokens if text.args.tie_word_embeddings else text.lm_head
     if tree_flatten(head.trainable_parameters()):
         raise ValueError('This bounded loss path requires a frozen output head')
-    hidden = text.model(tokens[:, :-1])[:, begin:end, :]
+    hidden = decoder_hidden(text, tokens[:, :-1], materialize_frozen_prefix)[:, begin:end, :]
     project = head.as_linear if text.args.tie_word_embeddings else head
     return chunked_head_loss(hidden, tokens[:, 1:][:, begin:end], project, chunk_size)

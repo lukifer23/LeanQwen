@@ -10,6 +10,7 @@ configs/sampling/cooler.yaml
 configs/sampling/finalist.yaml
 configs/sampling/presence-zero.yaml
 configs/sampling/repetition-105.yaml
+configs/training/external-human-smoke-bounded-prefix.yaml
 configs/training/external-human-smoke-memory-efficient.yaml
 configs/training/external-human-smoke.yaml
 configs/training/phase4-smoke.yaml
@@ -84,6 +85,7 @@ reports/early_exit_records.jsonl
 reports/environment.json
 reports/external-human-dev-protocol.json
 reports/external-human-pilot.json
+reports/external-human-smoke-memory-efficient-attempt1.json
 reports/external-human-smoke-memory-stop.json
 reports/external-human-smoke-memory-stop.md
 reports/external-source-comparison-v2.json

@@ -112,6 +112,7 @@ def _train(cfg, rows, output):
     model.train()  # Native differentiable gated-delta path; inference kernels have no VJP.
     mx.eval(model.parameters())
     before_hash = parameter_hash(model.trainable_parameters())
+    write_json(output/'initial-adapter.json', {'adapter_hash': before_hash, **targets})
     initial = {n: mx.array(p) for n, p in tree_flatten(model.trainable_parameters())}
     mx.eval(initial)
     base_before = frozen_base_fingerprint(model)
@@ -125,13 +126,14 @@ def _train(cfg, rows, output):
     rng.shuffle(order)
 
     def loss_fn(model, tokens, begin, end):
-        return response_loss(model, tokens, begin, end, cfg.get('loss_chunk_size', 32))
+        return response_loss(model, tokens, begin, end, cfg.get('loss_chunk_size', 32),
+                             cfg.get('materialize_frozen_prefix', False))
 
     value_grad = nn.value_and_grad(model, loss_fn)
     logs, training_start = [], time.perf_counter()
     swap_start = psutil.swap_memory().sout
 
-    def memory_gate():
+    def memory_gate(current_model):
         available, swap = psutil.virtual_memory().available, psutil.swap_memory()
         error = None
         if available < cfg.get('min_available_ram_bytes', 0):
@@ -139,6 +141,10 @@ def _train(cfg, rows, output):
         elif swap.sout-swap_start > cfg.get('max_swap_out_delta_bytes', 512*1024**2):
             error = 'Training swap-out pressure exceeded the bounded experiment limit'
         if error:
+            if logs:
+                # Preserve a tiny failed-run adapter, never an approved model.
+                partial = output/'aborted-adapters.safetensors'
+                mx.save_safetensors(str(partial), dict(tree_flatten(current_model.trainable_parameters())))
             write_json(output/'resource-stop.json', {'reason': error,
                 'optimizer_steps': len(logs), 'system_available_ram_bytes': available,
                 'min_available_ram_bytes': cfg.get('min_available_ram_bytes', 0),
@@ -149,7 +155,7 @@ def _train(cfg, rows, output):
             raise RuntimeError(error)
     with (output/'loss.jsonl').open('w') as handle:
         for step in range(1, cfg['steps']+1):
-            memory_gate()
+            memory_gate(model)
             start = time.perf_counter()
             accumulator, losses, supervised = None, [], 0
             for _ in range(cfg['gradient_accumulation']):
@@ -169,7 +175,7 @@ def _train(cfg, rows, output):
                 # Release reusable allocator buffers before checking current RAM.
                 # Live loss/gradient arrays and recorded peak allocation stay intact.
                 mx.clear_cache()
-                memory_gate()
+                memory_gate(model)
                 if not bool(mx.isfinite(loss).item()) or not all(bool(mx.all(mx.isfinite(v)).item()) for _, v in tree_flatten(gradients)):
                     raise RuntimeError('Non-finite training loss/gradients')
                 if not any(bool(mx.any(v != 0).item()) for _, v in tree_flatten(gradients)):
@@ -191,7 +197,9 @@ def _train(cfg, rows, output):
                        swap=psutil.swap_memory()._asdict(), finite_gradients=True,
                        sequence_length=tokens.shape[1], task_id=r['task_id'],
                        loss_chunk_size=cfg.get('loss_chunk_size', 32),
-                       mlx_active_bytes=mx.get_active_memory(), mlx_cache_bytes=mx.get_cache_memory())
+                       mlx_active_bytes=mx.get_active_memory(), mlx_cache_bytes=mx.get_cache_memory(),
+                       adapter_hash=parameter_hash(model.trainable_parameters()))
+            log['adapter_changed_from_initial'] = log['adapter_hash'] != before_hash
             logs.append(log)
             handle.write(json.dumps(log)+'\n')
             handle.flush()

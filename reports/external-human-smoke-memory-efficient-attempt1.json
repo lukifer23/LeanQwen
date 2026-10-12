@@ -1,0 +1,169 @@
+{
+  "active_microbatch": {
+    "loss_chunk_size": 32,
+    "sequence_length": 146,
+    "step": 2,
+    "supervised_tokens": 82,
+    "supervision_begin": 63,
+    "supervision_end": 145,
+    "task_id": "gsm8k-human-train-00034-0115e82ddf1a324d"
+  },
+  "adapter_saved": false,
+  "code_sha": "0c219d5181e5c29bf04956b04592a73d1f90c264",
+  "completion": {
+    "error": "Training available-memory floor reached; stop without escalation",
+    "error_type": "RuntimeError",
+    "status": "failed"
+  },
+  "config": {
+    "backend": "mlx",
+    "batch_size": 1,
+    "checkpoint_every": 2,
+    "context_profile": "mac-128k",
+    "enable_thinking": true,
+    "gradient_accumulation": 1,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+      "dropout": 0.0,
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj",
+        "linear_attn.in_proj_qkv"
+      ],
+      "rank": 4,
+      "scale": 2.0
+    },
+    "loss_chunk_size": 32,
+    "max_output_tokens": 512,
+    "max_sequence_length": 1024,
+    "max_swap_out_delta_bytes": 536870912,
+    "min_available_ram_bytes": 4294967296,
+    "mlx_cache_limit_bytes": 67108864,
+    "model": "Qwen/Qwen3.5-0.8B",
+    "name": "external-human-four-step-memory-efficient-smoke",
+    "num_layers": 2,
+    "optimizer": "adamw",
+    "prefill_step_size": 512,
+    "prompt_policy": "P2",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "sampling": {
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repetition_penalty": 1.0,
+      "temperature": 1.0,
+      "top_k": 20,
+      "top_p": 0.95
+    },
+    "seed": 20261012,
+    "steps": 4,
+    "training_source_policy": "external-teacher-only-v1",
+    "weight_decay": 0.01
+  },
+  "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+  "full_post_training_integrity_completed": false,
+  "interpretation": "First real finite optimizer update completed; technical smoke still failed the unchanged RAM floor after the second backward, before optimizer update2. No improvement claim.",
+  "loss_history": [
+    {
+      "finite_gradients": true,
+      "loss": 1.0665366649627686,
+      "loss_chunk_size": 32,
+      "mlx_active_bytes": 1506119492,
+      "mlx_cache_bytes": 16433053,
+      "mlx_peak_bytes": 2810513840,
+      "optimizer_steps": 1,
+      "rss_peak_observed_bytes": 2092089344,
+      "sequence_length": 281,
+      "step": 1,
+      "step_s": 1.2159819999978936,
+      "supervised_tokens": 171,
+      "supervised_tokens_per_second": 140.62708165112332,
+      "swap": {
+        "free": 1561395200,
+        "percent": 51.5,
+        "sin": 476866347008,
+        "sout": 513163264,
+        "total": 3221225472,
+        "used": 1659830272
+      },
+      "system_available_ram_bytes": 4533387264,
+      "task_id": "gsm8k-human-train-01595-695a079a906bfc10"
+    }
+  ],
+  "optimizer_steps": 1,
+  "raw_artifacts": [
+    {
+      "bytes": 204,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/active-microbatch.json",
+      "sha256": "8aca75a0cefa6aaf0793cdb8888f1a959e2087a604d748107c1a7b9e5389894e"
+    },
+    {
+      "bytes": 136,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/completion.json",
+      "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+    },
+    {
+      "bytes": 1091,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/config.json",
+      "sha256": "a9ec31902c85fdb885fc627b9a25db8a4f10218fab2e8e578311ffed10425007"
+    },
+    {
+      "bytes": 475,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/environment.json",
+      "sha256": "e442fe31d0453e900c49b1af9edbe5dbb3eb7f4fd24580ebf0a01aa3004c5740"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/frozen-base-before.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 598,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/loss.jsonl",
+      "sha256": "a7a10e2f865372214b67bc9871af3762792622bce9a52630e7f82c9571a901bf"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/original-loaded-base.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 4817,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/quality_manifest.json",
+      "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+    },
+    {
+      "bytes": 1127,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/raw-console.log",
+      "sha256": "1bba68d7f0f7014196e38bba566d577b887cda6857828cdb15a2af5e256d8aaf"
+    },
+    {
+      "bytes": 553,
+      "path": "adapters/external-human-smoke-memory-efficient-attempt1/resource-stop.json",
+      "sha256": "c767a6d28204fc659ab10d57416ada8afe43e188f02a385e4f8427c4557b6084"
+    }
+  ],
+  "real_sft_pilot_completed": false,
+  "resource_stop": {
+    "min_available_ram_bytes": 4294967296,
+    "mlx_active_bytes": 1505897768,
+    "mlx_cache_bytes": 28611702,
+    "mlx_peak_bytes": 2810513840,
+    "optimizer_steps": 1,
+    "reason": "Training available-memory floor reached; stop without escalation",
+    "rss_bytes": 2110373888,
+    "swap": {
+      "free": 1561395200,
+      "percent": 51.5,
+      "sin": 476866576384,
+      "sout": 513163264,
+      "total": 3221225472,
+      "used": 1659830272
+    },
+    "swap_out_delta_bytes": 1163264,
+    "system_available_ram_bytes": 4033495040,
+    "training_elapsed_s": 1.6696705409995047
+  },
+  "run_path": "adapters/external-human-smoke-memory-efficient-attempt1",
+  "save_reload_equivalence": null,
+  "status": "resource_stopped_after_one_optimizer_update"
+}

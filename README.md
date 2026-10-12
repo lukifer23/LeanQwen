@@ -27,7 +27,9 @@ model engine; no LM Studio. A separate source-aware gate validates licensing
 before training data/tensor loading and reproduces exact source/template/token IDs.
 The four-step technical smoke on eight human targets stopped after its first
 backward pass at 2.583 GiB available RAM, below the unchanged 4 GiB floor.
-**Optimizer steps remain zero and no adapter or improvement result exists**.
+A subsequent [memory-efficient retry](reports/external-human-smoke-memory-efficient-attempt1.json)
+completed **one real optimizer update**, then stopped at the same floor before
+update2. No saved adapter, successful four-step smoke or improvement result exists.
 See [saved smoke stop](reports/external-human-smoke-memory-stop.md).
 A new [56-task matched DEV protocol](reports/external-human-dev-protocol.json)
 combines 24 human-source questions and the existing 32 procedural retention tasks.

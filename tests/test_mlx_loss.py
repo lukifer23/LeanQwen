@@ -36,11 +36,12 @@ def test_checkpointed_chunks_equal_dense_loss_and_hidden_gradients(chunk, dtype)
 
 
 @pytest.mark.parametrize('tied', [True, False])
-def test_actual_qwen_decoder_lora_gradients_mask_prompt_and_include_first_token_eos(tied):
+@pytest.mark.parametrize('materialize', [True, False])
+def test_actual_qwen_decoder_lora_gradients_mask_prompt_and_include_first_token_eos(tied, materialize):
     with mx.stream(mx.cpu):
         mx.random.seed(43)
         args = TextModelArgs(model_type='qwen3_5_text', hidden_size=16, intermediate_size=32,
-            num_hidden_layers=2, num_attention_heads=2, num_key_value_heads=1, vocab_size=37,
+            num_hidden_layers=4, num_attention_heads=2, num_key_value_heads=1, vocab_size=37,
             linear_num_value_heads=2, linear_num_key_heads=1, linear_key_head_dim=8,
             linear_value_head_dim=8, full_attention_interval=2, tie_word_embeddings=tied)
         model = Model(ModelArgs(model_type='qwen3_5', text_config=vars(args)))
@@ -55,7 +56,7 @@ def test_actual_qwen_decoder_lora_gradients_mask_prompt_and_include_first_token_
             return nn.losses.cross_entropy(m(tokens[:, :-1])[:, begin:end].astype(mx.float32),
                     tokens[:, 1:][:, begin:end], reduction='mean')
         def bounded(m):
-            return response_loss(m, tokens, begin, end, 3)
+            return response_loss(m, tokens, begin, end, 3, materialize)
         l0, g0 = nn.value_and_grad(model, dense)(model)
         l1, g1 = nn.value_and_grad(model, bounded)(model)
         mx.eval(l0, g0, l1, g1)

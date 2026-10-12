@@ -148,3 +148,15 @@ zero optimizer steps are historical evidence, not a reason to increase N or
 relabeled teacher data. See the unchanged
 [review](../reports/phase3-natural-pilot-review.md) and
 [raw records](../reports/train_candidate_records.jsonl).
+
+### Further bounded-prefix execution
+
+The first memory-efficient retry completed one real optimizer update, then stopped
+at the unchanged RAM floor before update2. See the separately preserved
+[attempt report](../reports/external-human-smoke-memory-efficient-attempt1.json).
+It does not pass the four-step/integrity/reload gate. The next local fix materializes
+constant features from frozen prefix layers using the same complete-input decoder
+operations and training-mode recurrence, then differentiates the adapted suffix.
+No prefix contains trainable parameters; input embeddings must be frozen. The
+bounded-prefix profile keeps4 GiB RAM and512 MiB swap-out limits. Dense decoder loss
+and all LoRA gradients agree in small exact-operation CPU equivalence checks.

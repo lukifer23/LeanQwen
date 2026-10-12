@@ -61,6 +61,8 @@ def validate_optimizer_config(config):
         raise ValueError('Positive integer loss chunk size required')
     if type(config.get('mlx_cache_limit_bytes', 64*1024**2)) is not int or config.get('mlx_cache_limit_bytes', 64*1024**2) < 0:
         raise ValueError('Nonnegative integer MLX cache limit required')
+    if type(config.get('materialize_frozen_prefix', False)) is not bool:
+        raise ValueError('Boolean frozen-prefix execution option required')
     for key in ('steps', 'batch_size', 'gradient_accumulation', 'max_sequence_length', 'num_layers'):
         if type(config[key]) is not int or config[key] < 1:
             raise ValueError(f'Positive {key} required')
