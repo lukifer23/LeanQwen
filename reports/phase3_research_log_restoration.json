@@ -1,0 +1,35 @@
+{
+  "historical_entry_ids": [
+    "ENV-001",
+    "COMPAT-002",
+    "EOS-003",
+    "PROCESS-004",
+    "CONTROL-005",
+    "BASELINE-A-006",
+    "PARITY-007",
+    "CONTROL-005",
+    "SCORE-008",
+    "SCORE-009",
+    "SCORE-010",
+    "SAMPLING-011",
+    "PROCESS-012",
+    "FOUNDATION-013"
+  ],
+  "historical_heading_count": 14,
+  "metrics_file_changed": false,
+  "note": "CONTROL-005 planned and completed entries are both retained in their original chronological positions. Removed misplaced metric-contract preamble duplicates definitions in docs/metrics.md; its exact former text remains in Git history.",
+  "phase1_source_commit": "8f67d3b2a1c217f5cad819ac2b8211b24db57e7d",
+  "phase1_source_entries_preserved_verbatim": true,
+  "phase1_source_file_hash": "e8da8d868b43f6f053a6f86e72f7f588e96e7d309b132044cd22df2ce17d6bff",
+  "phase2_phase3_entries_preserved_verbatim": true,
+  "phase2_phase3_source_commit": "e5b5b49cdd89f7f982f66db90c88fee8c9b907b6",
+  "phase2_phase3_tail_hash": "6e62ad893b4d2e6cf100f7059f65b2ba54c04d4466586447f4c890f7e65ee8c9",
+  "relative_links_checked": [
+    {
+      "exists": true,
+      "label": "the first-pass report",
+      "target": "../reports/first-pass.md"
+    }
+  ],
+  "restored_log_hash_before_new_audit_entry": "aa7b4b467d06fc89b19d47cc493d49f1ccf3fcaa8a8386c1fc9cb79981cdb4e3"
+}
