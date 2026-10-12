@@ -123,8 +123,16 @@ def _train(cfg, rows, output):
 
     value_grad = nn.value_and_grad(model, loss_fn)
     logs, training_start = [], time.perf_counter()
+    swap_start = psutil.swap_memory().sout
+
+    def memory_gate():
+        if psutil.virtual_memory().available < cfg.get('min_available_ram_bytes', 0):
+            raise RuntimeError('Training available-memory floor reached; stop without escalation')
+        if psutil.swap_memory().sout-swap_start > cfg.get('max_swap_out_delta_bytes', 512*1024**2):
+            raise RuntimeError('Training swap-out pressure exceeded the bounded experiment limit')
     with (output/'loss.jsonl').open('w') as handle:
         for step in range(1, cfg['steps']+1):
+            memory_gate()
             start = time.perf_counter()
             accumulator, losses, supervised = None, [], 0
             for _ in range(cfg['gradient_accumulation']):
@@ -137,6 +145,7 @@ def _train(cfg, rows, output):
                 begin, end = supervision_range(r['prompt_token_ids'], r['target_token_ids'])
                 loss, gradients = value_grad(model, tokens, begin, end)
                 mx.eval(loss, gradients)
+                memory_gate()
                 if not bool(mx.isfinite(loss).item()) or not all(bool(mx.all(mx.isfinite(v)).item()) for _, v in tree_flatten(gradients)):
                     raise RuntimeError('Non-finite training loss/gradients')
                 if not any(bool(mx.any(v != 0).item()) for _, v in tree_flatten(gradients)):
@@ -179,6 +188,12 @@ def _train(cfg, rows, output):
     write_json(output/'adapter_config.json', {'fine_tune_type': 'lora', 'num_layers': cfg['num_layers'],
                'lora_parameters': cfg['lora_parameters'], 'base_model': cfg['model'], 'revision': cfg['revision']})
     info = backend.model_info
+    model.eval()
+    equivalence_ids = mx.array([rows[0]['prompt_token_ids'][:32]], dtype=mx.int32)
+    before_reload_logits = model(equivalence_ids)[:, -1, :]
+    mx.eval(before_reload_logits)
+    before_reload_fingerprint = tensor_fingerprint([('last_logits', before_reload_logits)])
+    del before_reload_logits
     backend.close()
     del leaves, initial, value_grad, optimizer, model, backend
     gc.collect()
@@ -194,6 +209,12 @@ def _train(cfg, rows, output):
         weights_identifier=info['weights_identifier'] + ':adapter:' + adapter_file_hash)
     if reload_hash != after_hash:
         raise RuntimeError('Reloaded adapter tensor hash differs')
+    after_reload_logits = reloaded.model(equivalence_ids)[:, -1, :]
+    mx.eval(after_reload_logits)
+    after_reload_fingerprint = tensor_fingerprint([('last_logits', after_reload_logits)])
+    if after_reload_fingerprint != before_reload_fingerprint:
+        raise RuntimeError('Reloaded adapter inference logits differ on fixed prefix')
+    del after_reload_logits, equivalence_ids
     # load_adapters does not freeze the fresh base. Freeze it for the same
     # independently enumerated frozen-base check; adapters remain trainable.
     reloaded.model.freeze()
@@ -226,6 +247,8 @@ def _train(cfg, rows, output):
               'mlx_peak_bytes': max(r['mlx_peak_bytes'] for r in logs), 'rss_peak_observed_bytes': rss_peak,
               'adapter_hash_before': before_hash, 'adapter_hash_after': after_hash,
               'adapter_hash_reloaded': reload_hash, 'changed_parameter_names': changed,
+              'reload_logits_exact': True, 'reload_logits_fingerprint': after_reload_fingerprint,
+              'source_distribution': dict(quality_source_counts(rows)),
               'all_frozen_base_unchanged': True, 'frozen_base_before': base_before,
               'frozen_base_after': base_after, 'frozen_base_reloaded': base_reloaded,
               'base_model_context': info['context_window_tokens'],
@@ -236,3 +259,8 @@ def _train(cfg, rows, output):
     write_json(output/'smoke_report.json', report)
     write_json(output/'completion.json', {'status': 'complete', 'optimizer_steps': cfg['steps']})
     return report
+
+
+def quality_source_counts(rows):
+    from collections import Counter
+    return Counter(r['provenance']['response_origin'] for r in rows)

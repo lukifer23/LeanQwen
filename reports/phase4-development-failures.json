@@ -1,0 +1,26 @@
+{
+  "failures": [
+    {
+      "approved_targets_from_failed_attempt": 0,
+      "cause": "Four successive discounts could yield fractional cents with original price divisibility",
+      "error": "ValueError: Final answer must be an exact integer",
+      "resolution": "Prices divisible by lcm(10**4,4**4); independently verify all exact cents before accepting targets",
+      "stage": "initial CPU generator exercise"
+    },
+    {
+      "approved_targets_from_failed_attempt": 0,
+      "artifact": "data/generated/solver-reasoning-v1-pilot256 (preserved failed empty destination)",
+      "cause": "Hugging Face interprets eos_token_ids assignment as a special token metadata mutation",
+      "error": "ValueError: Cannot set a non-string value as the eos_token",
+      "resolution": "CPU-only forwarding proxy owns an explicit EOS set; underlying pinned tokenizer untouched",
+      "stage": "pilot256 initial tokenizer assembly / local token test"
+    },
+    {
+      "cause": "CPU corpus build still held mandatory lease",
+      "error": "Another QwenLean model workload already holds the process lock",
+      "resolution": "No GPU job started; wait for corpus job exit and launch preflight sequentially",
+      "stage": "initial Metal preflight launch",
+      "successful_retry": "runs/phase4-metal-integrity.json"
+    }
+  ]
+}

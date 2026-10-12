@@ -10,7 +10,16 @@ all development stays on `main`.
 
 ## Current status
 
-Phase 3 is active. PonderScope finished naturally before LeanQwen model work.
+Phase 4 is active, explicitly authorized after reviewed commit `160f7e0`. A new
+CPU-verified corpus contains 512 distinct TRAIN problems and structures across
+eight families. It preserves complete productive derivations, independently checks
+every intermediate state, and has a separate hashed approval path. The matched
+32-task stock/adapter DEV protocol is frozen; stock measurements and optimizer
+validation are next. No improved model is claimed. See
+[corpus audit](reports/phase4_solver_corpus.json) and
+[proof/data contract](docs/phase4-verified-reasoning.md).
+
+Historical Phase 3: PonderScope finished naturally before LeanQwen model work.
 Stock context probes scored 3/5 at 2K and 4/5 at 8K/32K envelopes, with all
 positional retrieval questions correct. At 32K, 512-token prefill chunks reduced
 measured MLX peak from 5.016 to 2.960 GB at unchanged accuracy. Live short-request
@@ -27,7 +36,8 @@ adapter or reasoning improvement is claimed. The 16×4 natural TRAIN pilot compl
 One distinct eligible task is insufficient for meaningful SFT. See the
 [generation review](reports/phase3-natural-pilot-review.md) and
 [data options and safeguards](docs/training-data-strategy.md).
-The project is idle and held for user/independent-agent review; no optimizer ran.
+That completed negative result is preserved. Phase 4 continuation is authorized;
+no optimizer has run yet.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -126,7 +136,7 @@ require new derived destinations.
 | Measurement calibration | Source-linked DEV judgments, local embeddings and exact guard replay |
 | TRAIN natural best-of-N | N=4; correctness, reasoning validity and clean closure precede length |
 | Optimizer smoke | Approved TRAIN targets, actual LoRA steps, save/reload/inference verification |
-| Real SFT | Held at the current user checkpoint; decide after natural generation/coverage review, then satisfy data and optimizer gates |
+| Real SFT | One bounded Phase 4 pilot authorized only after solver data, matched baseline, optimizer and capacity gates |
 
 TEST stays sealed from model evaluation and training selection. Generator-only
 contamination audits inspect split metadata. Natural response targets come from

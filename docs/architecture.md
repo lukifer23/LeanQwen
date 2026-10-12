@@ -5,7 +5,8 @@ finished naturally before LeanQwen model work. See [current progress](../reports
 and [reversible runtime context contracts](context-management.md). The backend
 and compatibility evidence below remain historical unless explicitly updated.
 Higher-cap diagnosis, DEV semantic measurement and natural TRAIN generation
-completed. No optimizer ran. The project is idle for user/independent-agent review;
+completed. No optimizer ran in Phase 3. Phase 4 solver development and gated training are
+explicitly authorized;
 see [generation review](../reports/phase3-natural-pilot-review.md) and
 [data strategy](training-data-strategy.md).
 

@@ -1,13 +1,12 @@
 # Training data and capability preservation
 
-Status: review checkpoint, 2026-10-12. The sixteen-task × four-trajectory natural
-pilot completed with four correct natural responses from one task; sixty traces
-capped/unclosed. No optimizer step, solver corpus, external dataset import or
-closed-model teacher run has occurred. See the
-[generation review](../reports/phase3-natural-pilot-review.md).
-The project is idle for user/independent-agent review. New model jobs, data-source
-implementation, optimizer smoke and real SFT are held until the user's next
-instructions. This supersedes earlier automatic conditional progression.
+Status: Phase 4 continuation authorized by the user after reviewed SHA `160f7e0`.
+Natural Qwen self-distillation is supplementary. The primary first-experiment
+source is now `solver_verified_reasoning`, with a separate reproducible proof and
+approval contract. The historical 4/64 natural pilot remains a completed negative
+result; it is not rerun or relabeled. No external/closed-model worked answers are
+used. See [Phase 4 contract](phase4-verified-reasoning.md) and
+[corpus audit](../reports/phase4_solver_corpus.json). No optimizer has run yet.
 
 ## Current natural pilot
 
@@ -37,8 +36,8 @@ approved. The script exited without launching training.
 
 | Source | Role | Current boundary |
 |---|---|---|
-| Natural Qwen responses | Preserve successful native reasoning styles | First pilot accepts only exact, reviewed natural parents |
-| Deterministic solvers | Reproducible answers and valid intermediate operations across families/difficulties | Implement a separate fail-closed source contract only if completed natural coverage is inadequate and continuation is chosen |
+| Natural Qwen responses | Preserve successful native reasoning styles | Supplementary; retains exact, reviewed natural parents |
+| Deterministic solvers | Reproducible answers and valid intermediate operations across families/difficulties | Primary Phase 4 source; independent typed proofs and separate fail-closed approval implemented |
 | Coding/review assistants | Help develop generators, audit verifier logic and identify missing cases | Reviewer prose and directly authored solutions stay outside response targets; retain provenance and do not relabel teacher text as algorithmic |
 | Licensed public worked examples | Add linguistic/task diversity and productive reasoning | No import yet; source/license/verification/contamination review and a separate ingestion contract required |
 | Closed-model teacher responses | Possible separately identified distillation condition | Disabled without verified provider permission and explicit source/experiment contracts |

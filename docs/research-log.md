@@ -675,3 +675,33 @@ training remain held until the user's next instructions. No automatic continuati
 Local validation for this documentation/evidence checkpoint: 98 tests pass,
 Ruff and whitespace checks pass, ten current Markdown files have no missing
 local link targets. No new model experiment was launched for verification.
+
+### Phase 4 — starting audit and independently verified corpus
+
+User explicitly authorized continuation beyond the October 12 review hold. Clean
+`main` started at `160f7e0065249af41520c485a6e69ffc063070b8`; 98 starting tests
+and Ruff passed. Historical artifact SHA256 values are frozen in
+`reports/phase4_start.json`. No historical runs are overwritten. An unrelated
+LM Studio model was initially loading, so Qwen work was deferred; it subsequently
+unloaded. No unrelated process was terminated.
+
+Implemented `solver-reasoning-v1` with eight operation-producing algorithms,
+independent exact intermediate-state checks, structural deduplication, ID/OOD
+DEV holdouts and a sealed TEST generator namespace. A 256-problem pilot passed
+CPU verification before expansion to 512 problems / 512 distinct normalized
+TRAIN structures. Exactly 64 per family; difficulty counts 38 trivial, 124 easy,
+190 medium, 160 harder. Whole-example fit: 480 at 1024, 508 at 2048, 512 at 4096.
+No truncation, external dataset, teacher trace or review prose.
+
+The separate solver approval path reproduces its entire source archive from the
+seed/recipe, checks every proof and preserves exact pinned official thinking
+prefill/response/EOS tokens. Natural-parent contracts stay intact. Intermediate
+verification uses parsed Fraction arithmetic, Boolean truth tables, unreduced
+modular simulation, sequence invariants, transitive closure ranks, affine symbolic
+substitution, exact-cent accounting and exhaustive combinatorial enumeration.
+CPU property tests vary seeds and corrupt every intermediate after-state.
+Initial cents/tokenizer mistakes and a lease-refused launch are retained in
+`reports/phase4-development-failures.json`. Metal integrity and short backend
+preflights passed. A 32-task, one-seed, 2048-output-token paired thinking/nonthinking
+DEV protocol is frozen before training candidate selection; no TEST inference.
+Optimizer and improvement results remain pending at this milestone.

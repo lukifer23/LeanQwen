@@ -1,6 +1,7 @@
 """Training entrypoint contracts, independent of device/framework."""
 
 import math
+from collections import Counter
 
 from qwenlean.datasets.provenance import validate_provenance
 from qwenlean.utils.io import digest, read_jsonl
@@ -15,14 +16,30 @@ def validate_training_pool(rows, manifest, config):
         raise ValueError('No DEV/TEST responses permitted')
     if manifest.get('model_revision') != config['revision']:
         raise ValueError('Model revision pin mismatch')
-    if set(manifest.get('approved_parent_ids', [])) != {r['parent_generation_id'] for r in rows}:
+    natural = [r for r in rows if r['provenance']['response_origin'] == 'qwen_self']
+    solver = [r for r in rows if r['provenance']['response_origin'] == 'solver_verified_reasoning']
+    if len(natural) + len(solver) != len(rows):
+        raise ValueError('No approval path enabled for external or unknown sources')
+    if set(manifest.get('approved_parent_ids', [])) != {r['parent_generation_id'] for r in natural}:
         raise ValueError('Every parent trajectory must be explicitly quality approved')
     if len({r['task_id'] for r in rows}) != len(rows):
-        raise ValueError('Only one selected natural target per task in first SFT pool')
+        raise ValueError('Only one selected target per distinct task')
+    if solver:
+        from qwenlean.training.solver_contract import validate_solver_record
+        if set(manifest.get('approved_solver_certificate_ids', [])) != {r['proof_certificate_id'] for r in solver}:
+            raise ValueError('Explicit solver certificate approval required')
+        counts = dict(Counter(r['provenance']['response_origin'] for r in rows))
+        if manifest.get('source_distribution') != counts or manifest.get('source_sampling_proportions') != {k: v/len(rows) for k, v in counts.items()}:
+            raise ValueError('Exact source counts and sampling proportions required')
+        if manifest.get('contamination_checks', {}).get('passed') is not True:
+            raise ValueError('Solver contamination audit required')
     for r in rows:
         validate_provenance(r, for_training=True)
-        if r['provenance']['response_origin'] != 'qwen_self' or not r['provenance'].get('parent_ids'):
-            raise ValueError('First pool requires natural Qwen targets with parent IDs')
+        if r['provenance']['response_origin'] == 'qwen_self':
+            if not r['provenance'].get('parent_ids'):
+                raise ValueError('Natural Qwen targets require parent IDs')
+        else:
+            validate_solver_record(r)
         if r.get('correct') is not True or r.get('termination_reason') != 'eos':
             raise ValueError('Only correct cleanly terminated natural targets approved')
         if r.get('model_revision') != config['revision']:
@@ -69,6 +86,13 @@ def supervision_range(prompt_ids, target_ids):
 
 
 def validate_parent_sources(rows, manifest):
+    solver = [r for r in rows if r['provenance']['response_origin'] == 'solver_verified_reasoning']
+    if solver:
+        from qwenlean.training.solver_contract import validate_solver_sources
+        validate_solver_sources(solver, manifest)
+    rows = [r for r in rows if r['provenance']['response_origin'] == 'qwen_self']
+    if not rows:
+        return True
     if not manifest.get('source_records_path') or not manifest.get('source_records_hash'):
         raise ValueError('Hashed raw parent-generation archive required')
     parents = read_jsonl(manifest['source_records_path'])

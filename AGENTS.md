@@ -9,7 +9,7 @@
 - TEST is reserved; use DEV for sampler selection and TRAIN for candidate generation.
 - No proprietary closed-model outputs in training data without verified permission.
 - No Docker. No long training until baseline/decoding diagnosis and dataset quality gates.
-- Current Phase 3 checkpoint: the 16×4 natural generation pass is complete (4/64 correct EOS, one distinct eligible task). Work is held for user/independent-agent review. Do not launch new model jobs, implement new data sources, or start optimizer smoke/SFT until the user's next instructions. Preserve raw evidence; no automatic training continuation.
+- Phase 4 continuation is explicitly authorized by the user after reviewed commit `160f7e0`: solver-verified data development, matched DEV baselines, four-step optimizer smoke, capacity probes and one bounded SFT pilot only after the specified gates pass. Preserve the completed Phase 3 negative natural pilot (4/64 correct EOS, one eligible task); do not rerun it or continue training automatically beyond this experiment.
 - Verify changes with `uv run --frozen pytest -q` and Ruff as appropriate.
 
 - Preserve the native 262144-token model/position/RoPE configuration. Reversible runtime profiles are mac-128k (131072, default), mac-100k (102400, explicitly authorized fallback), and native-262k (262144). Refuse excess combined input/output budgets; never truncate. Output and training sequence budgets are separate.
