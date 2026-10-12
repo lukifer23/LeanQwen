@@ -10,6 +10,7 @@ import mlx.core as mx
 import psutil
 from huggingface_hub import snapshot_download
 from mlx_lm import load, stream_generate
+from mlx_lm.models.cache import make_prompt_cache
 from mlx_lm.sample_utils import apply_min_p, apply_top_k, apply_top_p
 
 from qwenlean.inference.context import context_contract, request_context
@@ -63,9 +64,12 @@ class MLXBackend:
             revision=config["revision"],
             allow_patterns=["*.json", "*.jinja", "*.safetensors", "tokenizer*", "*.txt"],
         )
+        model_config = json.loads((Path(path) / "config.json").read_text())
+        text_config = model_config.get("text_config", model_config)
+        self.original_text_config = text_config
+        self.context_contract = context_contract(config, text_config)
         self.model, self.tokenizer = load(path)
         mx.eval(self.model.parameters())
-        model_config = json.loads((Path(path) / "config.json").read_text())
         eos = model_config.get("text_config", model_config).get("eos_token_id")
         model_eos = eos if isinstance(eos, list) else ([] if eos is None else [eos])
         if model_eos:
@@ -73,9 +77,6 @@ class MLXBackend:
         for token_id in model_eos:
             if token_id is not None:
                 self.tokenizer.add_eos_token(self.tokenizer.convert_ids_to_tokens(token_id))
-        text_config = model_config.get("text_config", model_config)
-        self.original_text_config = text_config
-        self.context_contract = context_contract(config, text_config)
         self.context_window = text_config.get("max_position_embeddings")
         self.eos_ids = validate_eos_ids(self.tokenizer.eos_token_ids, len(self.tokenizer))
         self.model_info = {
@@ -158,13 +159,35 @@ class MLXBackend:
         available_start = psutil.virtual_memory().available
         swap_start = psutil.swap_memory()._asdict()
         first_token_s = None
+        prompt_cache = make_prompt_cache(self.model)
+        if any(type(cache).__name__ not in {"KVCache", "ArraysCache"} for cache in prompt_cache):
+            raise ValueError("Unexpected cache type in the full-history Qwen experiment")
+        memory_samples = []
+
+        def observe_memory(phase, count):
+            nonlocal rss_peak
+            rss = psutil.Process().memory_info().rss
+            available = psutil.virtual_memory().available
+            rss_peak = max(rss_peak, rss)
+            memory_samples.append({
+                "phase": phase, "tokens": count, "elapsed_s": time.perf_counter() - start,
+                "mlx_active_bytes": mx.get_active_memory(), "mlx_peak_bytes": mx.get_peak_memory(),
+                "rss_bytes": rss, "system_available_ram_bytes": available,
+                "attention_kv_bytes": sum(c.nbytes for c in prompt_cache if type(c).__name__ == "KVCache"),
+                "linear_state_bytes": sum(c.nbytes for c in prompt_cache if type(c).__name__ == "ArraysCache"),
+            })
+            if available < config.get("min_available_ram_bytes", 0):
+                raise RuntimeError("Declared available-memory floor reached; preserve failure and defer escalation")
+
+        def observe_prefill(processed, total):
+            observe_memory("prefill", processed)
 
         def observe(count):
             nonlocal rss_peak, first_token_s
             if first_token_s is None:
                 first_token_s = time.perf_counter() - start
-            if count % 64 == 0:
-                rss_peak = max(rss_peak, psutil.Process().memory_info().rss)
+            if count == 1 or count % 64 == 0:
+                observe_memory("decode", count)
 
         def responses():
             yield from stream_generate(
@@ -175,6 +198,8 @@ class MLXBackend:
                 sampler=sampler,
                 logits_processors=[penalties],
                 prefill_step_size=contract["prefill_step_size"],
+                prompt_cache=prompt_cache,
+                prompt_progress_callback=observe_prefill,
             )
 
         iterator = responses()
@@ -204,6 +229,13 @@ class MLXBackend:
             }
             result["termination_reason"] = "synchronize_decode_error"
         elapsed = time.perf_counter() - start
+        cache_summary = {
+            "cache_types": [type(c).__name__ for c in prompt_cache],
+            "attention_kv_bytes": sum(c.nbytes for c in prompt_cache if type(c).__name__ == "KVCache"),
+            "linear_state_bytes": sum(c.nbytes for c in prompt_cache if type(c).__name__ == "ArraysCache"),
+            "attention_offsets": [c.offset for c in prompt_cache if type(c).__name__ == "KVCache"],
+            "eviction": False,
+        }
         return {
             **result,
             "raw_output": raw,
@@ -211,6 +243,8 @@ class MLXBackend:
             "prompt_token_ids": list(prompt_ids),
             "formatted_prompt": formatted_prompt,
             "context": request_context(contract, len(prompt_ids), config["max_output_tokens"], len(ids)),
+            "cache": cache_summary,
+            "memory_samples": memory_samples,
             "latency_s": elapsed,
             "first_token_latency_s": first_token_s,
             "output_tokens_per_second": len(ids) / elapsed if elapsed > 0 else None,

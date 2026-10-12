@@ -40,6 +40,12 @@ persistent linear-state blocks and six growing full-attention KV caches.
 No sliding cache, quantization, destructive position edits, or system Metal-limit
 override was introduced. No resource-saving claim follows from a ceiling change.
 
+Prefill/decode telemetry samples actual allocator/RSS and separate attention-KV
+and DeltaNet-state sizes. Each request owns fresh full-history caches, with no
+cross-request cache reuse. The benchmark's declared memory floor also stops after
+sampled prefill/decode boundaries, retaining explicit failure evidence. None of
+these fields is a measured resource result until a model run is executed.
+
 Exact implemented commands and progressive native-window restoration recipe:
 [context-management.md](../docs/context-management.md). 100K, 128K and 262K
 behavior remain unverified; no adapter exists to validate restoration with one.

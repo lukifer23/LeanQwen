@@ -29,6 +29,7 @@ def main():
     config.update(name="context-stock" if not args.adapter_path else "context-adapted",
                   context_profile=args.context_profile, prefill_step_size=args.prefill_step_size,
                   enable_thinking=False, max_output_tokens=args.reserve, prompt_policy="P2",
+                  min_available_ram_bytes=int(args.min_available_gib * 2**30),
                   sampling={"temperature": 0, "presence_penalty": 0, "repetition_penalty": 1},
                   loop_guard={"enabled": False})
     if args.adapter_path:

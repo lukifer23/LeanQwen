@@ -8,19 +8,17 @@ from qwenlean.inference.context import PROFILES, context_contract, request_conte
 from qwenlean.utils.io import digest
 
 
-def test_profiles_restore_without_mutating_original_configuration_or_weight_identity():
+def test_profiles_restore_without_mutating_original_configuration():
     original = {"max_position_embeddings": 262144, "rope_parameters": {"rope_theta": 10000000},
                 "layer_types": ["linear_attention", "full_attention"]}
     snapshot = copy.deepcopy(original)
-    identity = {"checkpoint": "pinned", "adapter": "same-adapter"}
-    before = digest(identity)
     small = context_contract({}, original)
     restored = context_contract({"context_profile": "native-262k"}, original)
     assert small["selected_operational_context_limit"] == 131072
     assert restored["selected_operational_context_limit"] == 262144
     assert small["original_text_config_hash"] == restored["original_text_config_hash"]
     assert small["context_configuration_fingerprint"] != restored["context_configuration_fingerprint"]
-    assert original == snapshot and digest(identity) == before
+    assert original == snapshot and digest(original) == digest(snapshot)
 
 
 @pytest.mark.parametrize("profile,limit", PROFILES.items())

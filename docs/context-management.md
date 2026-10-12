@@ -99,8 +99,10 @@ uv run --frozen --no-sync python scripts/context_benchmark.py --lengths 8192 327
 Jobs save full prompts, actual IDs, answers, outputs, seeds, model/adapter identity,
 environment and timings durably. Repeating the exact command reuses complete
 per-job results; changed contracts are rejected. A 4 GiB available-memory floor
-defers escalation, without changing model state or evicting history. This boundary
-check cannot guarantee an intra-prefill memory peak; inspect pressure before launch
+defers escalation, without changing model state or evicting history. The same floor
+is checked after prefill chunks and sampled decode boundaries; violations are
+retained as explicit generation failures. Sampling cannot guarantee capture of
+an intra-chunk memory peak; inspect pressure before launch
 and do not escalate on the 18 GiB Mac without evidence from smaller probes.
 Run the identical suite with `--adapter-path adapters/<actual-checkpoint>` after SFT.
 
@@ -115,8 +117,12 @@ does not increase system Metal limits or install a larger override.
 
 Generation records contain backend prefill/decode duration, wall/first-token latency,
 MLX peak allocation and end allocation/cache, sampled RSS, available system memory
-and start/end swap counters. End allocation is an observation after generator
-cleanup, not a claim about steady-state KV usage. RSS sampling can miss peaks;
+and start/end swap counters. Prefill-chunk and decode snapshots include actual
+KV-cache and linear-state bytes. Each request owns fresh, ordinary `KVCache` and
+`ArraysCache` objects; unexpected cache types are refused. The wrapper retains
+those objects through the final memory snapshot, then releases them on return.
+End allocation includes retained request state, while allocator cache bytes are
+unused/reusable buffers; these are distinct measurements. Sampling can miss peaks;
 swap counters may be unavailable or zero on some platforms. Never sum overlapping
 MLX/RSS measurements or infer savings without matched measured runs.
 

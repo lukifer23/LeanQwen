@@ -380,3 +380,17 @@ strict no-GPU steering, MLX unit tests were explicitly forced to the CPU. Latest
 validation: 92 non-MLX plus six CPU MLX tests passed; Ruff passed. PonderScope still
 active, zero new LeanQwen model runs/optimizer steps. Context milestone `81db1ae`
 is pushed on main and its GitHub run 38284065338 passed.
+
+### Phase 3 — bounded prefill/cache measurement readiness
+
+Inspected installed `KVCache` (256-token allocation growth) and `ArraysCache`
+state/byte accounting. The wrapper now explicitly owns the same fresh ordinary
+caches that MLX-LM would construct and records per-chunk prefill and sampled decode
+allocation/RSS, attention-cache bytes and linear-state bytes. No state is evicted
+or reset during a request. Context probes apply their declared available-memory
+floor at those observation boundaries; violations become durable explicit failures.
+Cache state is retained through the final snapshot and released on return, so
+end-state bytes and unused allocator cache are distinguished in the docs. Profile
+validation runs before loading weights. No resource savings, prefix reproducibility
+or long-context behavior is claimed before native execution. PonderScope remains
+active; all verification continues on CPU only (98 tests, Ruff passed).
