@@ -67,7 +67,8 @@ def test_parent_archive_prevents_response_rewriting(tmp_path):
                                       ('learning_rate', -1), ('checkpoint_every', 0),
                                       ('checkpoint_every', 1.5), ('loss_chunk_size', 0),
                                       ('loss_chunk_size', True), ('mlx_cache_limit_bytes', -1),
-                                      ('mlx_cache_limit_bytes', False), ('materialize_frozen_prefix', 1)])
+                                      ('mlx_cache_limit_bytes', False), ('materialize_frozen_prefix', 1),
+                                      ('materialize_frozen_prefix', True)])
 def test_invalid_optimizer_settings_fail_before_loading_model(key, value):
     row, cfg, manifest = contracts()
     cfg[key] = value

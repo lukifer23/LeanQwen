@@ -12,6 +12,7 @@ configs/sampling/presence-zero.yaml
 configs/sampling/repetition-105.yaml
 configs/training/external-human-smoke-bounded-prefix.yaml
 configs/training/external-human-smoke-memory-efficient.yaml
+configs/training/external-human-smoke-supervised.yaml
 configs/training/external-human-smoke.yaml
 configs/training/phase4-smoke.yaml
 configs/training/smoke.yaml
@@ -69,6 +70,7 @@ qwenlean/training/mlx_loss.py
 qwenlean/training/mlx_sft.py
 qwenlean/training/quality.py
 qwenlean/training/solver_contract.py
+qwenlean/training/watchdog.py
 qwenlean/utils/environment.py
 qwenlean/utils/io.py
 qwenlean/utils/process_lock.py
@@ -85,6 +87,7 @@ reports/early_exit_records.jsonl
 reports/environment.json
 reports/external-human-dev-protocol.json
 reports/external-human-pilot.json
+reports/external-human-smoke-bounded-prefix-interruption.json
 reports/external-human-smoke-memory-efficient-attempt1.json
 reports/external-human-smoke-memory-stop.json
 reports/external-human-smoke-memory-stop.md
@@ -99,6 +102,8 @@ reports/format_meta_checkpoint.json
 reports/format_meta_v2_records.jsonl
 reports/inspection_records.json
 reports/lexical_pair_checkpoint.json
+reports/local-training-resource-safety.json
+reports/local-training-resource-safety.md
 reports/metric_calibration.json
 reports/metric_calibration.md
 reports/mlx_lora_probe.json
@@ -190,6 +195,7 @@ scripts/approve_solver_pool.py
 scripts/audit_external_sources.py
 scripts/build_solver_corpus.py
 scripts/calibrate_metrics.py
+scripts/check_training_resources.py
 scripts/context_benchmark.py
 scripts/context_metadata.py
 scripts/create_reports.py
@@ -230,4 +236,5 @@ tests/test_selection.py
 tests/test_solver_reasoning.py
 tests/test_tail.py
 tests/test_training_contract.py
+tests/test_training_watchdog.py
 uv.lock

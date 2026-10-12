@@ -873,3 +873,40 @@ loss and every LoRA gradient against the original full decoder with two frozen a
 two adapted layers, tied/untied heads. Per-step adapter hashes and failed-run tiny
 adapter preservation are added for exact update evidence. New bounded-prefix
 config retains all original resource gates and exact human targets.
+
+### GPU pressure incident and independent CPU supervision
+
+Bounded-prefix commit553d1c3 passed159 local tests and remote CI. GPU trial on the
+same281-token human example stalled inside mx.eval during the gradient transform;
+macOS sample reported26.9G peak physical footprint. CPU equivalence had not tested
+GPU resource behavior. Verified PID35811/PPID35810/exact command, took a one-second
+sample, then sent SIGINT only to the owned trainer; it exited with saved
+KeyboardInterrupt completion. SIGTERM follow-up found it already exited. No other
+application was signaled. Run emitted no optimizer/loss record. Earlier one-update
+run and all historical artifacts remain preserved and independently hashed.
+
+User reiterated system-pressure limits. No subsequent GPU model workload launched.
+Occupied swap after termination was7,171,538,944 bytes, available12,148,146,176 from
+a read-only tool observation. Removed unsafe materialization and reject that option
+in quality validation before model loading. Added independent CPU watchdog with
+strict parent PID/create-time ownership, confirmed startup,100 ms polling through
+native calls, snapshot-before-SIGINT and one-second SIGTERM fallback for native
+stalls. Guards include starting RAM/swap, running reserve, occupied-swap growth,
+swap-out delta, RSS and whole-job/gradient deadlines. Native MLX memory_limit is
+only a guideline and not represented as a hard cap. The new supervised profile
+keeps complete targets and unchanged4 GiB reserve, plus8 GiB admission and2 GiB
+starting-swap maximum. CPU-only current admission refused at8,074,756,096 available
+bytes with4,583,915,520 occupied swap bytes; no model was loaded for that check.
+
+Ownership/admission/timeouts tested with CPU fixtures, including an owned sleeping
+process interrupted during its operation. No model weights, teacher responses or
+GPU allocations in those watchdog tests. Safe GPU optimization, integrity/reload,
+capacity and full matched baseline remain unfinished. No improvement result exists.
+
+Safety milestone:171 complete local tests passed, Ruff/diff checks passed. All
+added MLX numerical tests use small CPU fixtures; the independent monitor tests
+load no model/MLX. Added an explicit CPU-only admission CLI for the guide. Public
+and private training calls require a live owned watcher before base loading.
+Documentation distinguishes the historical zero-step data milestone, one measured
+update, failed four-step gates and unsafe-prefix rejection. No GPU rerun after
+pressure correction. Compact evidence and original raw failures are preserved.

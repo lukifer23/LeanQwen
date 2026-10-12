@@ -185,3 +185,18 @@ this small observed set; it does not establish that population accuracy is exact
 zero or one. The twelve-task prompt pilot has limited power, and its seed outcomes
 are nested within tasks. Avoid interpreting boundary bootstrap intervals as strong
 evidence of absence or guaranteed performance.
+
+## Training and resource evidence scope
+
+The first finite optimizer update is a technical pipeline observation, not an
+accuracy/efficiency result. Losses on different examples do not establish a learning
+curve, and partial/capped fresh inference is not an improvement benchmark. The
+four-step/integrity/reload gate has not passed. Report completed optimizer updates
+separately from attempted forward/backward passes and interrupted workloads.
+
+The pressure incident has a macOS sample peak footprint in display units and no
+completed MLX allocator snapshot; those are separate measures. RAM, RSS, occupied
+swap and swap-out counters have different meanings; one counter did not capture
+the full observed pressure. Do not sum overlapping values or infer exact bytes
+from rounded OS text. CPU watchdog tests/admission are not GPU feasibility tests.
+See [saved measurements and limits](../reports/local-training-resource-safety.md).

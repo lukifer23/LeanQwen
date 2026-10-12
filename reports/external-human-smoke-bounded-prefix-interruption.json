@@ -1,0 +1,139 @@
+{
+  "active_microbatch": {
+    "loss_chunk_size": 32,
+    "sequence_length": 333,
+    "step": 4,
+    "supervised_tokens": 228,
+    "supervision_begin": 104,
+    "supervision_end": 332,
+    "task_id": "gsm8k-human-train-01709-f4c022d4b0c16ece"
+  },
+  "adapter_saved": false,
+  "code_sha": "553d1c37b0258013376cc4636621745bd4855c22",
+  "completion": {
+    "error": "",
+    "error_type": "KeyboardInterrupt",
+    "status": "failed"
+  },
+  "config": {
+    "backend": "mlx",
+    "batch_size": 1,
+    "checkpoint_every": 2,
+    "context_profile": "mac-128k",
+    "enable_thinking": true,
+    "gradient_accumulation": 1,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+      "dropout": 0.0,
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj",
+        "linear_attn.in_proj_qkv"
+      ],
+      "rank": 4,
+      "scale": 2.0
+    },
+    "loss_chunk_size": 32,
+    "materialize_frozen_prefix": true,
+    "max_output_tokens": 512,
+    "max_sequence_length": 1024,
+    "max_swap_out_delta_bytes": 536870912,
+    "min_available_ram_bytes": 4294967296,
+    "mlx_cache_limit_bytes": 67108864,
+    "model": "Qwen/Qwen3.5-0.8B",
+    "name": "external-human-four-step-bounded-prefix-smoke",
+    "num_layers": 2,
+    "optimizer": "adamw",
+    "prefill_step_size": 512,
+    "prompt_policy": "P2",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "sampling": {
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repetition_penalty": 1.0,
+      "temperature": 1.0,
+      "top_k": 20,
+      "top_p": 0.95
+    },
+    "seed": 20261012,
+    "steps": 4,
+    "training_source_policy": "external-teacher-only-v1",
+    "weight_decay": 0.01
+  },
+  "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+  "diagnostic_scope": "macOS sample reports peak footprint in display units; no numeric MLX allocation snapshot completed.",
+  "gate_passed": false,
+  "interpretation": "CPU equivalence was insufficient for GPU resource safety. Evaluation inside the gradient transform stalled with severe system pressure. No four-step smoke or efficacy claim.",
+  "loss_records": 0,
+  "mlx_peak_bytes": null,
+  "optimizer_steps": 0,
+  "owned_pid_verified": 35811,
+  "physical_footprint_peak_macos_sample_display": "26.9G",
+  "raw_artifacts": [
+    {
+      "bytes": 206,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/active-microbatch.json",
+      "sha256": "dc874e5496ac4fbb447705195c3ce459e62821f20357109d3b26a41d6e479ad1"
+    },
+    {
+      "bytes": 77,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/completion.json",
+      "sha256": "2b6310e7f674584df864455aa1a789adb4c7da2a475ff49b96752a1fbb237d5d"
+    },
+    {
+      "bytes": 1126,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/config.json",
+      "sha256": "fa1ac35d591833f8fa93d95dfb1659485bfefd965523c4dc518c05b082e836ab"
+    },
+    {
+      "bytes": 475,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/environment.json",
+      "sha256": "a8c89496fc3f26531e899aca1f93e1344a963a996b1d7d2539e154940db2a481"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/frozen-base-before.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 986,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/initial-adapter.json",
+      "sha256": "7349afa0de17a614ff5776523937c437a565ee9f9d4db0bc4f95890bbfcff21e"
+    },
+    {
+      "bytes": 2161,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/loss.jsonl",
+      "sha256": "754504ae09fd4d7013235fa24e13f423e9eeab532f477d49888a1972588d0078"
+    },
+    {
+      "bytes": 145684,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/macos-process-sample.txt",
+      "sha256": "7e52672c9a4d0ca946b8180ec0e020557dea5f525d782605bf1b2df691a09577"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/original-loaded-base.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 4817,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/quality_manifest.json",
+      "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+    },
+    {
+      "bytes": 2296,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/raw-console.log",
+      "sha256": "3871ff69b76f0f3ba3be041b94fdca1b5f0e0101d23acbc1fe6b07b9db6a3ac8"
+    },
+    {
+      "bytes": 221943,
+      "path": "adapters/external-human-smoke-bounded-prefix-attempt1/step-000002.safetensors",
+      "sha256": "f755acdbae7afb457660d1de480b56cc986545944c17c8d506c04b0b68a4aa80"
+    }
+  ],
+  "run_path": "adapters/external-human-smoke-bounded-prefix-attempt1",
+  "signal": "SIGINT",
+  "sigterm_followup": "Target had already exited; no other process was signaled.",
+  "status": "owned_gpu_run_interrupted_for_unsafe_pressure",
+  "unsafe_option_now_disabled": "materialize_frozen_prefix"
+}

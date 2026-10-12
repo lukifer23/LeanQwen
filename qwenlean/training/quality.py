@@ -63,6 +63,13 @@ def validate_optimizer_config(config):
         raise ValueError('Nonnegative integer MLX cache limit required')
     if type(config.get('materialize_frozen_prefix', False)) is not bool:
         raise ValueError('Boolean frozen-prefix execution option required')
+    if config.get('materialize_frozen_prefix', False):
+        raise ValueError('Frozen-prefix materialization disabled after unsafe GPU pressure')
+    for key in ('training_admission_ram_bytes', 'max_start_swap_used_bytes',
+                'max_swap_used_growth_bytes', 'max_process_rss_bytes', 'mlx_memory_limit_bytes',
+                'max_training_wall_s', 'max_gradient_wall_s'):
+        if key in config and (type(config[key]) is not int or config[key] <= 0):
+            raise ValueError('Positive integer training watchdog/resource limits required')
     for key in ('steps', 'batch_size', 'gradient_accumulation', 'max_sequence_length', 'num_layers'):
         if type(config[key]) is not int or config[key] < 1:
             raise ValueError(f'Positive {key} required')

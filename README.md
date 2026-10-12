@@ -30,6 +30,10 @@ backward pass at 2.583 GiB available RAM, below the unchanged 4 GiB floor.
 A subsequent [memory-efficient retry](reports/external-human-smoke-memory-efficient-attempt1.json)
 completed **one real optimizer update**, then stopped at the same floor before
 update2. No saved adapter, successful four-step smoke or improvement result exists.
+A subsequent frozen-prefix GPU experiment caused unsafe pressure and was stopped;
+that path is now disabled. Training has an independent CPU resource watchdog;
+no further model jobs ran after the pressure correction. See
+[local training and safety results](reports/local-training-resource-safety.md).
 See [saved smoke stop](reports/external-human-smoke-memory-stop.md).
 A new [56-task matched DEV protocol](reports/external-human-dev-protocol.json)
 combines 24 human-source questions and the existing 32 procedural retention tasks.
@@ -53,8 +57,8 @@ adapter or reasoning improvement is claimed. The 16×4 natural TRAIN pilot compl
 One distinct eligible task is insufficient for meaningful SFT. See the
 [generation review](reports/phase3-natural-pilot-review.md) and
 [data options and safeguards](docs/training-data-strategy.md).
-That completed negative result is preserved. Phase 4 continuation is authorized;
-no optimizer has run yet.
+That completed negative result is preserved. Its optimizer count was zero.
+Phase 4 subsequently completed one finite optimizer update, as reported above.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -73,8 +77,9 @@ split with zero detected cross-split structural-signature collisions. See its
 Tail diagnostics, counterfactual early-exit probes, local semantic measurement
 and offline guard replay have run. Natural TRAIN generation/automatic selection
 completed; no quality-approved training pool was created.
-A guarded `train-sft` interface exists but has not executed real
-optimizer steps or adapter reload validation. No substantial SFT, preference
+The guarded `train-sft` interface has executed one real optimizer update;
+complete smoke, full post-training integrity and adapter reload validation remain
+unfinished. No substantial SFT, preference
 training, compression pipeline, adaptive budget controller or CUDA backend has run.
 The [guide](docs/guide.md) distinguishes implemented interfaces from validated results.
 

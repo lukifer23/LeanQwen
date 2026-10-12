@@ -57,6 +57,10 @@ def test_actual_qwen_decoder_lora_gradients_mask_prompt_and_include_first_token_
                     tokens[:, 1:][:, begin:end], reduction='mean')
         def bounded(m):
             return response_loss(m, tokens, begin, end, 3, materialize)
+        if materialize:
+            with pytest.raises(ValueError, match='disabled'):
+                bounded(model)
+            return
         l0, g0 = nn.value_and_grad(model, dense)(model)
         l1, g1 = nn.value_and_grad(model, bounded)(model)
         mx.eval(l0, g0, l1, g1)

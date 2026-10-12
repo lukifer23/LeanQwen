@@ -99,7 +99,8 @@ are forbidden as targets. See [current data strategy](training-data-strategy.md)
 
 Device code now also lives in `training/mlx_sft.py`; framework-independent
 training contracts live in `training/quality.py`. The real optimizer interface
-is implemented but awaits approved TRAIN data and a measured save/reload smoke.
+now has approved external human TRAIN data and one finite optimizer update,
+but the full technical smoke/integrity/reload validation remains incomplete.
 Explicit targets are full-attention `self_attn.q_proj`/`v_proj` and gated-delta
 `linear_attn.in_proj_qkv` in selected final layers. Attachment verifies the expected
 adapter tensor count instead of silently falling back to generic modules.
@@ -107,7 +108,8 @@ Phase 3 strengthens this to exact target tensor names and bitwise fingerprinting
 of every frozen base parameter, re-enumerated from the live model before/after
 training and on fresh adapter reload. Host copies are chunked; base weights are
 not duplicated. CPU tests exercise dtype/shape/bit sensitivity and replacement of
-an unadapted tensor. Real optimizer/reload validation remains pending.
+an unadapted tensor. One update is measured; full post-training integrity/reload
+validation remains pending.
 
 Local semantic analysis uses Apache-2.0
 [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2),
@@ -118,3 +120,22 @@ content. Encoder-sized chunk subdivision is separate from Qwen context handling.
 Qwen's native positional context remains 262144. Phase 3's reversible runtime
 ceilings are 131072 by default, 102400 as an authorized fallback, and 262144 for
 restoration. Long-context behavior after any future adapter is unmeasured.
+
+## Training memory and controller correction
+
+Training decoder inputs and native architecture remain intact. The loss selects
+supervised hidden positions before projecting the frozen head, uses full-vocabulary
+float32 cross entropy in checkpointed chunks and preserves all target tokens/EOS.
+Tiny CPU float32/bf16 and Qwen LoRA-gradient equivalence checks are passing.
+The experimental frozen-prefix materialization path caused unsafe GPU pressure
+and was removed; its option is rejected before weights load. CPU numerical
+agreement is not GPU resource approval.
+
+An independent CPU process now supervises SFT across native evaluation, with
+verified parent PID/create-time ownership, resource admission, RAM/swap-occupancy/
+swap-out/RSS checks and gradient/job deadlines. Both public and private training
+paths require the live watchdog before loading weights. Watchdog startup must be
+confirmed; stops preserve snapshots before interrupting only the owned trainer.
+Native MLX's memory setting is a guideline, not a hard allocation cap. CPU watchdog
+fixtures pass, but the supervised GPU smoke has not been attempted after the
+pressure correction. See [measured safety report](../reports/local-training-resource-safety.md).

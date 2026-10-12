@@ -174,3 +174,14 @@ training bound are excluded whole, never truncated. Short SFT sequences do not
 change the native positional configuration or mechanically shorten inference
 context. They also do not prove context retention: repeat the paired context suite
 at every feasible stock-tested length after applying the adapter.
+
+## Pressure-event operating restriction
+
+Following the unsafe frozen-prefix training experiment, all model jobs are stopped
+until a fresh safe admission and an appropriate independent monitor are available.
+The SFT controller now has CPU supervision through native evaluation. Historical
+context/inference controllers do not yet have that new monitor; do not launch them
+to bypass the stop or begin a new128K stress campaign. The native262144 context,
+RoPE, tokenizer and reversible runtime profiles are unchanged. CPU-only source,
+template, report and resource checks remain available. See
+[current safety evidence](../reports/local-training-resource-safety.md).

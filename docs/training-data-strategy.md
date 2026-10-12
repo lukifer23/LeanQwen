@@ -160,3 +160,16 @@ operations and training-mode recurrence, then differentiates the adapted suffix.
 No prefix contains trainable parameters; input embeddings must be frozen. The
 bounded-prefix profile keeps4 GiB RAM and512 MiB swap-out limits. Dense decoder loss
 and all LoRA gradients agree in small exact-operation CPU equivalence checks.
+
+### System-pressure correction: unsafe prefix path disabled
+
+The frozen-prefix GPU experiment did not pass feasibility: macOS reported26.9G
+peak footprint and the owned run was interrupted before an optimizer update.
+The option and implementation are now disabled; the prior CPU-equivalence result
+cannot authorize it. Preserve its raw diagnostic/failure artifacts. Current SFT
+requires8 GiB startup RAM and bounded existing swap, then an independent CPU watchdog
+through native evaluation, watching occupied-swap growth, reserve RAM, RSS and
+wall-time. The MLX memory guideline is not a hard cap. See
+[actual stop and CPU safeguards](../reports/local-training-resource-safety.md).
+No GPU rerun was made after the user's system-pressure correction. Successful
+four-step optimization, frozen-base/reload and inference gates remain incomplete.

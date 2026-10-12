@@ -6,9 +6,12 @@ teacher or rewrite/judge pipeline and no LM Studio commands. The completed natur
 pilot and later solver corpus are preserved as historical evidence, excluded from
 current SFT. See [source comparison](../reports/external-source-comparison.md),
 [data strategy](training-data-strategy.md) and [corpus audit](../reports/external-human-pilot.json).
-The first external-human smoke stopped at the unchanged memory floor before
-optimizer update1; see [resource stop](../reports/external-human-smoke-memory-stop.md).
-Successful optimizer validation and matched before/after results remain pending.
+The first external-human smoke stopped before update1. A later retry completed
+one finite optimizer update, then stopped before update2. An experimental frozen
+prefix path caused unsafe GPU pressure and is now disabled. Complete four-step
+smoke/integrity/reload and matched before/after results remain pending. Model jobs
+are stopped; use CPU checks until fresh admission and a monitored profile pass.
+See [current measured training/safety status](../reports/local-training-resource-safety.md).
 
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.
@@ -189,7 +192,7 @@ used for contamination metadata only. Every output destination must be new.
 ```bash
 uv run --frozen python scripts/audit_external_sources.py --gsm-archive data/raw/<pinned-source> --output data/raw/<new-bounded-audit>
 uv run --frozen python scripts/import_external_reasoning.py --archive data/raw/<pinned-source> --output data/generated/<new-external-pilot> --count 768 --dev-count 64
-uv run --frozen python scripts/approve_external_dataset.py --corpus data/generated/<new-external-pilot> --published-human-qa data/raw/<pinned-human-qa-publication>.html --output data/processed/<new-approved-pool> --config configs/training/external-human-smoke.yaml
+uv run --frozen python scripts/approve_external_dataset.py --corpus data/generated/<new-external-pilot> --published-human-qa data/raw/<pinned-human-qa-publication>.html --output data/processed/<new-approved-pool> --config configs/training/external-human-smoke-supervised.yaml
 ```
 
 The QA publication is the exact archived `2110.14168v2` HTML registered in
@@ -201,7 +204,7 @@ frontier judgments. The importer's review bundle starts with every checkbox unse
 no coding-agent prose or rewritten response may enter targets.
 
 ```bash
-uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke.yaml --dataset data/processed/<actual-approved-pool>/train.jsonl --quality-manifest data/processed/<actual-approved-pool>/manifest.json --output adapters/<new-external-smoke>
+uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke-supervised.yaml --dataset data/processed/<actual-approved-pool>/train.jsonl --quality-manifest data/processed/<actual-approved-pool>/manifest.json --output adapters/<new-external-smoke>
 ```
 
 Freeze DEV before model training; this CPU operation does not generate responses:
@@ -221,7 +224,8 @@ Only run after source/quality and resource gates pass, one workload under the le
 This is four real optimizer steps for technical validation, not an improvement
 experiment. The maximum training sequence is 1024; actual human pilot sequences
 are all under 512, complete and never truncated. Completion of this smoke will
-not establish longer-sequence capacity. Current optimizer measurements remain zero.
+not establish longer-sequence capacity. One optimizer update is measured in a
+failed retry; the full technical smoke remains incomplete.
 
 SFT checks permission before reading tokenized records or loading tensors, then
 reproduces exact source text, official thinking prefill, first supervised token,
@@ -267,9 +271,32 @@ lengths. Boundary task-bootstrap intervals can be degenerate on this small pilot
 
 ```bash
 uv run --frozen python scripts/summarize_external_sources.py --archive data/raw/<bounded-audit> --output reports/<new-derived-source-measurements>.json
-uv run --frozen python scripts/report_external_pilot.py --candidates data/generated/<pilot> --approved data/processed/<approved-pool> --smoke data/processed/<approved-smoke> --config configs/training/external-human-smoke.yaml --output reports/<new-corpus-audit>.json
+uv run --frozen python scripts/report_external_pilot.py --candidates data/generated/<pilot> --approved data/processed/<approved-pool> --smoke data/processed/<approved-smoke> --config configs/training/external-human-smoke-supervised.yaml --output reports/<new-corpus-audit>.json
 ```
 
 The corpus report reproduces both approval/source contracts and tokenization;
 its zero-step status is scoped to the corpus milestone. Future optimizer results
 must be recorded in a separate measured report.
+
+## Hardware admission after the pressure event
+
+Use the supervised training profile and its independent CPU watchdog; do not run
+`external-human-smoke-bounded-prefix.yaml`, which is retained as a rejected
+historical configuration. Current validation rejects its unsafe option before
+model loading. CPU equivalence does not authorize a GPU experiment. Model jobs
+remain stopped after the pressure event until fresh resource admission passes.
+Inference/context controllers do not yet carry the new independent monitor and
+must not be used to bypass this stop. The corpus and license audit remain valid.
+See [saved safety results](../reports/local-training-resource-safety.md).
+
+Check current training admission without any model/tensor loading:
+
+```bash
+uv run --frozen python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/<new-cpu-admission-check>
+```
+
+Exit2 means admission refused; its exact RAM/swap snapshot remains saved. Exit0
+means only CPU resource admission/readiness passed, not GPU feasibility or a
+successful optimizer experiment. The supervised SFT command repeats admission and
+requires a live owned watchdog before loading weights. Native MLX memory settings
+are guidelines; independent running-pressure checks must remain enabled.

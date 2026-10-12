@@ -1,0 +1,57 @@
+{
+  "after_interruption_tool_observation": {
+    "available_ram_bytes": 12148146176,
+    "scope": "Read-only psutil tool observation after verified SIGINT and model-lease release; not an MLX training log.",
+    "swap_used_bytes": 7171538944
+  },
+  "approved_adapter_exists": false,
+  "limitations": [
+    "New monitor validated only with CPU fixtures; no GPU feasibility or save/reload claim.",
+    "MLX set_memory_limit is a guideline, not a guaranteed hard allocation cap. Independent system monitoring is required.",
+    "RSS and MLX allocation measure overlapping/different memory; no combined sum or equivalence claimed."
+  ],
+  "model_jobs_stopped": true,
+  "next_step": "Keep model jobs stopped. A future supervised bounded smoke requires a fresh resource admission pass; no unsafe-prefix retry.",
+  "optimizer_updates_completed_this_work": 1,
+  "results": [
+    "reports/external-human-smoke-memory-efficient-attempt1.json",
+    "reports/external-human-smoke-bounded-prefix-interruption.json"
+  ],
+  "starting_sha": "65c03ddbcaa231495b055b56eccf220367b51834",
+  "status": "cpu_safety_updates_complete_gpu_validation_not_run",
+  "successful_four_step_smoke": false,
+  "supervised_cpu_admission": {
+    "baseline": {
+      "available_ram_bytes": 8074756096,
+      "monotonic_s": 26257.229725166,
+      "rss_bytes": 24690688,
+      "swap_out_bytes": 561168384,
+      "swap_used_bytes": 4583915520
+    },
+    "create_time": 1791846401.895184,
+    "pid": 37292,
+    "policy": {
+      "admission_ram_bytes": 8589934592,
+      "max_gradient_wall_s": 15,
+      "max_process_rss_bytes": 3221225472,
+      "max_start_swap_used_bytes": 2147483648,
+      "max_swap_out_delta_bytes": 536870912,
+      "max_swap_used_growth_bytes": 134217728,
+      "max_training_wall_s": 120,
+      "min_available_ram_bytes": 4294967296,
+      "poll_s": 0.1
+    },
+    "status": "insufficient_starting_ram"
+  },
+  "supervised_cpu_admission_path": "runs/external-human-supervised-cpu-admission-20261012/resource-admission.json",
+  "supervised_cpu_admission_sha256": "8a5b893c9c9740d8a0bb597a1187d6699783dd2894aa91be94987fae89025aee",
+  "unsafe_frozen_prefix_disabled": true,
+  "validation": {
+    "ci_equivalent_deselected": 30,
+    "ci_equivalent_passed": 141,
+    "diff_whitespace": "passed",
+    "gpu_jobs_after_pressure_correction": 0,
+    "local_pytest_passed": 171,
+    "ruff": "passed"
+  }
+}

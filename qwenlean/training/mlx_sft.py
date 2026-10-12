@@ -28,6 +28,7 @@ from qwenlean.training.quality import (
     validate_parent_sources,
     validate_training_pool,
 )
+from qwenlean.training.watchdog import require_active_watchdog, training_watchdog
 from qwenlean.utils.environment import environment_manifest
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 from qwenlean.utils.process_lock import model_process_lock
@@ -74,14 +75,17 @@ def train(config, dataset, quality_manifest, output):
         write_json(output/'environment.json', environment_manifest())
         write_json(output/'completion.json', {'status': 'initializing'})
         previous_cache_limit = mx.set_cache_limit(config.get('mlx_cache_limit_bytes', 64*1024**2))
+        previous_memory_limit = mx.set_memory_limit(config.get('mlx_memory_limit_bytes', 3*1024**3))
         try:
-            return _train(config, rows, output)
+            with training_watchdog(config, output):
+                return _train(config, rows, output)
         except BaseException as exc:
             write_json(output/'completion.json', {'status': 'failed', 'error_type': type(exc).__name__, 'error': str(exc)})
             raise
         finally:
             mx.clear_cache()
             mx.set_cache_limit(previous_cache_limit)
+            mx.set_memory_limit(previous_memory_limit)
 
 
 def _train(cfg, rows, output):
@@ -89,6 +93,7 @@ def _train(cfg, rows, output):
     quality = json.loads((output/'quality_manifest.json').read_text())
     validate_training_pool(rows, quality, cfg)
     validate_parent_sources(rows, quality, cfg)
+    require_active_watchdog(output)
     mx.random.seed(cfg['seed'])
     rng = random.Random(cfg['seed'])
     backend = MLXBackend(cfg)
@@ -167,11 +172,14 @@ def _train(cfg, rows, output):
                 tokens = mx.array([r['prompt_token_ids'] + r['target_token_ids']], dtype=mx.int32)
                 begin, end = supervision_range(r['prompt_token_ids'], r['target_token_ids'])
                 write_json(output/'active-microbatch.json', {'step': step, 'task_id': r['task_id'],
+                    'phase': 'gradient', 'started_monotonic_s': time.monotonic(),
                     'sequence_length': tokens.shape[1], 'supervised_tokens': end-begin,
                     'supervision_begin': begin, 'supervision_end': end,
                     'loss_chunk_size': cfg.get('loss_chunk_size', 32)})
                 loss, gradients = value_grad(model, tokens, begin, end)
                 mx.eval(loss, gradients)
+                write_json(output/'active-microbatch.json', {'step': step, 'task_id': r['task_id'],
+                    'phase': 'gradient_completed', 'sequence_length': tokens.shape[1]})
                 # Release reusable allocator buffers before checking current RAM.
                 # Live loss/gradient arrays and recorded peak allocation stay intact.
                 mx.clear_cache()
