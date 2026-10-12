@@ -1,0 +1,21 @@
+{
+  "active_leanqwen_model_workloads": 0,
+  "adapter_created": false,
+  "available_ram_bytes": 6257344512,
+  "historical_changed_files": [],
+  "historical_file_count": 607,
+  "lease_available": true,
+  "local_tests": "........................................................................ [ 66%]\n.....................................                                    [100%]\n109 passed in 9.56s\n",
+  "missing_local_links": [],
+  "optimizer_steps": 0,
+  "ruff": "passed",
+  "status": "CPU data approved; model phase held at preserved memory-floor failure",
+  "swap": {
+    "free": 1485897728,
+    "percent": 53.9,
+    "sin": 393705177088,
+    "sout": 476397568,
+    "total": 3221225472,
+    "used": 1735327744
+  }
+}

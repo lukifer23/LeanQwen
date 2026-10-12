@@ -6,7 +6,7 @@ source is now `solver_verified_reasoning`, with a separate reproducible proof an
 approval contract. The historical 4/64 natural pilot remains a completed negative
 result; it is not rerun or relabeled. No external/closed-model worked answers are
 used. See [Phase 4 contract](phase4-verified-reasoning.md) and
-[corpus audit](../reports/phase4_solver_corpus.json). No optimizer has run yet.
+[corpus audit](../reports/phase4_solver_corpus_v1_1.json). No optimizer has run yet.
 
 ## Current natural pilot
 

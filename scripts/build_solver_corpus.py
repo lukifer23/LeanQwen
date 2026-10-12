@@ -103,6 +103,8 @@ def build(output, per_family):
         train_structures = {r['structural_fingerprint'] for r in train}
         if len(train_structures) != len(train):
             raise ValueError('Duplicate normalized TRAIN structure')
+        if len({r['response_structure_fingerprint'] for r in train}) != len(train):
+            raise ValueError('Duplicate TRAIN solver response structure')
         if any(r['structural_fingerprint'] in train_structures for r in dev_ood):
             raise ValueError('Structural OOD leak')
         if any(r['structural_fingerprint'] not in train_structures for r in dev_id):
@@ -125,6 +127,7 @@ def build(output, per_family):
             write_jsonl(output/f'{name}.jsonl', clean)
         lengths = [len(r['prompt_token_ids'])+len(r['target_token_ids']) for r in rows]
         checks = {'passed': True, 'train_structure_duplicates': 0, 'semantic_duplicates': 0,
+                  'train_response_structure_duplicates': 0,
                   'exact_prompt_duplicates': 0, 'ood_structure_overlap': 0,
                   'id_structure_overlap_expected': len(dev_id), 'historical_prompt_overlap': 0,
                   'test_model_or_target_use': False,

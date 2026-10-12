@@ -1,0 +1,41 @@
+{
+  "adapter_exists": false,
+  "baseline_complete": false,
+  "current_available_bytes": 4414701568,
+  "emitted_tokens": 0,
+  "generation_error": {
+    "message": "Declared available-memory floor reached; preserve failure and defer escalation",
+    "type": "RuntimeError"
+  },
+  "historical_files_changed": [],
+  "memory_pressure": "The system has 19327352832 (1179648 pages with a page size of 16384).\n\nStats: \nPages free: 5787 \nPages purgeable: 226 \nPages purged: 4501714 \n\nSwap I/O:\nSwapins: 1978324 \nSwapouts: 2297495 \n\nPage Q counts:\nPages active: 263560 \nPages inactive: 262055 \nPages speculative: 1503 \nPages throttled: 0 \nPages wired down: 164100 \n\nCompressor Stats:\nPages used by compressor: 443256 \nPages decompressed: 60323769 \nPages compressed: 67025716 \n\nFile I/O:\nPageins: 23766137 \nPageouts: 28913 \n\nSystem-wide memory free percentage: 46%\n",
+  "memory_samples": [
+    {
+      "attention_kv_bytes": 0,
+      "elapsed_s": 0.1318431250001595,
+      "linear_state_bytes": 0,
+      "mlx_active_bytes": 1504791388,
+      "mlx_peak_bytes": 1504791388,
+      "phase": "prefill",
+      "rss_bytes": 943620096,
+      "system_available_ram_bytes": 3323740160,
+      "tokens": 0
+    }
+  ],
+  "next_requirement": "Free background memory, then repeat unchanged protocol in a new artifact destination.",
+  "optimizer_steps": 0,
+  "protocol_hash": "44d1683f591a95c4c955a49928bba48a15b7eecdea8f262cd971e5838a73acb1",
+  "raw_sample_hash": "6938c9686bb8c8d13ec39bd644887d11cba76b79acc84486488a86cdfdfa0304",
+  "raw_sample_path": "runs/phase4-stock-dev/nonthinking/000/20261012T204654-phase4-matched-nonthinking-ead36c98/samples.jsonl",
+  "reason": "4 GiB configured floor is unmet with the base model loaded; no automatic threshold relaxation or training escalation",
+  "status": "stopped_before_first_generated_token",
+  "swap": {
+    "free": 1485897728,
+    "percent": 53.9,
+    "sin": 389384388608,
+    "sout": 473710592,
+    "total": 3221225472,
+    "used": 1735327744
+  },
+  "termination_reason": "stream_error"
+}

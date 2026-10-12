@@ -8,6 +8,7 @@ from pathlib import Path
 from qwenlean.datasets.procedural_v2 import FAMILIES
 from qwenlean.training.quality import validate_parent_sources, validate_training_pool
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
+from qwenlean.utils.process_lock import model_process_lock
 
 
 def approve(corpus, destination, config, selection='all'):
@@ -56,5 +57,6 @@ if __name__ == '__main__':
     p.add_argument('--config', required=True)
     p.add_argument('--selection', choices=['all', 'smoke', 'longest'], default='all')
     a = p.parse_args()
-    result = approve(a.corpus, a.output, yaml.safe_load(Path(a.config).read_text()), a.selection)
+    with model_process_lock():
+        result = approve(a.corpus, a.output, yaml.safe_load(Path(a.config).read_text()), a.selection)
     print(json.dumps({'approved': result['record_count'], 'lengths': result['actual_sequence_lengths']}))

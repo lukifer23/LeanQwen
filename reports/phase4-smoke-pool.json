@@ -1,0 +1,122 @@
+{
+  "actual_sequence_lengths": [
+    263,
+    264,
+    251,
+    250,
+    247,
+    254,
+    268,
+    254
+  ],
+  "approved_parent_ids": [],
+  "approved_solver_certificate_ids": [
+    "0a59d210642efcb2a4bc3b43019a7e4c0e1077502ec1069c4be091ccfcac6825",
+    "f84f5c54cf57d618e171c914b7367f7fbcdb44e035934cae921b6f6c318656fa",
+    "c1fb70cfb46108bc62ab44284cbed4648dcfdfa1cb8d98a953c5310f3fdb3d82",
+    "c995440fb5683a06e80553aeca52131a11a5a886ca6414575c5f18384c4cfe88",
+    "896d54e6c3705204f39dc2489d31820c142188f4d0f30ffba76a7fc4ea6492ca",
+    "76ecd9e7504dba07bce730d5dcd67cc295fc15f93178cec37255e1298e371db2",
+    "a32689aa0ed3c09403053745433c7f4edaf628593197fbeb41727427de24506a",
+    "02244daf7efade7100c2ee61a10ac855b496a9acd47fc32caa286392bd3eeebe"
+  ],
+  "contamination_checks": {
+    "exact_prompt_duplicates": 0,
+    "historical_prompt_overlap": 0,
+    "id_structure_overlap_expected": 32,
+    "limitation": "Normalized shape uniqueness does not prove conceptual diversity; word baskets and ordering transitive edges may share algorithms. ID intentionally shares topology.",
+    "ood_structure_overlap": 0,
+    "passed": true,
+    "semantic_duplicates": 0,
+    "test_model_or_target_use": false,
+    "train_structure_duplicates": 0
+  },
+  "correction_examples": 0,
+  "dataset_hash": "122fce18586d633772df36f619c381146d1ca7c468e59d55a21d0ebf31e2d8a8",
+  "dataset_version": "solver-reasoning-v1",
+  "dev_hashes": {
+    "id": "b0e4b420aba9753e671c51ad946adfdb978b1412024c90e336a274a98558e069",
+    "ood": "81fc71b9d917beb1add40e4debc1172cb9c8670a3fe4a201514499b49eca14c8"
+  },
+  "dev_used": false,
+  "difficulty_distribution": {
+    "easy": 1,
+    "harder": 2,
+    "medium": 4,
+    "trivial": 1
+  },
+  "distinct_train_problems": 8,
+  "distinct_train_structures": 512,
+  "family_distribution": {
+    "algebra": 1,
+    "arithmetic": 1,
+    "boolean_logic": 1,
+    "counting": 1,
+    "ordering": 1,
+    "sequence": 1,
+    "state_machine": 1,
+    "word_problem": 1
+  },
+  "generator_recipe": {
+    "namespace": "train",
+    "per_family": 64
+  },
+  "generator_version": "solver-tasks-1.0.0",
+  "holdout_questions": {
+    "id": "Fresh constants/entities on seen topology; numeric generalization",
+    "ood": "Hash-reserved normalized topologies; structural generalization"
+  },
+  "license_distribution": {
+    "Apache-2.0": 512
+  },
+  "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "parent_corpus_manifest_hash": "56dca6ef114f150d9b9ac1684e8c8b6c949c2f4dce459555027c6bd4c8fe918b",
+  "pool_selection": {
+    "excluded_whole_for_length": 32,
+    "max_sequence_length": 1024,
+    "method": "smoke",
+    "selected_task_ids": [
+      "train-solver-reasoning-v1-arithmetic-b2e22df43598df7866ae",
+      "train-solver-reasoning-v1-word_problem-e5f3a566bdfd67eefcff",
+      "train-solver-reasoning-v1-algebra-35383036335e2328d323",
+      "train-solver-reasoning-v1-boolean_logic-dbb2108f7fa7236a3a6d",
+      "train-solver-reasoning-v1-ordering-d7901fc78f929b0c6ef7",
+      "train-solver-reasoning-v1-state_machine-fe64eb7a9a9aff6eded1",
+      "train-solver-reasoning-v1-counting-dc828d6648067bf1001d",
+      "train-solver-reasoning-v1-sequence-fd2dd7b31e8090f76591"
+    ]
+  },
+  "record_count": 8,
+  "scope": "Algorithmic operations rendered by fixed grammar; no assistant authored worked solutions or external corpus",
+  "solver_records_hash": "1fd206918754628be4fd5de826dd913b652b8e135fc39c4fe700db2e8c727f3a",
+  "solver_records_path": "data/generated/solver-reasoning-v1-train512/solver-records.jsonl",
+  "solver_version": "operation-solver-1.0.0",
+  "source_distribution": {
+    "solver_verified_reasoning": 8
+  },
+  "source_hashes": {
+    "qwenlean/datasets/solver_tasks.py": "f36b90593fe5686499e41b08344107cc119c09aa33e1a08ae9ac1b5ffa812240",
+    "qwenlean/datasets/solver_verify.py": "ae62ef1b3d67f639c9ac42208e4fbb2fd6b94e1f7400802d2fce41814eb52344",
+    "qwenlean/training/solver_contract.py": "1c8642b10661f003822aa5b5dbfe730c6a0dfedeede82717e9955bbd97a7940f"
+  },
+  "source_sampling_proportions": {
+    "solver_verified_reasoning": 1.0
+  },
+  "status": "quality_approved",
+  "test_namespace": {
+    "sealed": true,
+    "seed": 410121,
+    "structural_hash_bucket": 4
+  },
+  "test_used": false,
+  "tokenizer_contract": {
+    "final_eos": "<|im_end|>",
+    "model": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "template_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+    "thinking_prefill": "<think>\n",
+    "vocabulary_hash": "420ab4b96193b4325156f56cd7c3876a8a0d46f515fe4f711a7a6bf5553bf8fa"
+  },
+  "truncation": false,
+  "verification_failures": 0
+}

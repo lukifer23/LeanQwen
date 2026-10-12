@@ -14,9 +14,11 @@ Phase 4 is active, explicitly authorized after reviewed commit `160f7e0`. A new
 CPU-verified corpus contains 512 distinct TRAIN problems and structures across
 eight families. It preserves complete productive derivations, independently checks
 every intermediate state, and has a separate hashed approval path. The matched
-32-task stock/adapter DEV protocol is frozen; stock measurements and optimizer
-validation are next. No improved model is claimed. See
-[corpus audit](reports/phase4_solver_corpus.json) and
+32-task stock/adapter DEV protocol is frozen; the stock baseline stopped before generating tokens because available RAM
+fell below its configured 4 GiB floor. Eight complete solver targets are approved
+for smoke, but optimizer steps remain zero. See the
+[measured checkpoint and next action](reports/phase4-verified-reasoning.md). No improved model is claimed. See
+[corpus audit](reports/phase4_solver_corpus_v1_1.json) and
 [proof/data contract](docs/phase4-verified-reasoning.md).
 
 Historical Phase 3: PonderScope finished naturally before LeanQwen model work.

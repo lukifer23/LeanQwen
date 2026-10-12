@@ -1,0 +1,19 @@
+{
+  "corrected_record_count": 512,
+  "corrected_response_structure_count": 512,
+  "corrected_task_structure_count": 512,
+  "initial_dataset": "solver-reasoning-v1",
+  "initial_declared_signature_count": 512,
+  "initial_record_count": 512,
+  "issues": [
+    "Word signatures included numerical discount rates; 64 records had 52 numerical-value-free operation structures.",
+    "Ordering transitive edges differed but removal traces repeated; 64 records had 50 size/query response structures."
+  ],
+  "maximum_initial_multiplicity": 3,
+  "old_artifacts_preserved": true,
+  "old_smoke_approval_invalid_under_current_version_intentionally": true,
+  "optimizer_steps_using_initial_or_corrected": 0,
+  "resolution": "solver-reasoning-v1.1 / generator1.0.1 removes discount values from shape signatures and rejects repeated size/query ordering response structures. Independent solvers unchanged.",
+  "strict_numeric_free_task_structures": 500,
+  "strict_response_structures": 486
+}

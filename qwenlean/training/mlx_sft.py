@@ -64,11 +64,11 @@ def train(config, dataset, quality_manifest, output):
     rows = read_jsonl(dataset)
     quality = json.loads(Path(quality_manifest).read_text())
     validate_training_pool(rows, quality, config)
-    validate_parent_sources(rows, quality)
     output = Path(output)
     if output.exists():
         raise ValueError('Refuse existing adapter output; optimizer resume is not implemented')
     with model_process_lock():
+        validate_parent_sources(rows, quality)
         output.mkdir(parents=True, exist_ok=False)
         write_json(output/'config.json', config)
         write_json(output/'quality_manifest.json', quality)

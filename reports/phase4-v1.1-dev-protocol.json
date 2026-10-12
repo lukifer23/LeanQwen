@@ -1,0 +1,94 @@
+{
+  "configs": {
+    "nonthinking": {
+      "backend": "mlx",
+      "context_profile": "mac-128k",
+      "enable_thinking": false,
+      "loop_guard": {
+        "enabled": false
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "min_available_ram_bytes": 4294967296,
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "phase4-matched-nonthinking",
+      "prefill_step_size": 512,
+      "prompt_policy": "P2",
+      "replicates": 1,
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 2.0,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 1.0
+      },
+      "seed": 20261012
+    },
+    "thinking": {
+      "backend": "mlx",
+      "context_profile": "mac-128k",
+      "enable_thinking": true,
+      "loop_guard": {
+        "enabled": false
+      },
+      "max_output_tokens": 2048,
+      "metrics": {
+        "lexical": {
+          "min_words": 10,
+          "threshold": 0.9
+        },
+        "loop": {
+          "max_period": 128,
+          "min_period": 24,
+          "repeats": 3
+        },
+        "ngrams": [
+          5,
+          8,
+          12
+        ]
+      },
+      "min_available_ram_bytes": 4294967296,
+      "model": "Qwen/Qwen3.5-0.8B",
+      "name": "phase4-matched-thinking",
+      "prefill_step_size": 512,
+      "prompt_policy": "P2",
+      "replicates": 1,
+      "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+      "sampling": {
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0,
+        "temperature": 1.0,
+        "top_k": 20,
+        "top_p": 0.95
+      },
+      "seed": 20261012
+    }
+  },
+  "configs_hash": "170a68a7517656e74659ed74b3709cc8fb69e73d845758a9c73f6f705f17507b",
+  "corpus_manifest_hash": "3b50b72aaacb7c0bbf95f43a5a16c3785ff8606596706a3e294839c54e13eb6a",
+  "one_seed_limitation": "Task-cluster paired comparisons; one replicate cannot estimate sampler variance.",
+  "selection_rule": "First and last structural complexity within each family/holdout; no model outcomes used",
+  "status": "frozen_before_training",
+  "task_count": 32,
+  "task_hash": "0f9e7a5c5bba1d9fabc7108386db69bd233577c6f38618ffcfee2d0e38c626fb",
+  "test_used": false
+}

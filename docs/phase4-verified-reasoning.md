@@ -4,7 +4,7 @@ The goal is useful reasoning per token with correctness and capability retention
 Natural-only best-of-four coverage failed in Phase 3; that evidence remains intact.
 This experiment uses algorithmic operations, not assistant-authored worked answers.
 
-`solver-tasks-1.0.0` / `operation-solver-1.0.0` generates arithmetic and Boolean
+`solver-tasks-1.0.1` / `operation-solver-1.0.0` generates arithmetic and Boolean
 trees, modular chains, sequence transformations, unique ordering constraints,
 nested affine algebra, exact-cent purchases/discounts/fees and bounded subset
 counts. Each proof has an initial state, complete typed operations with before/after
@@ -36,7 +36,10 @@ first response token and final EOS receive loss. Rendering, encoding, decoding a
 final-channel parsing must agree exactly. No target is silently cropped.
 
 TRAIN uses structural hash buckets 0–2, OOD DEV bucket 3 and TEST bucket 4.
-Within TRAIN, normalized structures, semantic problems and exact prompts are unique.
+Within TRAIN, normalized task and response structures, semantic problems and exact
+prompts are unique. Word signatures exclude discount values; ordering response
+schedules are deduplicated by list size/query position as well as graph structure.
+Initial v1 manifests are preserved; corrected v1.1 supersedes them for training.
 ID DEV deliberately shares TRAIN topology with fresh constants/entities (counting
 shifts the integer domain); it measures numeric generalization. OOD DEV measures
 new topology under the same family algorithms. Neither is a conceptual-domain

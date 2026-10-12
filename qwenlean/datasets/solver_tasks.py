@@ -10,8 +10,8 @@ from fractions import Fraction
 from qwenlean.datasets.procedural_v2 import FAMILIES, render_ast, structure
 from qwenlean.utils.io import digest
 
-VERSION = 'solver-reasoning-v1'
-GENERATOR_VERSION = 'solver-tasks-1.0.0'
+VERSION = 'solver-reasoning-v1.1'
+GENERATOR_VERSION = 'solver-tasks-1.0.1'
 SOLVER_VERSION = 'operation-solver-1.0.0'
 SEEDS = {'train': 410031, 'dev_id': 410061, 'dev_ood': 410091, 'test': 410121}
 
@@ -76,7 +76,7 @@ def task_spec(rng, family, index):
                    for _ in range(rng.randint(1, 5))]
         rates = [rng.choice([10, 20, 25, 50]) for _ in range(rng.randint(0, 4))]
         fees = [rng.randint(1, 99) for _ in range(rng.randint(0, 4))]
-        return {'baskets': baskets, 'rates': rates, 'fees': fees}, [family, len(baskets), rates, len(fees)], len(baskets)*3+len(rates)+len(fees)
+        return {'baskets': baskets, 'rates': rates, 'fees': fees}, [family, len(baskets), len(rates), len(fees)], len(baskets)*3+len(rates)+len(fees)
     if family == 'counting':
         n, k, m = rng.randint(4, 20), rng.randint(1, 4), rng.randint(2, 5)
         residue = rng.randrange(m)
@@ -255,18 +255,27 @@ def render_proof(proof):
     return '\n'.join(lines)
 
 
+def response_structure(family, spec, signature):
+    # Ordering's solver produces the same removal schedule for different redundant
+    # transitive edges. Deduplicate that response schedule by size/query position.
+    if family == 'ordering':
+        return [family, len(spec['nodes']), spec['position']]
+    return signature
+
+
 def generate(namespace, per_family=64):
     if namespace not in SEEDS or not 1 <= per_family <= 128:
         raise ValueError('Unsupported namespace/count')
-    rng, rows, seen = random.Random(SEEDS[namespace]), [], set()
+    rng, rows, seen, response_seen = random.Random(SEEDS[namespace]), [], set(), set()
     for family in FAMILIES:
         accepted = 0
         for attempt in range(200000):
             spec, sig, complexity = task_spec(rng, family, attempt)
             fingerprint = digest(sig)
+            response_fingerprint = digest(response_structure(family, spec, sig))
             bucket = int(fingerprint[:8], 16) % 5
             wanted = bucket < 3 if namespace in {'train', 'dev_id'} else bucket == (3 if namespace == 'dev_ood' else 4)
-            if not wanted or fingerprint in seen:
+            if not wanted or fingerprint in seen or response_fingerprint in response_seen:
                 continue
             body = body_for(family, spec)
             proof = solve(family, spec)
@@ -282,6 +291,7 @@ def generate(namespace, per_family=64):
                          'split': split, 'namespace': namespace, 'dataset': VERSION,
                          'family': family, 'difficulty': difficulty, 'structural_complexity': complexity,
                          'structural_signature': sig, 'structural_fingerprint': fingerprint,
+                         'response_structure_fingerprint': response_fingerprint,
                          'semantic_fingerprint': digest([family, spec]), 'facts': spec,
                          'body': body, 'prompt': body, 'expected': proof['final_answer'],
                          'generator_seed': SEEDS[namespace], 'generator_attempt': attempt,
@@ -293,6 +303,7 @@ def generate(namespace, per_family=64):
                                         'task_generator': VERSION, 'generator_version': GENERATOR_VERSION,
                                         'solver_version': SOLVER_VERSION}})
             seen.add(fingerprint)
+            response_seen.add(response_fingerprint)
             accepted += 1
             if accepted == per_family:
                 break

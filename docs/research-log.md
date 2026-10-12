@@ -705,3 +705,45 @@ Initial cents/tokenizer mistakes and a lease-refused launch are retained in
 preflights passed. A 32-task, one-seed, 2048-output-token paired thinking/nonthinking
 DEV protocol is frozen before training candidate selection; no TEST inference.
 Optimizer and improvement results remain pending at this milestone.
+
+### Phase 4 — approved smoke pool and stock baseline memory stop
+
+The 512-task corpus and source-aware approval milestone was committed/pushed as
+`135f5d8`; local 109 tests and Ruff passed, GitHub CI 38306454283 succeeded.
+Eight solver targets (one/family, full lengths 247–268) independently passed archive
+reproduction, proof, exact template/token/EOS and source approval. Parent archive
+reproduction now runs inside the training lease; the pool-approval CLI also takes
+the mandatory lease.
+
+The frozen stock DEV baseline attempted its first non-thinking request and stopped
+at prefill with zero emitted tokens: available RAM 3,323,740,160 bytes versus the
+configured 4 GiB floor, MLX active/peak 1,504,791,388, observed RSS 943,620,096.
+Explicit stream_error is saved in its raw sample; it is not a task-solving outcome.
+Qwen was released; no unrelated application was terminated. User was asked to
+free background memory. No floor was weakened and no model escalation followed.
+
+No optimizer, adapter, capacity measurement, improvement pilot or before/after
+capability comparison exists. Full status/length distributions/stopping evidence:
+`reports/phase4-verified-reasoning.md`. Historical artifact hashes still agree.
+This is an incomplete intervention experiment blocked at resource admission,
+not a measured negative SFT result. Retry the fixed baseline in a new destination
+when memory is available, then run actual optimizer smoke and capacity gates.
+
+### Phase 4 — stricter structural/response deduplication correction
+
+A final independent CPU normalization audit found word signatures retained discount
+values: 64 initial v1 tasks mapped to 52 number-free word structures. Ordering
+transitive-edge variants mapped to 50 size/query response schedules among64 tasks.
+Maximum initial multiplicity3; mathematical proof verification still passed.
+Retained the entire v1 corpus/manifests and published the derived audit in
+`reports/phase4-structural-audit-correction.json`; no optimizer used the initial data.
+
+`solver-reasoning-v1.1` / generator1.0.1 excludes numerical rates from word shapes
+and deduplicates ordering responses as well as constraint structure. Regeneration
+produced512 distinct problems,512 normalized task shapes and512 response shapes,
+64/family. Difficulty45 trivial/120 easy/206 medium/141 harder. Reasoning min9,
+median210, mean315.0977, max2134; whole-example fit480 at1024,511 at2048,512 at4096.
+Fresh v1.1 DEV protocol frozen before training; newly approved smoke lengths
+263/259/263/250/236/254/262/273. Older approvals intentionally fail the current
+source-version/hash gate. The initial zero-token memory failure is preserved.
+No new model job, optimizer, adapter or improvement evaluation followed the stop.

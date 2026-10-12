@@ -33,6 +33,7 @@ def test_unique_reproducible_structures_and_reserved_namespaces():
     train = generate('train', 32)
     assert train == generate('train', 32)
     assert len({r['structural_fingerprint'] for r in train}) == 256
+    assert len({r['response_structure_fingerprint'] for r in train}) == 256
     ood, test = generate('dev_ood', 4), generate('test', 4)
     assert not ({r['structural_fingerprint'] for r in train} & {r['structural_fingerprint'] for r in ood+test})
     assert all(r['split'] == 'train' and r['provenance']['response_origin'] == 'solver_verified_reasoning' for r in train)
