@@ -97,6 +97,11 @@ is implemented but awaits approved TRAIN data and a measured save/reload smoke.
 Explicit targets are full-attention `self_attn.q_proj`/`v_proj` and gated-delta
 `linear_attn.in_proj_qkv` in selected final layers. Attachment verifies the expected
 adapter tensor count instead of silently falling back to generic modules.
+Phase 3 strengthens this to exact target tensor names and bitwise fingerprinting
+of every frozen base parameter, re-enumerated from the live model before/after
+training and on fresh adapter reload. Host copies are chunked; base weights are
+not duplicated. CPU tests exercise dtype/shape/bit sensitivity and replacement of
+an unadapted tensor. Real optimizer/reload validation remains pending.
 
 Local semantic analysis uses Apache-2.0
 [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2),

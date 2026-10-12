@@ -1,5 +1,7 @@
 """Training entrypoint contracts, independent of device/framework."""
 
+import math
+
 from qwenlean.datasets.provenance import validate_provenance
 from qwenlean.utils.io import digest, read_jsonl
 
@@ -27,11 +29,26 @@ def validate_training_pool(rows, manifest, config):
             raise ValueError('Target model revision differs')
         if not r.get('prompt_token_ids') or not r.get('target_token_ids'):
             raise ValueError('Exact prompt and response token IDs required')
+        if any(type(t) is not int or t < 0 for t in r['prompt_token_ids'] + r['target_token_ids']):
+            raise ValueError('Training token IDs must be nonnegative integers')
         if len(r['prompt_token_ids']) + len(r['target_token_ids']) > config['max_sequence_length']:
             raise ValueError('Example exceeds training sequence bound; truncation is forbidden')
     for key in ('steps', 'batch_size', 'gradient_accumulation', 'max_sequence_length', 'num_layers'):
         if type(config[key]) is not int or config[key] < 1:
             raise ValueError(f'Positive {key} required')
+    for key in ('learning_rate', 'checkpoint_every'):
+        value = config.get(key)
+        if value is not None and (not math.isfinite(value) or value <= 0):
+            raise ValueError(f'Finite positive {key} required')
+    if 'checkpoint_every' in config and type(config['checkpoint_every']) is not int:
+        raise ValueError('Integer checkpoint_every required')
+    lora = config['lora_parameters']
+    if 'rank' in lora and (type(lora['rank']) is not int or lora['rank'] < 1):
+        raise ValueError('Positive integer LoRA rank required')
+    if 'scale' in lora and (not math.isfinite(lora['scale']) or lora['scale'] <= 0):
+        raise ValueError('Finite positive LoRA scale required')
+    if 'dropout' in lora and (not math.isfinite(lora['dropout']) or not 0 <= lora['dropout'] < 1):
+        raise ValueError('LoRA dropout must be in [0, 1)')
     if config['batch_size'] != 1:
         raise ValueError('Current implementation supports batch size 1; use accumulation')
     if config.get('optimizer') != 'adamw':

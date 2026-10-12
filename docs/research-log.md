@@ -361,3 +361,22 @@ are documented in `docs/context-management.md`. Historical v1/v5 and all 144
 prompt-study records remain unchanged. Current local tests: 92 passed; Ruff passed
 including pending training-integrity changes. The retried original CI and fresh
 CI for `91a0bb9` both passed.
+
+### Phase 3 — adapter/base integrity audit before GPU availability
+
+Replaced selected adapted-base-matrix hashing with name/shape/dtype/raw-byte hashes
+of every current frozen parameter, including unadapted blocks, embeddings and
+norms. Empty/duplicate verification sets fail. Hashing uses bounded host chunks
+and re-enumerates parameters after training, so replacing arrays cannot evade an
+old-reference check. Fresh reload repeats both adapter and base verification.
+Exact intended full-attention q/v and linear-attention qkv tensor names are checked;
+all-zero gradients, missing/early EOS, unclosed or incorrect targets, and failed
+reload generation prevent success. Added the explicit four-step smoke config.
+
+CPU tests use real tiny MLX Linear/LoRA modules to demonstrate that adapter changes
+leave the frozen-base fingerprint unchanged and an unadapted-weight replacement
+changes it. These are unit contracts, not Qwen optimizer evidence. After the user's
+strict no-GPU steering, MLX unit tests were explicitly forced to the CPU. Latest
+validation: 92 non-MLX plus six CPU MLX tests passed; Ruff passed. PonderScope still
+active, zero new LeanQwen model runs/optimizer steps. Context milestone `81db1ae`
+is pushed on main and its GitHub run 38284065338 passed.

@@ -58,3 +58,21 @@ def test_parent_archive_prevents_response_rewriting(tmp_path):
     row['target_token_ids'] = [9,9]
     with pytest.raises(ValueError, match='differs'):
         validate_parent_sources([row], manifest)
+
+
+@pytest.mark.parametrize('key,value', [('learning_rate', float('nan')),
+                                      ('learning_rate', -1), ('checkpoint_every', 0),
+                                      ('checkpoint_every', 1.5)])
+def test_invalid_optimizer_settings_fail_before_loading_model(key, value):
+    row, cfg, manifest = contracts()
+    cfg[key] = value
+    with pytest.raises(ValueError):
+        validate_training_pool([row], manifest, cfg)
+
+
+def test_invalid_training_token_ids_fail_closed():
+    row, cfg, manifest = contracts()
+    row['target_token_ids'] = [3, True, 5]
+    manifest['dataset_hash'] = digest([row])
+    with pytest.raises(ValueError, match='token IDs'):
+        validate_training_pool([row], manifest, cfg)

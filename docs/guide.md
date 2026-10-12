@@ -198,6 +198,19 @@ sanity. It refuses existing outputs; optimizer resume is not supported. Bounded
 training examples do not change the model context or RoPE, and none are silently
 truncated. The first four-step smoke test remains pending. Phase 3 authorizes one
 bounded real pilot only after diagnostic, dataset and optimizer gates pass.
+The implemented four-step configuration is `configs/training/smoke.yaml`:
+
+```bash
+uv run --frozen --no-sync qwenlean train-sft --config configs/training/smoke.yaml --dataset data/processed/<actual-approved-pool>.jsonl --quality-manifest reports/<actual-quality-manifest>.json --output adapters/<new-smoke-directory>
+```
+
+Adapter attachment checks exact layer/module names. Integrity hashes all current
+frozen base tensors, including embeddings, norms and unadapted layers, before
+training, afterward and after a fresh reload. Hashes include names, shapes, dtypes
+and raw bytes using bounded host chunks, without a second full base copy. Empty
+verification sets fail. Saved copies of old array references are not used to
+certify a mutated/replaced parameter. Targets must close reasoning and supervise
+their final EOS, and reload generation failures cannot become smoke success.
 
 After candidate generation, individual reviews live in a separate JSONL with
 `source_generation_id`, `approved_for_sft`, `intermediate_reasoning_review`

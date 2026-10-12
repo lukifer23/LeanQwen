@@ -44,6 +44,23 @@ Exact implemented commands and progressive native-window restoration recipe:
 [context-management.md](../docs/context-management.md). 100K, 128K and 262K
 behavior remain unverified; no adapter exists to validate restoration with one.
 
+## Training integrity preparation
+
+The former `.linear.weight` filter only checked adapted base matrices and did not
+assert a nonempty verification set; it omitted embeddings, norms and unadapted
+blocks, and retained old references that could miss replaced arrays. Verification
+now hashes all current frozen parameters by name/shape/dtype/raw bytes with bounded
+host copies, rejects empty sets, and repeats on fresh reload. Adapter attachment
+checks exact expected layer/module tensor names. Training also rejects all-zero
+gradients, unclosed/incorrect targets and early EOS, and records memory/swap and
+finite gradients per optimizer step. Reload generation must succeed before the
+smoke can report success. The four-step rank-4/two-layer configuration is now
+committed at `configs/training/smoke.yaml`.
+
+These are implementation and small CPU unit-test results, not actual Qwen training.
+Latest validation: 92 non-MLX tests and six MLX unit tests forced to the CPU pass;
+Ruff passes. No GPU test or model run starts while PonderScope is active.
+
 ## Pending model evidence
 
 1. After PonderScope exits naturally and memory is suitable: stock 2K/8K/32K

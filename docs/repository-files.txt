@@ -10,6 +10,7 @@ configs/sampling/cooler.yaml
 configs/sampling/finalist.yaml
 configs/sampling/presence-zero.yaml
 configs/sampling/repetition-105.yaml
+configs/training/smoke.yaml
 data/splits/dev.jsonl
 data/splits/manifest.json
 data/splits/procedural-v2/dev.jsonl
@@ -53,6 +54,7 @@ qwenlean/metrics/semantic.py
 qwenlean/scoring/exact.py
 qwenlean/scoring/legacy_v5.py
 qwenlean/training/__init__.py
+qwenlean/training/integrity.py
 qwenlean/training/mlx_sft.py
 qwenlean/training/quality.py
 qwenlean/utils/environment.py
@@ -128,6 +130,7 @@ tests/test_checkpoint_contract.py
 tests/test_context.py
 tests/test_context_suite.py
 tests/test_foundation.py
+tests/test_integrity.py
 tests/test_local_metrics.py
 tests/test_phase2_harness.py
 tests/test_procedural_v2.py
