@@ -238,6 +238,9 @@ class MLXBackend:
         }
         return {
             **result,
+            "generation_parameters": config,
+            "config_hash": digest(config),
+            "seed": seed,
             "raw_output": raw,
             "prompt_tokens": len(prompt_ids),
             "prompt_token_ids": list(prompt_ids),

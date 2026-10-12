@@ -1,9 +1,10 @@
 # Phase 3 progress — 2026-10-12
 
-Active work continues on main. No improved model or Phase 3 model experiment
-is claimed. The user's PonderScope Qwen3.5-4B GPU workload (PID 23131) must finish
-naturally before LeanQwen launches any model workload. It is never terminated by
-this work. Original 144-trajectory results and historical artifacts are preserved.
+Active work continues on main. No improved model is claimed. The user's PonderScope
+Qwen3.5-4B workload (PID 23131) exited naturally with `EVIDENCE_COMPLETE` before
+LeanQwen model runs. It was never terminated by this work. Original 144-trajectory
+results and historical artifacts are preserved. Tail diagnosis was held for the
+audit addendum's preflights, which now pass; resumption follows the saved checkpoint.
 
 ## Repository health
 
@@ -31,24 +32,34 @@ failure explanation in `phase3_metadata_initial_failure.json`.
 Five deterministic DEV questions per length cover positional retrieval, similar
 distractors, distant addition and a basic document calculation. Pinned-tokenizer
 tests verify exact 2K/8K/32K combined envelopes with a 256-token reservation.
-These tests construct stimuli only; **no context accuracy or memory benchmark
-has run**. The suite preserves identical tasks/seeds for later adapter comparison.
+The suite preserves identical tasks/seeds for later adapter comparison. Native
+stock probes have now completed: 3/5 at 2K, 4/5 at 8K and 4/5 at 32K, with all
+beginning/middle/end facts retrieved. The inventory-reasoning question failed at
+every length, including an incorrect naturally terminated answer at 32K. Context
+retrieval and useful long-document reasoning therefore remain separate findings.
 
 Installed MLX-LM 0.32.0 supports prefill chunk selection via `stream_generate`.
 Default 2048; smaller chunks are ready for matched measurement. Qwen uses 18
 persistent linear-state blocks and six growing full-attention KV caches.
 No sliding cache, quantization, destructive position edits, or system Metal-limit
 override was introduced. No resource-saving claim follows from a ceiling change.
+Actual 512-chunk peak allocation fell from 3.016 to 2.473 GB at 8K (18.0%) and
+5.016 to 2.960 GB at 32K (41.0%); correctness stayed 4/5. Mean prefill at 32K:
+16.274 versus 16.381 seconds. Four of five 8K outputs and all five 32K outputs
+matched exactly. No representative population or controlled thermal estimate.
 
 Prefill/decode telemetry samples actual allocator/RSS and separate attention-KV
 and DeltaNet-state sizes. Each request owns fresh full-history caches, with no
 cross-request cache reuse. The benchmark's declared memory floor also stops after
 sampled prefill/decode boundaries, retaining explicit failure evidence. None of
-these fields is a measured resource result until a model run is executed.
+these observations establishes a 100K/128K/262K feasibility or adapter-retention claim.
 
 Exact implemented commands and progressive native-window restoration recipe:
 [context-management.md](../docs/context-management.md). 100K, 128K and 262K
 behavior remain unverified; no adapter exists to validate restoration with one.
+Short live profile restoration now also verifies every loaded tensor and model
+argument unchanged, with identical 64-token emissions. See
+`phase3_live_profile_restoration.json` and `phase3_gpu_handoff.json`.
 
 ## Training integrity preparation
 
@@ -64,8 +75,21 @@ smoke can report success. The four-step rank-4/two-layer configuration is now
 committed at `configs/training/smoke.yaml`.
 
 These are implementation and small CPU unit-test results, not actual Qwen training.
-Latest validation: 92 non-MLX tests and six MLX unit tests forced to the CPU pass;
-Ruff passes. No GPU test or model run starts while PonderScope is active.
+Latest full Mac validation: 98 tests and Ruff passed. Small actual Metal bf16
+hashing passed with stable hashes, value sensitivity and six-byte maximum host
+copies in the primitive test. The loaded stock model also passed live short
+EOS/cap generation, 6 KV/18 state caches, consistent telemetry, cleanup and
+identical outputs in all three profiles. Two historical P2 trajectories reproduce
+their first 128 emitted IDs exactly. Full tensor/position/tokenizer metadata remains
+unchanged. These are compatibility results, not optimizer or quality improvement.
+The integrity contract now independently compares all canonical frozen parameters
+against the full original loaded parameter inventory before LoRA attachment.
+
+Historical research-log restoration is committed independently at `466041f`,
+whose CI run 38286571600 passed. All original Phase 1 entries from `8f67d3b2`
+and later Phase 2/3 entries were merged verbatim, with source/entry/link checks.
+See [preflight checkpoint](phase3-preflight-checkpoint.md) for the exact gates and
+next commands. No GPU test or model run starts while a competing project is active.
 
 ## Pending model evidence
 
@@ -77,8 +101,8 @@ saved trajectories, while saying nothing about paraphrased redundant reasoning.
 It is explicitly a partial prompt-only result; tail replay and semantic calibration
 remain pending. See [partial replay](phase3-prompt-replay/runtime_guard_calibration.md).
 
-1. After PonderScope exits naturally and memory is suitable: stock 2K/8K/32K
-   capability checks and bounded prefill comparison.
+1. Completed stock 2K/8K/32K capability checks, bounded prefill comparison and
+   live short-request profile restoration. Full-length larger contexts deferred.
 2. Existing seven-case termination-tail protocol, own-prefix early exit including
    zero controls, semantic calibration and offline guard replay.
 3. Existing 16 TRAIN tasks × four trajectories at P2/4096; measure and review
@@ -87,7 +111,7 @@ remain pending. See [partial replay](phase3-prompt-replay/runtime_guard_calibrat
    real SFT pilot, followed by matched reasoning, non-thinking and context evaluation.
 
 No new natural TRAIN generations, solver corpus, optimizer steps, trained adapter,
-accuracy/efficiency comparison or context-retention result exists yet. Historical
+stock-versus-trained efficiency comparison or context-retention result exists yet. Historical
 P2 has 7/36 correct and 29/36 capped at 2048; this remains a diagnosis input, not
 post-training success. Recommendations about real adapter coverage/data quantity
 must await the actual gates.

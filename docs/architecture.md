@@ -1,7 +1,7 @@
 # Architecture and compatibility decision
 
-Phase 3 resumes the completed prompt-study checkpoint; GPU work waits for the
-user's PonderScope run to finish naturally. See [current progress](../reports/phase3-progress.md)
+Phase 3 resumes the completed prompt-study checkpoint; the user's PonderScope run
+finished naturally before LeanQwen model work. See [current progress](../reports/phase3-progress.md)
 and [reversible runtime context contracts](context-management.md). The backend
 and compatibility evidence below remain historical unless explicitly updated.
 Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke

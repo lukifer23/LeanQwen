@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/admin/Downloads/CodeProjects/QwenLean/.venv/bin/python3",
+    "scripts/termination_tail.py"
+  ],
+  "completed_job_records": "runs/phase2-tail-controller/jobs/*/*/samples.jsonl",
+  "external_ponder_scope_terminated": false,
+  "owned_process": {
+    "active": true,
+    "create_time": 1791826958.132883,
+    "pid": 38487
+  },
+  "raw_partial_tokens": "If the in-flight generation is interrupted before its fsynced row, no partial emitted archive is available; retain job completion failure and rerun only non-durable work after compatibility passes.",
+  "reason": "User pre-GPU audit addendum arrived after context probes and the staged tail began; hold escalation to complete missing primitive/cache/historical-prefix gates.",
+  "signal": "SIGINT to own LeanQwen controller only"
+}

@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--config", default="configs/nonthinking.yaml")
     parser.add_argument("--context-profile", choices=list(PROFILES), default=DEFAULT_PROFILE)
     parser.add_argument("--lengths", nargs="+", type=int, default=[2048, 8192, 32768])
+    parser.add_argument("--questions", nargs="+", choices=list(QUESTIONS), help="Bounded representative preflight; default preserves the complete historical suite")
     parser.add_argument("--prefill-step-size", type=int, default=2048)
     parser.add_argument("--reserve", type=int, default=256)
     parser.add_argument("--adapter-path")
@@ -41,6 +42,11 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     contract = {"config": config, "lengths": args.lengths, "task_version": VERSION,
                 "min_available_gib": args.min_available_gib}
+    questions = list(QUESTIONS) if args.questions is None else args.questions
+    if len(questions) != len(set(questions)):
+        parser.error('Question selection must be unique')
+    if args.questions is not None:
+        contract['questions'] = questions
     path = root / "contract.json"
     if path.exists() and json.loads(path.read_text()) != contract:
         raise ValueError("Context benchmark resume contract differs")
@@ -50,7 +56,7 @@ def main():
     results = []
     with model_process_lock(), MLXBackend(config) as backend:
         for length in args.lengths:
-            for kind in QUESTIONS:
+            for kind in questions:
                 if psutil.virtual_memory().available < args.min_available_gib * 2**30:
                     write_json(root / "deferred.json", {"length": length, "task": kind,
                                "reason": "available_memory_below_declared_floor",
@@ -63,7 +69,7 @@ def main():
                 if row["prompt_token_ids"] != task["prompt_token_ids"]:
                     raise ValueError("Actual generation prompt differs from constructed stimulus")
                 results.append(row)
-                write_json(root / "progress.json", {"completed": len(results), "planned": len(args.lengths) * len(QUESTIONS)})
+                write_json(root / "progress.json", {"completed": len(results), "planned": len(args.lengths) * len(questions)})
     summary = {"status": "complete", "task_version": VERSION, "contract_hash": digest(contract),
                "config": config, "training_permitted": False, "test_used": False,
                "by_combined_budget": {str(n): {

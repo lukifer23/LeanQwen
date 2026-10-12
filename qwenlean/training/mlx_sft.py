@@ -99,6 +99,8 @@ def _train(cfg, rows, output):
         if parsed.parse_status != 'complete' or not score(parsed.final, row['expected'], cfg['prompt_policy'])['correct']:
             raise ValueError('Supervised target must close reasoning and preserve the correct answer')
     model = backend.model
+    original_loaded_base = tensor_fingerprint(tree_flatten(model.parameters()))
+    write_json(output/'original-loaded-base.json', original_loaded_base)
     targets = attach_adapters(model, cfg)
     model.train()  # Native differentiable gated-delta path; inference kernels have no VJP.
     mx.eval(model.parameters())
@@ -106,6 +108,8 @@ def _train(cfg, rows, output):
     initial = {n: mx.array(p) for n, p in tree_flatten(model.trainable_parameters())}
     mx.eval(initial)
     base_before = frozen_base_fingerprint(model)
+    if base_before != original_loaded_base:
+        raise RuntimeError('Adapter attachment altered or omitted original base parameters')
     write_json(output/'frozen-base-before.json', base_before)
     optimizer = optim.AdamW(learning_rate=cfg['learning_rate'], weight_decay=cfg.get('weight_decay', .01))
     mx.reset_peak_memory()

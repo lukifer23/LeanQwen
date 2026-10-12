@@ -1,0 +1,58 @@
+{
+  "available_ram_start_bytes": 8058880000,
+  "changed_fingerprint": {
+    "elements": 64,
+    "method": "sorted_name_shape_dtype_raw_bytes_chunked_v1",
+    "sha256": "e591ae22c6f828364f60fe7a54cfbfd30b338f181058aae97a68e86567d3e7b7",
+    "tensor_count": 1
+  },
+  "checks": {
+    "bounded_host_copy": true,
+    "changed_value_changes_hash": true,
+    "copied_all_bytes": true,
+    "stable_hash": true
+  },
+  "full_model_loaded": false,
+  "host_chunk_bytes": [
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    2
+  ],
+  "initial_fingerprint": {
+    "elements": 64,
+    "method": "sorted_name_shape_dtype_raw_bytes_chunked_v1",
+    "sha256": "4c8cac1023b7fa80996fb0e8fc0320318fa4a882cff091bc27113d00b560f76a",
+    "tensor_count": 1
+  },
+  "input_dtype": "mlx.core.bfloat16",
+  "input_elements": 64,
+  "max_host_chunk_bytes": 6,
+  "metal_peak_bytes": 384,
+  "purpose": "small_Metal_hash_primitive_only",
+  "repeated_fingerprint": {
+    "elements": 64,
+    "method": "sorted_name_shape_dtype_raw_bytes_chunked_v1",
+    "sha256": "4c8cac1023b7fa80996fb0e8fc0320318fa4a882cff091bc27113d00b560f76a",
+    "tensor_count": 1
+  },
+  "status": "passed"
+}

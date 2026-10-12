@@ -1,9 +1,9 @@
 # Phase 2 — deconfounding before post-training
 
-Current checkpoint (2026-10-05): the matched prompt study is complete and work is
-stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
-Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
-remain pending; implemented interfaces are not evidence that those experiments ran.
+The completed 2026-10-05 prompt study and its protocol remain historical. Phase 3
+resumes the pending diagnostics after stock context and backend preflight checks.
+See [current progress](../reports/phase3-progress.md), [pre-run checkpoint](../reports/phase3-preflight-checkpoint.md)
+and [the preserved Phase 2 checkpoint](../reports/phase2_checkpoint.md).
 
 Starting main: `8f67d3b2a1c217f5cad819ac2b8211b24db57e7d`.
 The first-pass stimuli, original generations, v5 scoring module and reports remain historical.
@@ -70,10 +70,13 @@ RoPE settings remain unchanged. Prompt tokenization does not truncate. A prompt
 plus output budget exceeding the original window is refused. Output caps and
 bounded future smoke-training sequence lengths are experimental budgets, not
 changes to model context capacity. Full source traces remain saved; counterfactual
-prefixes will be separately labeled interventions. The user permits a documented 128K limit if useful, with a floor of 131072 tokens;
-current experiments keep 262144. Lowering a configured ceiling alone does not save
-compute for short inputs. Long-context behavioral retention
-has not been tested and cannot be inferred from unchanged configuration alone.
+prefixes are separately labeled interventions. Phase 2 kept the native 262144
+ceiling under its historical 131072 floor rule. Phase 3 supersedes that operating
+policy with reversible 128K/default, 100K/fallback and native/262K profiles, while
+preserving every original position/RoPE setting. See [context management](context-management.md).
+Lowering a configured ceiling alone does not save short-input compute. The narrow
+stock context suite is measured through 32512 input tokens; adapter retention and
+100K/128K/262K-length behavior are untested.
 
 ## Remaining gates
 
@@ -82,4 +85,5 @@ probes, semantic redundancy and guard replay remain pending; source-linked manua
 and lexical calibration is partial. These diagnostic gates must complete before
 TRAIN candidate generation. Procedural-v2 must pass structural contamination checks.
 A real optimizer smoke requires quality-approved TRAIN targets and adapter reload
-verification. No substantial SFT is authorized until the final review gate.
+verification. The Phase 3 user authorization allows one bounded real SFT pilot
+only after diagnostic, data-quality and real optimizer/reload gates pass.

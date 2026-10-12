@@ -495,6 +495,29 @@ Reproduce into a new protected destination:
 The full default command still requires tail records and runs semantic analysis
 under the existing process lease. PonderScope is active and untouched.
 
+### Phase 3 — stock context and prefill evidence after natural GPU handoff
+
+PonderScope exited naturally with EVIDENCE_COMPLETE before LeanQwen model work;
+no external process was signaled. Stock `context_document_v1` completed 25 total
+question/length/chunk observations before the later audit addendum arrived.
+Original bf16 weights, greedy non-thinking, mac-128k, full history and 256 reserved
+output tokens. At 2K/8K/32K combined envelopes (1792/7936/32512 actual input):
+3/5, 4/5 and 4/5 correct, with all three positional retrievals correct at each
+length. The inventory-reasoning task failed in every condition, including a
+wrong naturally terminated 32K answer. These fixed-fact/repeated-distractor
+questions do not establish general long-context reasoning capability.
+
+Measured 512-token prefill chunks reduced peak MLX allocation at 8K from 3.016
+to 2.473 GB (18.0%) and at 32K from 5.016 to 2.960 GB (41.0%). Accuracy unchanged;
+four of five 8K outputs and all five 32K outputs match exactly. Mean 32K prefill:
+16.274 versus 16.381 seconds. KV capacity: 24/96/384 MiB; linear state 18.6 MiB.
+Measurements are preliminary sequential interactive observations, without thermal
+controls. Savings come from chunk size, not a reduced operating ceiling.
+Short live 128K/262K switching preserved all 320 loaded tensors (752393024
+elements), model args and emitted IDs. Full 100K/128K/262K remains unverified.
+Evidence: `phase3-context-stock.md`, `phase3_context_stock.json`,
+`phase3_context_stock_records.jsonl`, `phase3_live_profile_restoration.json`.
+
 ### Phase 3 — historical log restoration after independent audit
 
 The independent addendum identified a real documentation regression: the log
@@ -521,3 +544,34 @@ Completed job archives are retained; the interrupted job has zero durable rows
 and an explicit KeyboardInterrupt completion record. Full partial emitted tokens
 were not captured for that interrupted job. Hold evidence:
 `reports/phase3_tail_preflight_hold.json`. PonderScope was never signaled.
+
+### Phase 3 — actual Metal/backend/historical compatibility gates
+
+After the audit hold, tested small real Metal bf16 tensors before loading Qwen
+for the new compatibility preflight. Stable hashes across repeats/chunk sizes,
+value-sensitive hashes, safe GPU/CPU transfer, and host copies bounded to six
+bytes covering all 128 input bytes passed. No full Qwen model was loaded for the
+primitive test. `phase3_metal_integrity_preflight.json` retains actual evidence.
+
+Short loaded-model checks passed correct EOS and exact one-token cap behavior,
+six full-attention KV/eighteen linear-state caches, nonnegative consistent byte
+counts, progress callbacks, prefill/decode timing and request cleanup. All three
+profiles produce identical short IDs without changing any loaded tensor, model
+argument or tokenizer/template metadata. First 128 tokens match two saved P2
+replicate-zero arithmetic/algebra trajectories exactly under their original
+prompt IDs, seeds and sampling. After adding explicit seed/config/hash fields to
+all backend generations, repeated the bounded checks into
+`phase3_backend_preflight_attributed.json`, preserving the initial artifact.
+
+Available RAM before that load: 7.10 GiB; short-generation MLX peak 1.605–1.609 GB;
+cleanup active allocation approximately 1.505 GB, within 22 bytes of the baseline.
+Frozen-base integrity now compares the complete canonical inventory with the
+original loaded parameters before attachment, and verifies trainables belong to
+the unique full set. Unit contracts pass; actual optimizer steps remain pending.
+
+User requested all current evidence/docs be saved remotely before the next long
+run. Full Mac suite: 98 passed; Ruff/whitespace checks pass. Pre-run checkpoint:
+`reports/phase3-preflight-checkpoint.md`. The tail remains held until this update
+is pushed, CI is observed and main is clean. No TRAIN generations, solver targets,
+optimizer steps, adapter or model improvement are claimed. Next: resume the
+existing seven-case tail, then early exit, semantic calibration and 16×4 TRAIN.

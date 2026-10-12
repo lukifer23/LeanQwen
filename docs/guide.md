@@ -1,7 +1,9 @@
 # Running QwenLean
 
-Current Phase 3 work resumes the completed prompt-study checkpoint. Model runs
-wait for the user's PonderScope workload to finish naturally. See
+Current Phase 3 work resumes the completed prompt-study checkpoint. PonderScope
+finished naturally before the stock context probes. Tail diagnosis was held for
+the audit addendum's missing preflights; those checks passed, and resumption follows
+the saved pre-run checkpoint. See
 [current progress](../reports/phase3-progress.md), [historical checkpoint](../reports/phase2_checkpoint.md)
 and [reversible context profiles](context-management.md).
 Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke

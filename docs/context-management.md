@@ -59,6 +59,7 @@ Do not reuse an existing output file or change a resumable run's explicit option
 
 ```bash
 uv run --frozen --no-sync python scripts/context_metadata.py --verify-weight-files --output runs/native-restoration-file-audit.json
+uv run --frozen --no-sync python scripts/profile_restore_probe.py --output runs/native-restoration-live-audit.json
 uv run --frozen qwenlean generate --config configs/baseline.yaml --context-profile native-262k --prompt 'Compute 17 * 23.' --output runs/native-restoration-short.json
 uv run --frozen --no-sync python scripts/context_benchmark.py --context-profile native-262k --lengths 2048 8192 32768 --state runs/native-progressive-small
 ```
@@ -83,6 +84,21 @@ from the configured maximum. A future CUDA implementation needs its own backend
 validation; this repository currently implements MLX only.
 
 ## Small paired capability suite and prefill profiling
+
+For a new GPU session, run the small primitive/backend gates before a context suite:
+
+```bash
+uv run --frozen --no-sync python scripts/preflight_metal_integrity.py --output runs/<new-metal-preflight>.json
+uv run --frozen --no-sync python scripts/preflight_backend.py --output runs/<new-backend-preflight>.json
+uv run --frozen --no-sync python scripts/context_benchmark.py --lengths 2048 --questions beginning --state runs/<new-context-2k-preflight>
+uv run --frozen --no-sync python scripts/context_benchmark.py --lengths 8192 --questions beginning --state runs/<new-context-8k-preflight>
+```
+
+Then expand to complete 2K/8K tests; qualify 32K only if those runs and memory
+headroom warrant it. The first Phase 3 complete suite preceded the audit addendum;
+its original stimuli and measured records remain unchanged. New `--questions`
+selection is optional; omitted selection preserves the original full-suite resume
+contract. See the [pre-run checkpoint](../reports/phase3-preflight-checkpoint.md).
 
 Five deterministic questions per length cover beginning/middle/end retrieval,
 similar distractors, distant addition and a simple inventory calculation. Ground
@@ -129,7 +145,26 @@ MLX/RSS measurements or infer savings without matched measured runs.
 The actual cached-file restoration audit is
 [`phase3_context_configuration.json`](../reports/phase3_context_configuration.json).
 It verifies unchanged original files and positional metadata without loading the
-model. Behavioral long-context validation and adapter restoration remain pending.
+model. [`phase3_live_profile_restoration.json`](../reports/phase3_live_profile_restoration.json)
+also verifies all live loaded tensors and model arguments across short requests
+in 128K/262K profiles, with identical emitted IDs. Supply `--adapter-path` to
+`profile_restore_probe.py` when an actual adapter exists. Neither audit validates
+a full 262K-length request. The [stock context measurements](../reports/phase3-context-stock.md)
+cover actual inputs through 32512 tokens; adapter restoration/retention is pending.
+
+### Later varied context suite (design only)
+
+Keep `context_document_v1` frozen for paired adapter evaluation. A future
+`context_document_v2` should derive identifiers/values from a pinned deterministic
+seed, control fact locations after tokenization, vary distractors (near identifiers,
+irrelevant facts, conflicting superseded entries), and use distinct document
+forms such as inventory ledgers, dated memos and interleaved tables. Include
+missing-fact controls with a separately versioned typed abstention scorer, and
+multi-evidence questions whose exact answers are computed independently. Record
+separate sample/task IDs and hashes; forbid evaluation responses from training.
+This richer suite is not implemented or validated, and does not block the current
+reasoning/data/optimizer work. Current five fixed-fact questions establish only
+the narrow measured retrieval/calculation behavior, not general context capability.
 
 ## Training is a separate budget
 

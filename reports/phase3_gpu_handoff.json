@@ -1,0 +1,21 @@
+{
+  "available_ram_bytes": 10287955968,
+  "external_completion_status": "EVIDENCE_COMPLETE",
+  "external_manifest": "/Users/admin/Downloads/CodeProjects/PonderScope/runs/20261012T162909Z-phase1-8-probe-bf16-recoverability-dep-e1c20569173a/manifest.json",
+  "external_manifest_hash": "546d51adc531bd328ea32711f031a8ac4402bf16a4e98081ea035f5f5246bb57",
+  "external_pid": 23131,
+  "external_process_exited": true,
+  "external_process_terminated_by_this_work": false,
+  "initial_metadata_check_failure": "System python3 lacked psutil; repeated with uv run --frozen --no-sync python and verified EVIDENCE_COMPLETE and exited PID.",
+  "leanqwen_first_model_run": "runs/context-stock-2048-prefill",
+  "note": "No PonderScope files were modified. Raw QwenLean generation timing/memory resides in per-job samples.",
+  "observation_stage": "after first stock-context model load",
+  "swap": {
+    "free": 1620246528,
+    "percent": 74.9,
+    "sin": 246200369152,
+    "sout": 405749760,
+    "total": 6442450944,
+    "used": 4822204416
+  }
+}

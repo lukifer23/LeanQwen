@@ -10,11 +10,16 @@ all development stays on `main`.
 
 ## Current status
 
-Phase 3 is active, with model work waiting for the user's PonderScope GPU run to
-finish naturally. CPU preparation implements reversible context profiles and
-checks the unchanged pinned checkpoint files. See [current progress](reports/phase3-progress.md)
-and [context management / restoration](docs/context-management.md). No Phase 3
-model results or improved adapter are claimed yet.
+Phase 3 is active. PonderScope finished naturally before LeanQwen model work.
+Stock context probes scored 3/5 at 2K and 4/5 at 8K/32K envelopes, with all
+positional retrieval questions correct. At 32K, 512-token prefill chunks reduced
+measured MLX peak from 5.016 to 2.960 GB at unchanged accuracy. Live short-request
+128K-to-262K profile switching preserved all loaded tensors and model arguments.
+See [measured context results](reports/phase3-context-stock.md),
+[current progress](reports/phase3-progress.md) and
+[context management / restoration](docs/context-management.md).
+The staged tail is resumable after passing the audit preflights; no trained
+adapter or reasoning improvement is claimed.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -43,7 +48,9 @@ inputs are never silently truncated. Runtime profiles select a combined input/ou
 ceiling: `mac-128k` (131072, default), `mac-100k` (102400, fallback) or `native-262k`
 (262144). Checkpoint/RoPE/tokenizer file hashes are unchanged across profile selection.
 Output caps and bounded training examples are separate budgets. Long-context
-behavior and memory savings have not been empirically validated.
+behavior is measured through 32512 actual input tokens with a 256-token output
+reservation. 100K/128K/262K inference remains unverified; measured memory savings
+come from smaller prefill chunks, not the operating ceiling.
 
 ## Historical first-pass evidence
 

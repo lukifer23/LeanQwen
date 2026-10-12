@@ -1,0 +1,6 @@
+{
+  "complete_seven_case_protocol": false,
+  "durable_rows": 4,
+  "note": "Partial selected DEV evidence only; preserve completed records and resume after gates. The next job has zero durable rows and KeyboardInterrupt, not a measured trajectory.",
+  "status": "held_for_addendum_preflight"
+}

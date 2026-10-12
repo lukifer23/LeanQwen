@@ -1,9 +1,9 @@
 # Measurement contract
 
-Current checkpoint (2026-10-05): the matched prompt study is complete and work is
-stopped with no active QwenLean model worker. See [measured status and next steps](../reports/phase2_checkpoint.md).
-Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
-remain pending; implemented interfaces are not evidence that those experiments ran.
+Historical Phase 2 definitions and evidence remain preserved. Phase 3 has completed
+stock context/prefill and compatibility checks; full tail/early-exit/semantic/data
+and optimizer gates remain pending. See [current progress](../reports/phase3-progress.md)
+and [the pre-run checkpoint](../reports/phase3-preflight-checkpoint.md).
 
 Final task correctness is programmatic, using terminal numeric FINAL/boxed/plain answers
 where present. Quoted formatting examples or markers followed by reconsideration

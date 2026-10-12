@@ -37,9 +37,13 @@ def test_frozen_base_includes_unadapted_layers_and_reads_replaced_arrays():
 
     with mx.stream(mx.cpu):
         model = nn.Sequential(nn.Linear(3, 4), nn.Linear(4, 2))
+        from mlx.utils import tree_flatten
+
+        original = tensor_fingerprint(tree_flatten(model.parameters()))
         model.freeze()
         model.layers[1] = LoRALinear.from_base(model.layers[1], r=2, scale=2, dropout=0)
         before = frozen_base_fingerprint(model)
+        assert before == original
         assert before['tensor_count'] == 4 and before['elements'] == 26
         model.layers[1].lora_b = model.layers[1].lora_b + 1
         assert frozen_base_fingerprint(model) == before
