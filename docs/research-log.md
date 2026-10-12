@@ -747,3 +747,20 @@ Fresh v1.1 DEV protocol frozen before training; newly approved smoke lengths
 263/259/263/250/236/254/262/273. Older approvals intentionally fail the current
 source-version/hash gate. The initial zero-token memory failure is preserved.
 No new model job, optimizer, adapter or improvement evaluation followed the stop.
+
+### Phase 4 — v1.1 baseline retry, resource stop and engine constraint
+
+After background memory recovered to6,257,328,128 bytes, retried the corrected
+frozen cohort in a new directory under the unchanged4 GiB floor. One non-thinking
+arithmetic request completed incorrectly at15 output tokens. The next stopped
+at448 output tokens, available RAM4,230,922,240 bytes (3.940 GiB); raw outputs
+were preserved. No matched thinking cohort, optimizer, adapter or SFT followed.
+This is an incomplete baseline, not measured cohort accuracy or an SFT failure.
+Corrected data milestone07a2e21 passed GitHub CI38307356441.
+
+User reiterated that LM Studio/LFM is forbidden. Earlier lms status commands
+were an operational mistake; one woke its service. No LFM inference or target
+generation ran for LeanQwen, and no LM Studio/Qwen output entered the new TRAIN
+pool. Added an explicit rule forbidding even LM Studio status commands and new
+Qwen self-distillation. Direct Python/MLX runs benchmark/train Qwen as the student;
+all512 target proofs originate in independently verified deterministic solvers.

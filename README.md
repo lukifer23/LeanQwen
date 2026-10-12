@@ -13,9 +13,11 @@ all development stays on `main`.
 Phase 4 is active, explicitly authorized after reviewed commit `160f7e0`. A new
 CPU-verified corpus contains 512 distinct TRAIN problems and structures across
 eight families. It preserves complete productive derivations, independently checks
-every intermediate state, and has a separate hashed approval path. The matched
-32-task stock/adapter DEV protocol is frozen; the stock baseline stopped before generating tokens because available RAM
-fell below its configured 4 GiB floor. Eight complete solver targets are approved
+every intermediate state, and has a separate hashed approval path. Qwen is the student; all new targets are solver computations. Inference and
+training use the direct Python/MLX pipeline. The matched
+32-task stock/adapter DEV protocol is frozen. The stock baseline is incomplete:
+one incorrect non-thinking EOS response, then a hardware stop below the configured
+4 GiB available-memory floor. Eight complete solver targets are approved
 for smoke, but optimizer steps remain zero. See the
 [measured checkpoint and next action](reports/phase4-verified-reasoning.md). No improved model is claimed. See
 [corpus audit](reports/phase4_solver_corpus_v1_1.json) and

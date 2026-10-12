@@ -8,6 +8,7 @@
 - Never invent measurements. Retain raw outputs and failed-run explanations.
 - TEST is reserved; use DEV for sampler selection and TRAIN for candidate generation.
 - No proprietary closed-model outputs in training data without verified permission.
+- Do not use LM Studio or LFM for this project, including status commands. Phase 4 targets come from deterministic, independently verified solvers; do not generate new Qwen self-distillation targets. Qwen is the student and the subject of stock/adapter evaluation through the repository's direct Python/MLX pipeline.
 - No Docker. No long training until baseline/decoding diagnosis and dataset quality gates.
 - Phase 4 continuation is explicitly authorized by the user after reviewed commit `160f7e0`: solver-verified data development, matched DEV baselines, four-step optimizer smoke, capacity probes and one bounded SFT pilot only after the specified gates pass. Preserve the completed Phase 3 negative natural pilot (4/64 correct EOS, one eligible task); do not rerun it or continue training automatically beyond this experiment.
 - Verify changes with `uv run --frozen pytest -q` and Ruff as appropriate.

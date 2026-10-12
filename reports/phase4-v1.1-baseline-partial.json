@@ -1,0 +1,228 @@
+{
+  "adapter_exists": false,
+  "attempted_generations": 2,
+  "available_after_release_bytes": 5610668032,
+  "completed_cohort": false,
+  "frozen_protocol_hash": "238b6cb729b8f12551a365324d0dcc79c2eb0bdc466e24fc316816d6677201c3",
+  "interpretation": "One incorrect EOS and one hardware-stopped partial response do not establish cohort accuracy or model efficiency. No thinking-mode cohort or optimizer work followed.",
+  "optimizer_steps": 0,
+  "planned_generations": 64,
+  "records": [
+    {
+      "correct": false,
+      "difficulty": "trivial",
+      "family": "arithmetic",
+      "final": "29 - 15\n= 14\n\n14",
+      "generation_error": null,
+      "latency_s": 0.4220315830025356,
+      "memory_samples": [
+        {
+          "attention_kv_bytes": 0,
+          "elapsed_s": 0.16249833300025784,
+          "linear_state_bytes": 0,
+          "mlx_active_bytes": 1504791388,
+          "mlx_peak_bytes": 1504791388,
+          "phase": "prefill",
+          "rss_bytes": 709017600,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 0
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.2037360409995017,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1527696222,
+          "mlx_peak_bytes": 1583086204,
+          "phase": "prefill",
+          "rss_bytes": 717979648,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 36
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.22558520800157567,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1559489821,
+          "mlx_peak_bytes": 1583086204,
+          "phase": "prefill",
+          "rss_bytes": 721928192,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 37
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.22571687500021653,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1559489821,
+          "mlx_peak_bytes": 1583086204,
+          "phase": "decode",
+          "rss_bytes": 721944576,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 1
+        }
+      ],
+      "mlx_peak_bytes": 1583086204,
+      "mode": "nonthinking",
+      "namespace": "dev_id",
+      "output_tokens": 15,
+      "system_available_ram_bytes": 4503175168,
+      "task_id": "dev_id-solver-reasoning-v1.1-arithmetic-5c8572dfd22cd025cd3b",
+      "termination_reason": "eos"
+    },
+    {
+      "correct": false,
+      "difficulty": "harder",
+      "family": "arithmetic",
+      "final": "Let's break down the expression step by step from left to right.\n\nThe expression is:\n$$ (((17 - ((14 + 8) + 13) - (28 + (17 - 8)))) * ((14 + 21) + (21 - ((21 - 12) + 14)))) + (((((11 * 29) - 28) + ((20 - 18) * 22)) + 13) - ((19 + (25 + (18 + 29))) + 11))) $$\n\n### Step 1: Calculate innermost parentheses first\n\n**Part A:** $14 + 8 = 22$\n**Part B:** $17 - 8 = 9$\n**Part C:** $28 + 9 = 37$\n**Part D:** $(14 + 8) + 13 = 22 + 13 = 35$\nSubstituting back into the outermost square bracket:\nFirst term: $17 - 35 = -18$\n\n**Parenthesis Group 1:**\nInner part: $21 - 12 = 9$\nNext sub-part: $9 + 14 = 23$\nWhole group: $21 - 23 = -2$\n\nNow multiply and add next level:\n$(-2) + 22 = 20$\n\nThen add:\n$-18 + 20 = 2$\n\nCalculate final Term 1: **2**\n\n---\n\n**Part B:**\nInner part 1: $20 - 18 = 2$\nMultiply: $2 * 22 = 44$\nAdd: $44 + 13 = 57$\n\nNext sub-part of outer parenthesis logic:\n$(20 - 18) \\to 2$\nTerm: $19 + (25 + (18 + 29))$\n",
+      "generation_error": {
+        "message": "Declared available-memory floor reached; preserve failure and defer escalation",
+        "type": "RuntimeError"
+      },
+      "latency_s": 6.3143544160011515,
+      "memory_samples": [
+        {
+          "attention_kv_bytes": 0,
+          "elapsed_s": 0.0005599159994744696,
+          "linear_state_bytes": 0,
+          "mlx_active_bytes": 1504792270,
+          "mlx_peak_bytes": 1504792270,
+          "phase": "prefill",
+          "rss_bytes": 726433792,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 0
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.05288550000113901,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1527697102,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "prefill",
+          "rss_bytes": 722665472,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 134
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.07325050000144984,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1559487477,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "prefill",
+          "rss_bytes": 722452480,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 135
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.07333500000095228,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1559487477,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 722452480,
+          "system_available_ram_bytes": 4503175168,
+          "tokens": 1
+        },
+        {
+          "attention_kv_bytes": 3145728,
+          "elapsed_s": 0.9407187500000873,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1559969781,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 720764928,
+          "system_available_ram_bytes": 4297965568,
+          "tokens": 64
+        },
+        {
+          "attention_kv_bytes": 6291456,
+          "elapsed_s": 1.7959237909999501,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1563119605,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 716865536,
+          "system_available_ram_bytes": 4326670336,
+          "tokens": 128
+        },
+        {
+          "attention_kv_bytes": 6291456,
+          "elapsed_s": 2.6544915000013134,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1563119605,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 716865536,
+          "system_available_ram_bytes": 4349427712,
+          "tokens": 192
+        },
+        {
+          "attention_kv_bytes": 6291456,
+          "elapsed_s": 3.588109083000745,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1563119605,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 686047232,
+          "system_available_ram_bytes": 4315250688,
+          "tokens": 256
+        },
+        {
+          "attention_kv_bytes": 6291456,
+          "elapsed_s": 4.526896332998149,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1563111413,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 679198720,
+          "system_available_ram_bytes": 4307533824,
+          "tokens": 320
+        },
+        {
+          "attention_kv_bytes": 9437184,
+          "elapsed_s": 5.411737499998708,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1566268405,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 677675008,
+          "system_available_ram_bytes": 4349689856,
+          "tokens": 384
+        },
+        {
+          "attention_kv_bytes": 9437184,
+          "elapsed_s": 6.302753332998691,
+          "linear_state_bytes": 19537920,
+          "mlx_active_bytes": 1566268405,
+          "mlx_peak_bytes": 1676982132,
+          "phase": "decode",
+          "rss_bytes": 677347328,
+          "system_available_ram_bytes": 4230823936,
+          "tokens": 448
+        }
+      ],
+      "mlx_peak_bytes": 1676982132,
+      "mode": "nonthinking",
+      "namespace": "dev_id",
+      "output_tokens": 448,
+      "system_available_ram_bytes": 4230922240,
+      "task_id": "dev_id-solver-reasoning-v1.1-arithmetic-439d872787597b0afa68",
+      "termination_reason": "stream_error"
+    }
+  ],
+  "source_records": [
+    {
+      "hash": "528fc61f780058a0f54f79fa521907e82531c9c1f92e14aba3ba72ec06ee1f3f",
+      "path": "runs/phase4-v1.1-stock-dev/nonthinking/000/20261012T205537-phase4-matched-nonthinking-17e4aa1f/samples.jsonl"
+    },
+    {
+      "hash": "e6a1a0002cb526e9f49830e77009c49f7dcc4cc640420786bec9a53991ece388",
+      "path": "runs/phase4-v1.1-stock-dev/nonthinking/001/20261012T205538-phase4-matched-nonthinking-bf5f02f0/samples.jsonl"
+    }
+  ],
+  "status": "stopped_at_memory_floor",
+  "stream_errors": 1,
+  "valid_completions": 1,
+  "valid_correct_completions": 0
+}

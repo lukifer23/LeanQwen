@@ -106,3 +106,26 @@ baseline before training. No evidence yet distinguishes reasoning-efficiency
 learning from answer-format learning. The next highest-value experiment is the
 already frozen baseline followed by actual optimizer validation, once headroom is
 available. The failed natural pilot is preserved as historical evidence.
+
+## Subsequent v1.1 retry and engine clarification
+
+Corrected corpus milestone `07a2e217660e968f80658c9f0a67fe71b08ca715` was pushed;
+GitHub CI [38307356441](https://github.com/lukifer23/LeanQwen/actions/runs/38307356441)
+passed. Background memory briefly recovered to 6,257,328,128 bytes, so the frozen
+v1.1 protocol was attempted under the unchanged 4 GiB floor. One non-thinking
+response ended naturally, incorrectly, at 15 output tokens. The next stopped
+after 448 tokens at 4,230,922,240 available bytes (3.940 GiB), with an explicit
+memory-floor stream error. Both raw records remain retained and source hashed in
+[the partial report](phase4-v1.1-baseline-partial.json). The cohort is incomplete;
+these two attempts are not an overall accuracy estimate. Qwen was unloaded, and
+no optimizer or further model escalation followed. A later CPU snapshot found
+5,391,564,800 bytes available; this does not establish adequate loaded-model or
+optimizer headroom.
+
+The user reiterated that LM Studio/LFM must not be used. Earlier LM Studio status
+commands were an operational mistake: a status call woke its service. No LFM
+inference, data generation or training was requested by LeanQwen. No model from
+LM Studio supplied targets. Future status, inference and training use direct
+repository Python/MLX tools; the working rules now explicitly forbid LM Studio
+commands and new Qwen self-distillation targets. All 512 approved targets are
+computed solver derivations. Qwen stock generations are evaluation records only.
