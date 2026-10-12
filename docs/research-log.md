@@ -815,3 +815,24 @@ tests pass (16 device/tokenizer tests deselected); Ruff and diff whitespace chec
 pass. Historical tracked reports/split files match starting Git objects exactly;
 counts and hashes are saved in external-source-start-audit.json. Raw datasets,
 permission archives and weights remain ignored. Remote CI is verified after push.
+
+### Phase 4 — external human technical smoke resource stop
+
+Corpus/code/docs milestone df51885 pushed to main; GitHub CI38313003963 succeeded.
+Attempted the actual four-step MLX smoke on eight intact approved human TRAIN
+solutions under the unchanged4 GiB floor and512 MiB swap-out limit. No competing
+student process; model lease acquired. First backward evaluation completed, then
+available RAM2,773,237,760 bytes hit the floor before optimizer update1. MLX
+active1,520,987,980 / peak2,896,505,106 bytes; RSS2,076,753,920; swap-outdelta4,161,536.
+Loss and gradient finiteness checks follow the memory gate and were not reached;
+no passing finite-loss claim, completed step time or adapter exists. Original-base
+and attached frozen-base fingerprints match before optimization. Post-training
+integrity/reload/fresh inference and capacity checks were not reached.
+
+Saved failure completion, raw console, resource snapshot, exact approved-source
+manifest and base fingerprints in ignored adapter directory; compact measured
+report tracks their hashes. Resource-stop logging now preserves allocation, RSS,
+swap and completed-update count. Qwen exited and released the lease; no unrelated
+application was killed and no floor was relaxed. Stop model work at the resource
+gate. Same bounded smoke is the next technical action once memory permits; no
+external review/teacher call is needed for this retry. No SFT efficacy conclusion.

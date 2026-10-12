@@ -25,8 +25,10 @@ models cannot author, rewrite or judge targets. Historical natural and solver
 corpora remain preserved and excluded from current SFT. Direct Python/MLX is the
 model engine; no LM Studio. A separate source-aware gate validates licensing
 before training data/tensor loading and reproduces exact source/template/token IDs.
-Eight external human targets are approved for the four-step technical smoke;
-**optimizer steps remain zero and no adapter or improvement result exists**.
+The four-step technical smoke on eight human targets stopped after its first
+backward pass at 2.583 GiB available RAM, below the unchanged 4 GiB floor.
+**Optimizer steps remain zero and no adapter or improvement result exists**.
+See [saved smoke stop](reports/external-human-smoke-memory-stop.md).
 A new [56-task matched DEV protocol](reports/external-human-dev-protocol.json)
 combines 24 human-source questions and the existing 32 procedural retention tasks.
 The earlier stock baseline remains partial after memory stops. A complete matched baseline, actual smoke and capacity measurements remain

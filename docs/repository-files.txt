@@ -82,6 +82,8 @@ reports/early_exit_records.jsonl
 reports/environment.json
 reports/external-human-dev-protocol.json
 reports/external-human-pilot.json
+reports/external-human-smoke-memory-stop.json
+reports/external-human-smoke-memory-stop.md
 reports/external-source-comparison-v2.json
 reports/external-source-comparison.json
 reports/external-source-comparison.md

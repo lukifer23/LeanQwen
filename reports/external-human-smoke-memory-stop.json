@@ -1,0 +1,149 @@
+{
+  "adapter_saved": false,
+  "backward_computation_evaluated_before_memory_gate": true,
+  "base_fingerprint_before": {
+    "elements": 752393024,
+    "method": "sorted_name_shape_dtype_raw_bytes_chunked_v1",
+    "sha256": "5a0225eabd1194dd6b3b58937ff4d4bcbf70b1cd0f6c4b6038f2b14d4feef4d1",
+    "tensor_count": 320
+  },
+  "code_delta_at_run": "Only resource-stop diagnostic logging differed from source milestone; committed with this report.",
+  "code_file_sha256": "9da2525e451cab8de657a24ca64ddd825e3392bccd517fce5805dd7c1a74cd89",
+  "completion": {
+    "error": "Training available-memory floor reached; stop without escalation",
+    "error_type": "RuntimeError",
+    "status": "failed"
+  },
+  "config": {
+    "backend": "mlx",
+    "batch_size": 1,
+    "checkpoint_every": 2,
+    "context_profile": "mac-128k",
+    "enable_thinking": true,
+    "gradient_accumulation": 1,
+    "learning_rate": 0.0001,
+    "lora_parameters": {
+      "dropout": 0.0,
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj",
+        "linear_attn.in_proj_qkv"
+      ],
+      "rank": 4,
+      "scale": 2.0
+    },
+    "max_output_tokens": 512,
+    "max_sequence_length": 1024,
+    "max_swap_out_delta_bytes": 536870912,
+    "min_available_ram_bytes": 4294967296,
+    "model": "Qwen/Qwen3.5-0.8B",
+    "name": "external-human-four-step-smoke",
+    "num_layers": 2,
+    "optimizer": "adamw",
+    "prefill_step_size": 512,
+    "prompt_policy": "P2",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "sampling": {
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repetition_penalty": 1.0,
+      "temperature": 1.0,
+      "top_k": 20,
+      "top_p": 0.95
+    },
+    "seed": 20261012,
+    "steps": 4,
+    "training_source_policy": "external-teacher-only-v1",
+    "weight_decay": 0.01
+  },
+  "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+  "finite_loss_and_gradients_validated": false,
+  "first_example_reconstructed_from_config_seed": {
+    "complete_sequence_length": 281,
+    "method": "Reproduce Python seeded shuffle from the saved config and exact approved pool. Not a runtime token-length log.",
+    "task_id": "gsm8k-human-train-01595-695a079a906bfc10"
+  },
+  "fresh_adapter_inference": null,
+  "interpretation": "Hardware admission failure, not measured SFT improvement or degradation. Stop before optimizer; no floor reduction or larger job.",
+  "lease_released_and_no_student_process_remaining": true,
+  "loss_records": 0,
+  "memory_stop": {
+    "min_available_ram_bytes": 4294967296,
+    "mlx_active_bytes": 1520987980,
+    "mlx_peak_bytes": 2896505106,
+    "optimizer_steps": 0,
+    "reason": "Training available-memory floor reached; stop without escalation",
+    "rss_bytes": 2076753920,
+    "swap": {
+      "free": 1502674944,
+      "percent": 53.4,
+      "sin": 459599495168,
+      "sout": 508166144,
+      "total": 3221225472,
+      "used": 1718550528
+    },
+    "swap_out_delta_bytes": 4161536,
+    "system_available_ram_bytes": 2773237760
+  },
+  "next_gate": "Retry identical bounded smoke only when enough available memory preserves the 4 GiB floor during backward. No additional teacher/reviewer input is required for this human-reference pool.",
+  "optimizer_steps": 0,
+  "pre_optimizer_adapter_attachment_preserved_full_base": true,
+  "quality_approval_basis": "published_human_qa_with_exact_screening",
+  "raw_artifacts": [
+    {
+      "bytes": 136,
+      "path": "adapters/external-human-smoke-v1-attempt1/completion.json",
+      "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+    },
+    {
+      "bytes": 1012,
+      "path": "adapters/external-human-smoke-v1-attempt1/config.json",
+      "sha256": "01d5d634c33f0a6f2dac2c308bb54cb6f756a535a321ef554b37898de3819792"
+    },
+    {
+      "bytes": 475,
+      "path": "adapters/external-human-smoke-v1-attempt1/environment.json",
+      "sha256": "f4c18a1cd173a125499766144a9cf253c0405f14d87cc80a750a96d4d0865aa5"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-v1-attempt1/frozen-base-before.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 0,
+      "path": "adapters/external-human-smoke-v1-attempt1/loss.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 191,
+      "path": "adapters/external-human-smoke-v1-attempt1/original-loaded-base.json",
+      "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+    },
+    {
+      "bytes": 4817,
+      "path": "adapters/external-human-smoke-v1-attempt1/quality_manifest.json",
+      "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+    },
+    {
+      "bytes": 1083,
+      "path": "adapters/external-human-smoke-v1-attempt1/raw-console.log",
+      "sha256": "4dd35fbac8c890ebe556b263bb308cefe2d77659e2f82245840544239df839c3"
+    },
+    {
+      "bytes": 478,
+      "path": "adapters/external-human-smoke-v1-attempt1/resource-stop.json",
+      "sha256": "b866b68591e0e3488860379a5bed2d557beaad5f7b6ac8736b7080a3b2a38c8e"
+    }
+  ],
+  "real_sft_pilot_completed": false,
+  "run_path": "adapters/external-human-smoke-v1-attempt1",
+  "save_reload_equivalence": null,
+  "sequence_feasibility_passed": false,
+  "source_distribution": {
+    "licensed_external_reasoning": 8
+  },
+  "source_milestone_sha": "df51885e74359ace2c14d70d7a58b839d2740ec5",
+  "status": "resource_stopped_before_first_optimizer",
+  "step_time_s": null
+}

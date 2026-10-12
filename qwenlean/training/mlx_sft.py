@@ -128,10 +128,20 @@ def _train(cfg, rows, output):
     swap_start = psutil.swap_memory().sout
 
     def memory_gate():
-        if psutil.virtual_memory().available < cfg.get('min_available_ram_bytes', 0):
-            raise RuntimeError('Training available-memory floor reached; stop without escalation')
-        if psutil.swap_memory().sout-swap_start > cfg.get('max_swap_out_delta_bytes', 512*1024**2):
-            raise RuntimeError('Training swap-out pressure exceeded the bounded experiment limit')
+        available, swap = psutil.virtual_memory().available, psutil.swap_memory()
+        error = None
+        if available < cfg.get('min_available_ram_bytes', 0):
+            error = 'Training available-memory floor reached; stop without escalation'
+        elif swap.sout-swap_start > cfg.get('max_swap_out_delta_bytes', 512*1024**2):
+            error = 'Training swap-out pressure exceeded the bounded experiment limit'
+        if error:
+            write_json(output/'resource-stop.json', {'reason': error,
+                'optimizer_steps': len(logs), 'system_available_ram_bytes': available,
+                'min_available_ram_bytes': cfg.get('min_available_ram_bytes', 0),
+                'swap': swap._asdict(), 'swap_out_delta_bytes': swap.sout-swap_start,
+                'mlx_active_bytes': mx.get_active_memory(), 'mlx_peak_bytes': mx.get_peak_memory(),
+                'rss_bytes': process.memory_info().rss})
+            raise RuntimeError(error)
     with (output/'loss.jsonl').open('w') as handle:
         for step in range(1, cfg['steps']+1):
             memory_gate()

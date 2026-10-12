@@ -6,7 +6,9 @@ teacher or rewrite/judge pipeline and no LM Studio commands. The completed natur
 pilot and later solver corpus are preserved as historical evidence, excluded from
 current SFT. See [source comparison](../reports/external-source-comparison.md),
 [data strategy](training-data-strategy.md) and [corpus audit](../reports/external-human-pilot.json).
-Optimizer smoke and matched before/after results remain pending.
+The first external-human smoke stopped at the unchanged memory floor before
+optimizer update1; see [resource stop](../reports/external-human-smoke-memory-stop.md).
+Successful optimizer validation and matched before/after results remain pending.
 
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.

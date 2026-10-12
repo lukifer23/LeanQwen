@@ -113,6 +113,15 @@ campaign. Native 262144 position/context, RoPE, tokenizer and original weights
 remain unchanged. Runtime profiles mac-128k/mac-100k/native-262k are reversible;
 training sequence bounds are separate. Adapters stay unfused and removable.
 
+## Measured technical smoke stop
+
+The first external-human smoke reached backward computation but stopped before
+optimizer update1: available RAM2,773,237,760 bytes below the unchanged4 GiB floor,
+MLX peak2,896,505,106 bytes. No completed loss/step-time, adapter/reload or improvement
+measurement exists. See [raw-linked report](../reports/external-human-smoke-memory-stop.md).
+Retry the same bounded smoke only with sufficient memory; no source expansion,
+new review or paid teacher is required to resolve this hardware gate.
+
 ## Preserved negative result
 
 The completed natural pilot produced 4/64 correct natural EOS responses, all
