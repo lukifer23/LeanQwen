@@ -115,20 +115,27 @@ See [diagnosis and sources](phase3-reasoning-diagnosis.md).
    live short-request profile restoration. Full-length larger contexts deferred.
 2. Completed seven-case termination-tail protocol, own-prefix early exit including
    zero controls, semantic calibration and offline guard replay.
-3. Active 16 TRAIN tasks × four trajectories at P2/4096; measure and review
-   natural clean-target coverage. Solver targets are conditional on poor coverage.
-4. Hardened optimizer smoke, sequence-feasibility measurements and one conditional
-   real SFT pilot, followed by matched reasoning, non-thinking and context evaluation.
+3. Completed 16 TRAIN tasks × four trajectories at P2/4096: 4/64 correct/EOS,
+   60 capped/unclosed, one distinct eligible task. Solver targets remain unimplemented.
+4. Optimizer smoke, sequence-memory feasibility and any real SFT/paired evaluation
+   remain unexecuted and held for user/independent-agent review.
 
-Natural TRAIN responses are being saved in
-`runs/20261012T184117-phase2-train-natural-n4-1af34da1`; see the explicitly partial
-[snapshot](phase3_natural_pilot_snapshot.json). Four eligible responses in that
-snapshot come from one task, so repetitions do not establish corpus diversity.
-Final coverage remains unknown until all 64 responses and quality reports publish.
+The complete TRAIN run is
+`runs/20261012T184117-phase2-train-natural-n4-1af34da1`; completion confirms 64
+responses/16 tasks, and raw outputs/quality reports published. The earlier
+[partial snapshot](phase3_natural_pilot_snapshot.json) remains historical.
+All four successful traces solve `2 + (-3)` and use 302/1605/417/440 reasoning
+tokens. All other tasks fail all four seeds at the 4096 cap. Mean reasoning
+3883.19; median/p90/p95 are censored at 4096. There were zero generation errors.
+See [completed generation review](phase3-natural-pilot-review.md) for per-family
+patterns, token-fit counts, review scope and numeric-checker limitations.
 
-The user requested generation finish before deciding whether to continue into
-training. Optimizer smoke and SFT are now held for that decision, superseding
-earlier automatic conditional progression. Documented
+The user requested documentation/push and then a stop for user/independent-agent
+review. No project model worker is active; the OS model lease was acquired and
+released to verify availability. See [idle checkpoint](phase3_idle_checkpoint.json).
+No further model jobs, data-source implementation or training are authorized to
+start before the user's next instructions. This supersedes earlier automatic
+conditional progression. Documented
 [data options and retention safeguards](../docs/training-data-strategy.md) are
 proposals, not implemented sources or proven capability preservation.
 

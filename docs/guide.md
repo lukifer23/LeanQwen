@@ -6,9 +6,11 @@ the audit addendum's missing preflights; those checks passed and the seven-case
 tail, 34 early-exit probes and semantic calibration have now completed. See
 [current progress](../reports/phase3-progress.md), [historical checkpoint](../reports/phase2_checkpoint.md)
 and [reversible context profiles](context-management.md).
-The sixteen-task × four-trajectory TRAIN generation pass is active. Optimizer
-smoke/SFT are held until final coverage is reviewed and the user decides whether
-to continue. See [data strategy and safeguards](training-data-strategy.md) and the
+The sixteen-task × four-trajectory TRAIN pass completed: four correct natural
+responses from one task, sixty capped/unclosed traces. No optimizer ran; the
+project is idle for user/independent-agent review. See
+[generation review](../reports/phase3-natural-pilot-review.md),
+[data strategy and safeguards](training-data-strategy.md) and the
 [measured diagnosis](../reports/phase3-reasoning-diagnosis.md) for completed evidence.
 
 This guide describes implemented commands. It does not assume an adapter,
@@ -193,18 +195,20 @@ length only breaks quality ties. Detected invalid numeric equations disqualify
 an otherwise correct final answer. Narrow step validation leaves much reasoning
 unverified, so selected targets need individual inspection.
 
-The active pilot is `runs/20261012T184117-phase2-train-natural-n4-1af34da1`.
-Let the existing process finish; do not launch a duplicate. The script publishes
-data/quality reports and exits without starting an optimizer. If interrupted,
-inspect its explicit completion state and use its existing resume contract:
+The completed pilot is `runs/20261012T184117-phase2-train-natural-n4-1af34da1`.
+Its completion manifest confirms 64 samples/16 tasks; the controller published
+data/quality reports and exited without an optimizer. Do not resume or rerun this
+completed pilot. For a future genuinely incomplete eligible run, after new user
+instructions, inspect its completion state before using the existing contract:
 
 ```bash
-uv run --frozen --no-sync python scripts/train_candidates.py --resume runs/20261012T184117-phase2-train-natural-n4-1af34da1
+uv run --frozen --no-sync python scripts/train_candidates.py --resume runs/<actual-eligible-incomplete-run>
 ```
 
 Resume applies only to an eligible incomplete run, never a completed run.
-At this checkpoint, stop after generation/publication for the user's continuation
-decision. Solver/external/teacher options and retention safeguards are discussed
+At this checkpoint, stop for the user's continuation decision after independent
+review. No new model job or data-source implementation should begin.
+Solver/external/teacher options and retention safeguards are discussed
 in [training data strategy](training-data-strategy.md); they are not implemented
 or silently enabled by these commands.
 

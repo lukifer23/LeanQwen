@@ -1,0 +1,927 @@
+{
+  "aggregate": {
+    "accuracy": 0.0625,
+    "accuracy_bootstrap_ci95": [
+      0.0,
+      0.1875
+    ],
+    "accuracy_over_median_reasoning_tokens": 1.52587890625e-05,
+    "accuracy_unit": "task_mean",
+    "accuracy_wilson_ci95": null,
+    "aggregate_output_tokens_per_second": 70.62197764362746,
+    "by_family": {
+      "algebra": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "arithmetic": {
+        "accuracy": 0.5,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 2393.5,
+          "p50": 2850.5,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "boolean_logic": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "counting": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "ordering": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "sequence": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "state_machine": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      },
+      "word_problem": {
+        "accuracy": 0.0,
+        "n": 8,
+        "reasoning_tokens": {
+          "mean": 4096.0,
+          "p50": 4096.0,
+          "p75": 4096.0,
+          "p90": 4096.0,
+          "p95": 4096.0,
+          "p99": 4096.0
+        },
+        "total_generations": 8,
+        "unique_tasks": 2
+      }
+    },
+    "candidate_conclusion_found": 43,
+    "candidate_correct_then_wrong_final": 0,
+    "excessive_reasoning_rate": {
+      "1024": 0.953125,
+      "2048": 0.9375,
+      "4096": 0.0,
+      "512": 0.953125
+    },
+    "final_tokens": {
+      "mean": 0.1875,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "p95": 2.549999999999983,
+      "p99": 3.0
+    },
+    "format_applicable_generations": 64,
+    "format_compliance_rate": 0.0625,
+    "format_meta_density": {
+      "mean": 0.06545524784724611,
+      "p50": 0.0474260168619786,
+      "p75": 0.09332088534921643,
+      "p90": 0.13178921547357675,
+      "p95": 0.14791313161933267,
+      "p99": 0.25523625112695664
+    },
+    "generation_error_count": 0,
+    "latency_s": {
+      "mean": 54.98996388343744,
+      "p50": 57.606791687499026,
+      "p75": 58.436840969249715,
+      "p90": 59.615068716899806,
+      "p95": 60.1679156205505,
+      "p99": 60.979319759289645
+    },
+    "lexical_redundancy_density": {
+      "mean": 0.12966924158351556,
+      "p50": 0.049807773215917825,
+      "p75": 0.2176878484994216,
+      "p90": 0.34858121079593873,
+      "p95": 0.41603915191694274,
+      "p99": 0.5667255607663503
+    },
+    "longest_repeated_span_words": {
+      "mean": 19.984375,
+      "p50": 17.0,
+      "p75": 23.25,
+      "p90": 29.700000000000003,
+      "p95": 39.39999999999998,
+      "p99": 43.219999999999985
+    },
+    "loop_rate": 0.0,
+    "max_output_rate": 0.9375,
+    "mlx_peak_bytes": 1771800546,
+    "n": 64,
+    "output_loop_rate": 0.0,
+    "reasoning_tokens": {
+      "mean": 3883.1875,
+      "p50": 4096.0,
+      "p75": 4096.0,
+      "p90": 4096.0,
+      "p95": 4096.0,
+      "p99": 4096.0
+    },
+    "repetition_density": {
+      "mean": 0.11935069714543631,
+      "p50": 0.08266228972713295,
+      "p75": 0.16727913597459007,
+      "p90": 0.24062683250330383,
+      "p95": 0.27948756604307456,
+      "p99": 0.4053371872560316
+    },
+    "rss_peak_observed_bytes": 2154594304,
+    "scoring_versions": [
+      "terminal_numeric_policies_v6"
+    ],
+    "strict_final_accuracy": 0.0625,
+    "task_accuracy_bootstrap_ci95": [
+      0.0,
+      0.1875
+    ],
+    "task_mean_accuracy": 0.0625,
+    "termination_counts": {
+      "eos": 4,
+      "max_output_tokens": 60
+    },
+    "total_generations": 64,
+    "total_output_tokens": {
+      "mean": 3883.5,
+      "p50": 4096.0,
+      "p75": 4096.0,
+      "p90": 4096.0,
+      "p95": 4096.0,
+      "p99": 4096.0
+    },
+    "unclosed_thinking_rate": 0.9375,
+    "unique_tasks": 16,
+    "within_task_variation": {
+      "fraction_tasks_with_mixed_correctness": 0.0,
+      "mean_total_token_std": 33.14259556258381,
+      "per_task_accuracy": {
+        "train-algebra-v2-177f13eb58ca311a": 0.0,
+        "train-algebra-v2-30ca17015d0210fe": 0.0,
+        "train-arithmetic-v2-d2446a8621b29e20": 0.0,
+        "train-arithmetic-v2-e14f6f07604682c5": 1.0,
+        "train-boolean_logic-v2-5ca98b95ad3c26e4": 0.0,
+        "train-boolean_logic-v2-8fb72a21170de707": 0.0,
+        "train-counting-v2-43965877cf1bcc96": 0.0,
+        "train-counting-v2-f3df91ced9465187": 0.0,
+        "train-ordering-v2-18b06489f9e591aa": 0.0,
+        "train-ordering-v2-dca3eb718b1be27f": 0.0,
+        "train-sequence-v2-2a2f04a2f2582c3e": 0.0,
+        "train-sequence-v2-c57000927bf6d401": 0.0,
+        "train-state_machine-v2-5edc26027f6baaeb": 0.0,
+        "train-state_machine-v2-89e0e71b7e17958e": 0.0,
+        "train-word_problem-v2-4c686c06115f7bfc": 0.0,
+        "train-word_problem-v2-5e80a0905ac90227": 0.0
+      },
+      "tasks_with_mixed_correctness": 0
+    }
+  },
+  "automatic_flagged_numeric_claims": [
+    {
+      "claims": [
+        "*   $60 + 42 = 108$",
+        "*   $6 \\times 17 = 108$."
+      ],
+      "family": "word_problem",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-0"
+    },
+    {
+      "claims": [
+        "$60 + 42 = 108$"
+      ],
+      "family": "word_problem",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-2"
+    },
+    {
+      "claims": [
+        "*   $8 \\times 9 = 7"
+      ],
+      "family": "state_machine",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-0"
+    },
+    {
+      "claims": [
+        "1+1=0",
+        "2+0=0",
+        "5+1=0",
+        "6+0=0"
+      ],
+      "family": "counting",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-1"
+    }
+  ],
+  "capped_candidate_correct_cue_count": 39,
+  "complete_example_fit_only": {
+    "1024": {
+      "distinct_tasks_fitting": 1,
+      "eligible_trajectories_excluded_whole": 1,
+      "eligible_trajectories_fitting": 3
+    },
+    "2048": {
+      "distinct_tasks_fitting": 1,
+      "eligible_trajectories_excluded_whole": 0,
+      "eligible_trajectories_fitting": 4
+    },
+    "4096": {
+      "distinct_tasks_fitting": 1,
+      "eligible_trajectories_excluded_whole": 0,
+      "eligible_trajectories_fitting": 4
+    }
+  },
+  "complete_generation_count": 64,
+  "family_task_review": [
+    {
+      "correct": 0,
+      "cue_found": 2,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "155",
+      "family": "ordering",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-dca3eb718b1be27f-P2-1512c0892f44:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-dca3eb718b1be27f-P2-1512c0892f44:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-dca3eb718b1be27f-P2-1512c0892f44:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-dca3eb718b1be27f-P2-1512c0892f44:replicate-3"
+      ],
+      "prompt": "3 numbered runners finish in distinct positions. Runner numbers are identifiers, not ranks. 103 precedes 155; 155 precedes 148. Which runner is in position 2, counting from 1? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-ordering-v2-dca3eb718b1be27f"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "2",
+      "family": "arithmetic",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-d2446a8621b29e20-P2-7616e3138705:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-d2446a8621b29e20-P2-7616e3138705:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-d2446a8621b29e20-P2-7616e3138705:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-d2446a8621b29e20-P2-7616e3138705:replicate-3"
+      ],
+      "prompt": "Calculate ((-2 + ((-1 * 10) / 10)) - -5). On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-arithmetic-v2-d2446a8621b29e20"
+    },
+    {
+      "correct": 0,
+      "cue_found": 1,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "6",
+      "family": "sequence",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-c57000927bf6d401-P2-ff84cc40cca5:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-c57000927bf6d401-P2-ff84cc40cca5:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-c57000927bf6d401-P2-ff84cc40cca5:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-c57000927bf6d401-P2-ff84cc40cca5:replicate-3"
+      ],
+      "prompt": "List [-2, -6, -5, -9, -3, 13, 10]. Apply in order: rotate_left, reverse, negate, reverse. sort means ascending; rotate_left moves the first item to the end; negate changes every sign. What is the integer in position 1, counting from 1? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-sequence-v2-c57000927bf6d401"
+    },
+    {
+      "correct": 0,
+      "cue_found": 3,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "36720",
+      "family": "word_problem",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-3"
+      ],
+      "prompt": "6 boxes contain 17 items each at 400 cents per item. All items receive a 10% discount. What is the total price in cents? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-word_problem-v2-4c686c06115f7bfc"
+    },
+    {
+      "correct": 0,
+      "cue_found": 1,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "17",
+      "family": "algebra",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-30ca17015d0210fe-P2-07668d17fc1b:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-30ca17015d0210fe-P2-07668d17fc1b:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-30ca17015d0210fe-P2-07668d17fc1b:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-30ca17015d0210fe-P2-07668d17fc1b:replicate-3"
+      ],
+      "prompt": "Solve for the integer x: 2 * (2 * (7 * (x + 17) - 4 + 1) + 2) = 944. On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-algebra-v2-30ca17015d0210fe"
+    },
+    {
+      "correct": 4,
+      "cue_found": 4,
+      "difficulty": "trivial",
+      "eos": 4,
+      "expected": "-1",
+      "family": "arithmetic",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-3"
+      ],
+      "prompt": "Calculate (2 + -3). On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        302,
+        1605,
+        417,
+        440
+      ],
+      "task_id": "train-arithmetic-v2-e14f6f07604682c5"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "0",
+      "family": "boolean_logic",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-8fb72a21170de707-P2-3dbbbd415fdf:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-8fb72a21170de707-P2-3dbbbd415fdf:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-8fb72a21170de707-P2-3dbbbd415fdf:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-8fb72a21170de707-P2-3dbbbd415fdf:replicate-3"
+      ],
+      "prompt": "A=True, B=True, C=True, D=False, E=False, F=False. Evaluate ((F OR F) OR (F OR E)). What is its truth value as 1 for true or 0 for false? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-boolean_logic-v2-8fb72a21170de707"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "6",
+      "family": "state_machine",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-3"
+      ],
+      "prompt": "Start at 10 modulo 11. Apply in order: multiply 4, subtract 6, multiply 2, multiply 6, add 7, multiply 9. Reduce after every operation to a nonnegative remainder modulo 11. What is the final state? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-state_machine-v2-5edc26027f6baaeb"
+    },
+    {
+      "correct": 0,
+      "cue_found": 0,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "99773",
+      "family": "word_problem",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-5e80a0905ac90227-P2-f00b9707c478:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-5e80a0905ac90227-P2-f00b9707c478:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-5e80a0905ac90227-P2-f00b9707c478:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-5e80a0905ac90227-P2-f00b9707c478:replicate-3"
+      ],
+      "prompt": "10 boxes contain 7 items each at 1900 cents per item. All items receive a 25% discount. Additional fees are [7, 16] cents. What is the final net cost in cents? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-word_problem-v2-5e80a0905ac90227"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "4",
+      "family": "state_machine",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-89e0e71b7e17958e-P2-8204fc5cb604:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-89e0e71b7e17958e-P2-8204fc5cb604:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-89e0e71b7e17958e-P2-8204fc5cb604:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-89e0e71b7e17958e-P2-8204fc5cb604:replicate-3"
+      ],
+      "prompt": "Start at 11 modulo 23. Apply in order: multiply 7, subtract 4. Reduce after every operation to a nonnegative remainder modulo 23. What is the final state? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-state_machine-v2-89e0e71b7e17958e"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "1",
+      "family": "boolean_logic",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-5ca98b95ad3c26e4-P2-7955e06a9aba:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-5ca98b95ad3c26e4-P2-7955e06a9aba:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-5ca98b95ad3c26e4-P2-7955e06a9aba:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-5ca98b95ad3c26e4-P2-7955e06a9aba:replicate-3"
+      ],
+      "prompt": "A=True, B=False, C=True, D=True, E=True, F=True. Evaluate ((NOT (NOT (D)) OR ((C XOR A) OR (F XOR C))) OR (((B XOR C) XOR NOT (C)) XOR ((C XOR A) AND NOT (D)))). What is its truth value as 1 for true or 0 for false? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-boolean_logic-v2-5ca98b95ad3c26e4"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "3",
+      "family": "counting",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-3"
+      ],
+      "prompt": "How many unordered subsets of size 1 from integers 1 through 6 whose sum is even? Each integer may appear at most once. On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-counting-v2-43965877cf1bcc96"
+    },
+    {
+      "correct": 0,
+      "cue_found": 0,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "182",
+      "family": "counting",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-f3df91ced9465187-P2-7d59cbe286ed:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-f3df91ced9465187-P2-7d59cbe286ed:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-f3df91ced9465187-P2-7d59cbe286ed:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-f3df91ced9465187-P2-7d59cbe286ed:replicate-3"
+      ],
+      "prompt": "How many unordered subsets of size 3 from integers 1 through 14 whose sum is even? Each integer may appear at most once. On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-counting-v2-f3df91ced9465187"
+    },
+    {
+      "correct": 0,
+      "cue_found": 3,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "-5",
+      "family": "sequence",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-2a2f04a2f2582c3e-P2-31c22455d52e:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-2a2f04a2f2582c3e-P2-31c22455d52e:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-2a2f04a2f2582c3e-P2-31c22455d52e:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-2a2f04a2f2582c3e-P2-31c22455d52e:replicate-3"
+      ],
+      "prompt": "List [-5, -1, -10]. Apply in order: reverse, sort. sort means ascending; rotate_left moves the first item to the end; negate changes every sign. What is the integer in position 2, counting from 1? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-sequence-v2-2a2f04a2f2582c3e"
+    },
+    {
+      "correct": 0,
+      "cue_found": 1,
+      "difficulty": "medium",
+      "eos": 0,
+      "expected": "33",
+      "family": "ordering",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-18b06489f9e591aa-P2-f45994c0d1d3:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-18b06489f9e591aa-P2-f45994c0d1d3:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-18b06489f9e591aa-P2-f45994c0d1d3:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-18b06489f9e591aa-P2-f45994c0d1d3:replicate-3"
+      ],
+      "prompt": "9 numbered runners finish in distinct positions. Runner numbers are identifiers, not ranks. 31 precedes 132; 132 precedes 66; 132 precedes 89; 82 precedes 31; 66 precedes 140; 82 precedes 66; 33 precedes 82; 56 precedes 33; 89 precedes 66; 135 precedes 56. Which runner is in position 3, counting from 1? On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-ordering-v2-18b06489f9e591aa"
+    },
+    {
+      "correct": 0,
+      "cue_found": 4,
+      "difficulty": "trivial",
+      "eos": 0,
+      "expected": "-9",
+      "family": "algebra",
+      "generation_ids": [
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-177f13eb58ca311a-P2-2957a24b36ab:replicate-0",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-177f13eb58ca311a-P2-2957a24b36ab:replicate-1",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-177f13eb58ca311a-P2-2957a24b36ab:replicate-2",
+        "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-177f13eb58ca311a-P2-2957a24b36ab:replicate-3"
+      ],
+      "prompt": "Solve for the integer x: 18 * (x + 12) - 18 = 36. On the final line, write only the integer answer.",
+      "reasoning_tokens": [
+        4096,
+        4096,
+        4096,
+        4096
+      ],
+      "task_id": "train-algebra-v2-177f13eb58ca311a"
+    }
+  ],
+  "generation_config": {
+    "backend": "mlx",
+    "enable_thinking": true,
+    "loop_guard": {
+      "check_every": 16,
+      "enabled": false,
+      "max_period": 128,
+      "min_period": 24,
+      "repeats": 3
+    },
+    "max_output_tokens": 4096,
+    "metrics": {
+      "lexical": {
+        "min_words": 10,
+        "threshold": 0.9
+      },
+      "loop": {
+        "max_period": 128,
+        "min_period": 24,
+        "repeats": 3
+      },
+      "ngrams": [
+        5,
+        8,
+        12
+      ]
+    },
+    "model": "Qwen/Qwen3.5-0.8B",
+    "name": "phase2-train-natural-n4",
+    "prompt_policies": [
+      "P2"
+    ],
+    "prompt_policy": "P2",
+    "replicates": 4,
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "sampling": {
+      "min_p": 0.0,
+      "presence_penalty": 1.5,
+      "repetition_penalty": 1.0,
+      "temperature": 1.0,
+      "top_k": 20,
+      "top_p": 0.95
+    },
+    "scoring_version": "terminal_numeric_policies_v6",
+    "seed": 20261005
+  },
+  "label_review": [
+    {
+      "agrees": true,
+      "expected": "155",
+      "recomputed_answer": "155",
+      "rendered_prompt": "3 numbered runners finish in distinct positions. Runner numbers are identifiers, not ranks. 103 precedes 155; 155 precedes 148. Which runner is in position 2, counting from 1? On the final line, write only the integer answer.",
+      "review_calculation": "Unique chain 103 \u2192 155 \u2192 148; second is 155.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-dca3eb718b1be27f-P2-1512c0892f44:replicate-0",
+      "task_id": "train-ordering-v2-dca3eb718b1be27f",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "2",
+      "recomputed_answer": "2",
+      "rendered_prompt": "Calculate ((-2 + ((-1 * 10) / 10)) - -5). On the final line, write only the integer answer.",
+      "review_calculation": "(-1*10)/10=-1; -2+(-1)=-3; -3-(-5)=2.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-d2446a8621b29e20-P2-7616e3138705:replicate-0",
+      "task_id": "train-arithmetic-v2-d2446a8621b29e20",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "6",
+      "recomputed_answer": "6",
+      "rendered_prompt": "List [-2, -6, -5, -9, -3, 13, 10]. Apply in order: rotate_left, reverse, negate, reverse. sort means ascending; rotate_left moves the first item to the end; negate changes every sign. What is the integer in position 1, counting from 1? On the final line, write only the integer answer.",
+      "review_calculation": "Final transformed list is [6,5,9,3,-13,-10,2]; first is 6.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-c57000927bf6d401-P2-ff84cc40cca5:replicate-0",
+      "task_id": "train-sequence-v2-c57000927bf6d401",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "36720",
+      "recomputed_answer": "36720",
+      "rendered_prompt": "6 boxes contain 17 items each at 400 cents per item. All items receive a 10% discount. What is the total price in cents? On the final line, write only the integer answer.",
+      "review_calculation": "6*17=102 items; 102*400=40800 cents; 90% is 36720.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-4c686c06115f7bfc-P2-9b5d9ffadee8:replicate-0",
+      "task_id": "train-word_problem-v2-4c686c06115f7bfc",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "17",
+      "recomputed_answer": "17",
+      "rendered_prompt": "Solve for the integer x: 2 * (2 * (7 * (x + 17) - 4 + 1) + 2) = 944. On the final line, write only the integer answer.",
+      "review_calculation": "944/2=472; (472-2)/2=235; 7*(x+17)=238; x=17.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-30ca17015d0210fe-P2-07668d17fc1b:replicate-0",
+      "task_id": "train-algebra-v2-30ca17015d0210fe",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "-1",
+      "recomputed_answer": "-1",
+      "rendered_prompt": "Calculate (2 + -3). On the final line, write only the integer answer.",
+      "review_calculation": "2+(-3)=-1.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-0",
+      "task_id": "train-arithmetic-v2-e14f6f07604682c5",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "0",
+      "recomputed_answer": "0",
+      "rendered_prompt": "A=True, B=True, C=True, D=False, E=False, F=False. Evaluate ((F OR F) OR (F OR E)). What is its truth value as 1 for true or 0 for false? On the final line, write only the integer answer.",
+      "review_calculation": "F=False and E=False, so both OR terms and their OR are false.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-8fb72a21170de707-P2-3dbbbd415fdf:replicate-0",
+      "task_id": "train-boolean_logic-v2-8fb72a21170de707",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "6",
+      "recomputed_answer": "6",
+      "rendered_prompt": "Start at 10 modulo 11. Apply in order: multiply 4, subtract 6, multiply 2, multiply 6, add 7, multiply 9. Reduce after every operation to a nonnegative remainder modulo 11. What is the final state? On the final line, write only the integer answer.",
+      "review_calculation": "Reduced states: 10,7,1,2,1,8,6 modulo 11.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-5edc26027f6baaeb-P2-6db424d484d5:replicate-0",
+      "task_id": "train-state_machine-v2-5edc26027f6baaeb",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "99773",
+      "recomputed_answer": "99773",
+      "rendered_prompt": "10 boxes contain 7 items each at 1900 cents per item. All items receive a 25% discount. Additional fees are [7, 16] cents. What is the final net cost in cents? On the final line, write only the integer answer.",
+      "review_calculation": "10*7*1900=133000; 75%=99750; fees 7+16=23; total99773.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-word_problem-v2-5e80a0905ac90227-P2-f00b9707c478:replicate-0",
+      "task_id": "train-word_problem-v2-5e80a0905ac90227",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "4",
+      "recomputed_answer": "4",
+      "rendered_prompt": "Start at 11 modulo 23. Apply in order: multiply 7, subtract 4. Reduce after every operation to a nonnegative remainder modulo 23. What is the final state? On the final line, write only the integer answer.",
+      "review_calculation": "11*7=77; 77 mod23=8; 8-4=4.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-state_machine-v2-89e0e71b7e17958e-P2-8204fc5cb604:replicate-0",
+      "task_id": "train-state_machine-v2-89e0e71b7e17958e",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "1",
+      "recomputed_answer": "1",
+      "rendered_prompt": "A=True, B=False, C=True, D=True, E=True, F=True. Evaluate ((NOT (NOT (D)) OR ((C XOR A) OR (F XOR C))) OR (((B XOR C) XOR NOT (C)) XOR ((C XOR A) AND NOT (D)))). What is its truth value as 1 for true or 0 for false? On the final line, write only the integer answer.",
+      "review_calculation": "NOT(NOT(D))=True, so the outer OR is true regardless of the other branch.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-boolean_logic-v2-5ca98b95ad3c26e4-P2-7955e06a9aba:replicate-0",
+      "task_id": "train-boolean_logic-v2-5ca98b95ad3c26e4",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "3",
+      "recomputed_answer": "3",
+      "rendered_prompt": "How many unordered subsets of size 1 from integers 1 through 6 whose sum is even? Each integer may appear at most once. On the final line, write only the integer answer.",
+      "review_calculation": "Size-one even-sum subsets are {2},{4},{6}.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-43965877cf1bcc96-P2-ee2e6ceda2c5:replicate-0",
+      "task_id": "train-counting-v2-43965877cf1bcc96",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "182",
+      "recomputed_answer": "182",
+      "rendered_prompt": "How many unordered subsets of size 3 from integers 1 through 14 whose sum is even? Each integer may appear at most once. On the final line, write only the integer answer.",
+      "review_calculation": "Seven odds/seven evens: choose(7,3)+choose(7,2)*7=35+147=182.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-counting-v2-f3df91ced9465187-P2-7d59cbe286ed:replicate-0",
+      "task_id": "train-counting-v2-f3df91ced9465187",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "-5",
+      "recomputed_answer": "-5",
+      "rendered_prompt": "List [-5, -1, -10]. Apply in order: reverse, sort. sort means ascending; rotate_left moves the first item to the end; negate changes every sign. What is the integer in position 2, counting from 1? On the final line, write only the integer answer.",
+      "review_calculation": "Reverse gives [-10,-1,-5]; ascending sort [-10,-5,-1]; second is -5.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-sequence-v2-2a2f04a2f2582c3e-P2-31c22455d52e:replicate-0",
+      "task_id": "train-sequence-v2-2a2f04a2f2582c3e",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "33",
+      "recomputed_answer": "33",
+      "rendered_prompt": "9 numbered runners finish in distinct positions. Runner numbers are identifiers, not ranks. 31 precedes 132; 132 precedes 66; 132 precedes 89; 82 precedes 31; 66 precedes 140; 82 precedes 66; 33 precedes 82; 56 precedes 33; 89 precedes 66; 135 precedes 56. Which runner is in position 3, counting from 1? On the final line, write only the integer answer.",
+      "review_calculation": "Unique chain 135\u219256\u219233\u219282\u219231\u2192132\u219289\u219266\u2192140; third is 33.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-ordering-v2-18b06489f9e591aa-P2-f45994c0d1d3:replicate-0",
+      "task_id": "train-ordering-v2-18b06489f9e591aa",
+      "training_permitted": false
+    },
+    {
+      "agrees": true,
+      "expected": "-9",
+      "recomputed_answer": "-9",
+      "rendered_prompt": "Solve for the integer x: 18 * (x + 12) - 18 = 36. On the final line, write only the integer answer.",
+      "review_calculation": "18*(x+12)=54; x+12=3; x=-9.",
+      "review_origin": "assistant_math_review_not_blinded",
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-algebra-v2-177f13eb58ca311a-P2-2957a24b36ab:replicate-0",
+      "task_id": "train-algebra-v2-177f13eb58ca311a",
+      "training_permitted": false
+    }
+  ],
+  "natural_response_lengths": [
+    {
+      "reasoning_tokens": 302,
+      "replicate": 0,
+      "sequence_tokens": 335,
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-0"
+    },
+    {
+      "reasoning_tokens": 1605,
+      "replicate": 1,
+      "sequence_tokens": 1638,
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-1"
+    },
+    {
+      "reasoning_tokens": 417,
+      "replicate": 2,
+      "sequence_tokens": 450,
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-2"
+    },
+    {
+      "reasoning_tokens": 440,
+      "replicate": 3,
+      "sequence_tokens": 473,
+      "source_generation_id": "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-3"
+    }
+  ],
+  "numeric_flag_limitations": "Parity equations under modulo2 are flagged as ordinary arithmetic; a cap-cut RHS is flagged as a complete equation. These flags do not prove errors; capped traces remain ineligible independently.",
+  "optimizer_steps": 0,
+  "published_outputs_match_original_raw_records": true,
+  "recommendation": "Hold training. One elementary task cannot support a meaningful SFT improvement comparison. Consider diverse solver-verified complete targets only after user/independent-agent review and renewed continuation instructions.",
+  "review_scope": "All64 statistical records; all16 rendered prompts/answer labels; all4 natural responses in full; representative opening/ending passages from replicate0 of all15 capped tasks; focused contexts of flagged claims. Not an exhaustive proof of all intermediate reasoning.",
+  "reviewed_at_utc": "2026-10-12T20:20:01.325525+00:00",
+  "sampled_min_available_ram_bytes": 4534304768,
+  "semantic_train_metric_run": false,
+  "source_archive_sha256": "ec49f0c4a204f925101529a83e4c3c31b41948e07af217249853c341f2db895c",
+  "source_raw_records_hash": "46c5a334bd53f98dc96142f5c9a770fdf787debc4d3eb1cc5c6b0bd3bbe89140",
+  "source_records_hash": "e849fa5507c6db15af579df8c0a25d815626f63443d111f9f1adb90b32001041",
+  "source_run": "runs/20261012T184117-phase2-train-natural-n4-1af34da1",
+  "source_run_manifest": {
+    "config_hash": "f5e4a251295f7c47549419c2987c55396c5c015f8a13611122f3dd5c4becbcc9",
+    "created_utc": "20261012T184117",
+    "git_commit": "13b958a4e4aa93f6d3539804a546a25eee5a13be",
+    "git_dirty": false
+  },
+  "status": "completed_natural_pilot_cpu_review",
+  "sum_generation_latency_seconds": 3519.357688539996,
+  "test_evaluated": false,
+  "training_pool_approved": false,
+  "unique_tasks": 16
+}

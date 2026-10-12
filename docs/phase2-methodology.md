@@ -2,6 +2,9 @@
 
 The completed 2026-10-05 prompt study and its protocol remain historical. Phase 3
 completed the staged diagnostics after stock context and backend preflight checks.
+The natural 64-response TRAIN pilot also completed with one distinct eligible
+task. No optimizer ran; work is held for user/independent-agent review. See
+[the completed generation review](../reports/phase3-natural-pilot-review.md).
 See [current progress](../reports/phase3-progress.md), [pre-run checkpoint](../reports/phase3-preflight-checkpoint.md)
 and [the preserved Phase 2 checkpoint](../reports/phase2_checkpoint.md).
 

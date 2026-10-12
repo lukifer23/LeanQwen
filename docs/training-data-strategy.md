@@ -1,11 +1,13 @@
 # Training data and capability preservation
 
-Status: discussion checkpoint, 2026-10-12. The sixteen-task × four-trajectory
-natural pilot is running. No optimizer step, solver corpus, external dataset
-import or closed-model teacher run has occurred. Finish this generation pass,
-publish its quality evidence, then decide with the user whether to proceed.
-Optimizer smoke and real SFT are held until that decision. This supersedes the
-earlier automatic conditional progression at this checkpoint.
+Status: review checkpoint, 2026-10-12. The sixteen-task × four-trajectory natural
+pilot completed with four correct natural responses from one task; sixty traces
+capped/unclosed. No optimizer step, solver corpus, external dataset import or
+closed-model teacher run has occurred. See the
+[generation review](../reports/phase3-natural-pilot-review.md).
+The project is idle for user/independent-agent review. New model jobs, data-source
+implementation, optimizer smoke and real SFT are held until the user's next
+instructions. This supersedes earlier automatic conditional progression.
 
 ## Current natural pilot
 
@@ -25,10 +27,11 @@ independent training problems.
 
 The partial snapshot in
 [phase3_natural_pilot_snapshot.json](../reports/phase3_natural_pilot_snapshot.json)
-is explicitly incomplete. Final evidence will be published by the running
-controller to `reports/train_candidate_quality.json` and
-`reports/train_candidate_records.jsonl`; those are not complete until generation
-and publication succeed. The current script does not launch training afterward.
+is explicitly incomplete and preserved as history. Final
+[quality evidence](../reports/train_candidate_quality.json) and
+[raw responses](../reports/train_candidate_records.jsonl) are now published.
+Only one distinct task qualifies automatically; no reviewed training pool is
+approved. The script exited without launching training.
 
 ## Proposed data sources
 

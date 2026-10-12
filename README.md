@@ -22,9 +22,12 @@ The seven-case tail completed: two correct natural completions, five censored,
 all 13 prefix checks exact. Early exit recovered 3/34 probes; 31 exhausted the
 128-token final budget. Semantic calibration and offline guard replay completed.
 See [reasoning diagnosis](reports/phase3-reasoning-diagnosis.md). No trained
-adapter or reasoning improvement is claimed. The 16×4 natural TRAIN pool is now
-generating. Finish and review its coverage before deciding with the user whether
-to start optimizer training. See [data options and safeguards](docs/training-data-strategy.md).
+adapter or reasoning improvement is claimed. The 16×4 natural TRAIN pilot completed:
+4/64 correct EOS responses, all from `2 + (-3)`; 60/64 capped and unclosed.
+One distinct eligible task is insufficient for meaningful SFT. See the
+[generation review](reports/phase3-natural-pilot-review.md) and
+[data options and safeguards](docs/training-data-strategy.md).
+The project is idle and held for user/independent-agent review; no optimizer ran.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -41,7 +44,8 @@ split with zero detected cross-split structural-signature collisions. See its
 [measured generator audit](reports/procedural_v2_quality.md) for limitations.
 
 Tail diagnostics, counterfactual early-exit probes, local semantic measurement
-and offline guard replay have run. Natural TRAIN selection remains pending.
+and offline guard replay have run. Natural TRAIN generation/automatic selection
+completed; no quality-approved training pool was created.
 A guarded `train-sft` interface exists but has not executed real
 optimizer steps or adapter reload validation. No substantial SFT, preference
 training, compression pipeline, adaptive budget controller or CUDA backend has run.

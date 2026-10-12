@@ -88,6 +88,7 @@ reports/phase2_protocol.json
 reports/phase2_start.json
 reports/phase2_stop_audit.json
 reports/phase3-context-stock.md
+reports/phase3-natural-pilot-review.md
 reports/phase3-preflight-checkpoint.md
 reports/phase3-progress.md
 reports/phase3-prompt-replay/conclusion_state_measurements.jsonl
@@ -101,10 +102,13 @@ reports/phase3_context_configuration.json
 reports/phase3_context_stock.json
 reports/phase3_context_stock_records.jsonl
 reports/phase3_gpu_handoff.json
+reports/phase3_idle_checkpoint.json
 reports/phase3_live_profile_restoration.json
 reports/phase3_metadata_initial_failure.json
 reports/phase3_metal_integrity_preflight.json
+reports/phase3_natural_pilot_audit.json
 reports/phase3_natural_pilot_snapshot.json
+reports/phase3_natural_pilot_summary.json
 reports/phase3_research_log_restoration.json
 reports/phase3_tail_partial_records.jsonl
 reports/phase3_tail_partial_status.json
@@ -125,6 +129,9 @@ reports/sampling_measurements.json
 reports/smoke_generations.json
 reports/trace_evidence.json
 reports/trace_review.md
+reports/train_candidate_quality.json
+reports/train_candidate_quality.md
+reports/train_candidate_records.jsonl
 reports/transformers_probe.json
 scripts/approve_natural_dataset.py
 scripts/calibrate_metrics.py

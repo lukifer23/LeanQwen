@@ -1,0 +1,27 @@
+{
+  "adapter_directory_exists": false,
+  "generation_completion": {
+    "samples": 64,
+    "status": "complete",
+    "unique_tasks": 16
+  },
+  "hold": "No additional inference, generation, semantic model analysis, solver implementation or training until user/independent-agent review and new instructions.",
+  "model_jobs_launched_during_review": 0,
+  "optimizer_steps_executed": 0,
+  "os_model_lease_acquired_and_released": true,
+  "previous_lock_metadata": {
+    "active": false,
+    "create_time": 1791830474.800015,
+    "pid": 54542
+  },
+  "processes_terminated_during_review": 0,
+  "project": "/Users/admin/Downloads/CodeProjects/QwenLean",
+  "project_model_workers": [],
+  "released_lock_metadata": {
+    "active": false,
+    "create_time": 1791836334.105518,
+    "pid": 9508
+  },
+  "system_available_ram_bytes": 6109495296,
+  "verified_at_utc": "2026-10-12T20:18:54.164517+00:00"
+}

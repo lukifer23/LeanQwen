@@ -1,0 +1,71 @@
+{
+  "candidate_count": 64,
+  "compression_applied": false,
+  "coverage_clean": 0.0625,
+  "dataset_manifest": "data/splits/procedural-v2/manifest.json",
+  "difficulty_candidate_counts": {
+    "medium": 32,
+    "trivial": 32
+  },
+  "duplicate_response_count": 0,
+  "family_candidate_counts": {
+    "algebra": 8,
+    "arithmetic": 8,
+    "boolean_logic": 8,
+    "counting": 8,
+    "ordering": 8,
+    "sequence": 8,
+    "state_machine": 8,
+    "word_problem": 8
+  },
+  "family_counts": {
+    "arithmetic": 1
+  },
+  "license_distribution": {
+    "Apache-2.0": 64
+  },
+  "median_candidate_minus_selected_tokens": [
+    126.5
+  ],
+  "natural_only": true,
+  "output_cap": 4096,
+  "policy": "P2",
+  "problem_count": 16,
+  "raw_correctness_rate": 0.0625,
+  "raw_reasoning_length_distribution": {
+    "mean": 3883.1875,
+    "p50": 4096.0,
+    "p75": 4096.0,
+    "p90": 4096.0,
+    "p95": 4096.0,
+    "p99": 4096.0
+  },
+  "replicates": 4,
+  "selected_count": 1,
+  "selected_parent_ids": [
+    "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-0"
+  ],
+  "selected_reasoning_length_distribution": {
+    "mean": 302.0,
+    "p50": 302.0,
+    "p75": 302.0,
+    "p90": 302.0,
+    "p95": 302.0,
+    "p99": 302.0
+  },
+  "selected_reasoning_tokens": [
+    302
+  ],
+  "selection_requires_manual_review": true,
+  "source_distribution": {
+    "qwen_self": 64
+  },
+  "source_run": "runs/20261012T184117-phase2-train-natural-n4-1af34da1",
+  "tasks_with_clean_correct_candidate": 1,
+  "tasks_with_correct_candidate": 1,
+  "test_used": false,
+  "tier_counts": {
+    "A": 4,
+    "E": 60
+  }
+}

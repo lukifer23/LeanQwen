@@ -632,3 +632,46 @@ permission/provenance restrictions; diverse complete examples and structural
 splits; conservative removable adapters and measured held-out capability gates.
 These are proposed interventions, not generated targets or demonstrated retention.
 No external dataset or proprietary teacher response has entered training.
+
+### Phase 3 — completed natural pilot, negative coverage and idle handoff
+
+The preserved controller completed 64/64 generations across sixteen TRAIN tasks
+and exited naturally. Four correct EOS responses, all for `2 + (-3) = -1`;
+sixty capped/unclosed traces. Automatic target coverage is one distinct task
+(6.25%), insufficient for a meaningful SFT improvement pilot. Successful reasoning
+lengths: 302/1605/417/440; complete sequence lengths: 335/1638/450/473.
+Mean reasoning3883.19; median/p90/p95 censored4096. No generation errors.
+Sum of request latencies58.66min, aggregate70.62 output tokens/s; peak recorded
+MLX1.772GB/RSS2.155GB overlap, minimum sampled available RAM4.534GB.
+Original raw/public generation fields match exactly. No scores were rewritten.
+
+Reviewed all64 statistical records, all16 task prompts/labels, all4 natural
+responses in full, representative replicate-zero opening/ending passages for
+the fifteen capped tasks, and flagged-claim contexts. Recomputed labels agree16/16
+in an assistant mathematical review; not blinded or independent human validation.
+Patterns include semantic re-derivation, instruction doubt, formatting fixation,
+parsing confusion and arithmetic drift. Thirty-nine capped traces contain heuristic
+correct-number cues; these are not completed solutions. Natural tierA remains
+automatic eligibility, not a certificate of productive intermediate reasoning.
+
+Found context limitations in the narrow equation checker: parity equations in
+a modulo2 passage are flagged as ordinary integer arithmetic; a cap-cut RHS is
+treated as a complete claim; rejected chained equations are not parsed. Do not
+count these flags as a verified error rate. No checker change occurred in this
+review, and these flags do not change complete-target coverage. Potential prompt
+confounds (unused operation glossary, bracketed fees, adjacent signs, final-line
+wording) remain hypotheses; evaluated v2 stimuli must stay unchanged.
+
+Evidence: `reports/phase3-natural-pilot-review.md`, source-bound CPU audit/summary,
+`reports/train_candidate_records.jsonl` and original quality report. Review prose
+and calculations are measurement-only, not training targets. TRAIN semantic model
+analysis was not run. No approved corpus, solver path, optimizer step or adapter.
+
+User requested this documentation/remote milestone and then a stop for their and
+another agent's review. Verified no project model workers and successful acquisition/
+release of the OS lease (`reports/phase3_idle_checkpoint.json`). No processes were
+terminated during this review. All new model work, data-source implementation and
+training remain held until the user's next instructions. No automatic continuation.
+Local validation for this documentation/evidence checkpoint: 98 tests pass,
+Ruff and whitespace checks pass, ten current Markdown files have no missing
+local link targets. No new model experiment was launched for verification.
