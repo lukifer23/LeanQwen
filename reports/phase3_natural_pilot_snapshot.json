@@ -1,0 +1,33 @@
+{
+  "automatically_eligible_trajectories": 4,
+  "capped_trajectories": 49,
+  "correct_trajectories": 4,
+  "distinct_tasks_with_eligible_natural_target": 1,
+  "documentation_parent_head": "13b958a4e4aa93f6d3539804a546a25eee5a13be",
+  "limitations": "Incomplete snapshot, not final pilot coverage or an approved training corpus. Four repeats of one task are not four independent tasks.",
+  "manual_review_complete": false,
+  "natural_eos_trajectories": 4,
+  "observed_at_utc": "2026-10-12T19:29:58.942181+00:00",
+  "optimizer_training_launched": false,
+  "planned_tasks": 16,
+  "planned_trajectories": 64,
+  "saved_trajectories": 53,
+  "selected_candidate_ids": [
+    "20261012T184117-phase2-train-natural-n4-1af34da1:train-arithmetic-v2-e14f6f07604682c5-P2-abe549d83f09:replicate-0"
+  ],
+  "selected_complete_sequence_tokens": [
+    335
+  ],
+  "source_bytes_sha256_at_snapshot": "e53d8f87de587981a697c9d4105deba20ba03f6dfcc1b3ad6c5935bfaca86b1c",
+  "source_config_hash": "f5e4a251295f7c47549419c2987c55396c5c015f8a13611122f3dd5c4becbcc9",
+  "source_distribution": {
+    "qwen_self": 53
+  },
+  "source_git_commit": "13b958a4e4aa93f6d3539804a546a25eee5a13be",
+  "source_git_dirty": false,
+  "source_records_digest_at_snapshot": "00194eff4b68154f6c5e2a1081e6622acc646e741c3fcbe2fd6886122591adfb",
+  "source_run": "runs/20261012T184117-phase2-train-natural-n4-1af34da1",
+  "status": "partial_generation_snapshot",
+  "test_evaluated": false,
+  "user_checkpoint": "Finish current generation, publish/review final coverage, then await continuation decision before optimizer smoke or SFT."
+}

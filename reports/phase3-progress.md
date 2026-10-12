@@ -115,12 +115,24 @@ See [diagnosis and sources](phase3-reasoning-diagnosis.md).
    live short-request profile restoration. Full-length larger contexts deferred.
 2. Completed seven-case termination-tail protocol, own-prefix early exit including
    zero controls, semantic calibration and offline guard replay.
-3. Existing 16 TRAIN tasks × four trajectories at P2/4096; measure and review
+3. Active 16 TRAIN tasks × four trajectories at P2/4096; measure and review
    natural clean-target coverage. Solver targets are conditional on poor coverage.
 4. Hardened optimizer smoke, sequence-feasibility measurements and one conditional
    real SFT pilot, followed by matched reasoning, non-thinking and context evaluation.
 
-No new natural TRAIN generations, solver corpus, optimizer steps, trained adapter,
+Natural TRAIN responses are being saved in
+`runs/20261012T184117-phase2-train-natural-n4-1af34da1`; see the explicitly partial
+[snapshot](phase3_natural_pilot_snapshot.json). Four eligible responses in that
+snapshot come from one task, so repetitions do not establish corpus diversity.
+Final coverage remains unknown until all 64 responses and quality reports publish.
+
+The user requested generation finish before deciding whether to continue into
+training. Optimizer smoke and SFT are now held for that decision, superseding
+earlier automatic conditional progression. Documented
+[data options and retention safeguards](../docs/training-data-strategy.md) are
+proposals, not implemented sources or proven capability preservation.
+
+No solver corpus, optimizer steps, trained adapter,
 stock-versus-trained efficiency comparison or context-retention result exists yet. Historical
 P2 has 7/36 correct and 29/36 capped at 2048; this remains a diagnosis input, not
 post-training success. Recommendations about real adapter coverage/data quantity

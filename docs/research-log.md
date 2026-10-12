@@ -607,3 +607,28 @@ again yielded zero triggers and zero savings. Guard remains disabled.
 post-training objective. No TRAIN generations, solver targets or optimizer steps
 have yet run. Next: the predeclared sixteen TRAIN tasks × four natural trajectories,
 then complete-target review and conditional optimizer/SFT gates.
+
+### Phase 3 — active natural pilot and user decision checkpoint
+
+After diagnostic commit `13b958a` and passing CI run 38292517555, launched the
+predeclared sixteen TRAIN tasks × four natural Qwen generations, P2, cap4096,
+original pinned bf16 weights, guard off, one leased process. Partial snapshot:
+53/64 saved; 4 correct/EOS; 4 automatically eligible responses across
+1 distinct task(s). This is incomplete evidence, not final coverage or a reviewed
+training pool. Snapshot/hash: `reports/phase3_natural_pilot_snapshot.json`;
+raw outputs remain durable in `runs/20261012T184117-phase2-train-natural-n4-1af34da1`.
+
+The user now explicitly requests generation finish and a decision before
+training. Optimizer smoke and real SFT are held; the current controller only
+publishes candidate reports and exits. No optimizer job is queued. This checkpoint
+supersedes earlier automatic conditional training progression. Do not implement
+the conditional solver path before final natural coverage is assessed and
+continuation is chosen.
+
+Documented new discussion in `docs/training-data-strategy.md`: exact solver
+reasoning with checked intermediates; reviewed licensed public worked examples;
+coding/review assistants separated from response targets; closed-model teacher
+permission/provenance restrictions; diverse complete examples and structural
+splits; conservative removable adapters and measured held-out capability gates.
+These are proposed interventions, not generated targets or demonstrated retention.
+No external dataset or proprietary teacher response has entered training.

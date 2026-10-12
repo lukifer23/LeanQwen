@@ -4,8 +4,9 @@ Phase 3 resumes the completed prompt-study checkpoint; the user's PonderScope ru
 finished naturally before LeanQwen model work. See [current progress](../reports/phase3-progress.md)
 and [reversible runtime context contracts](context-management.md). The backend
 and compatibility evidence below remain historical unless explicitly updated.
-Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
-remain pending; implemented interfaces are not evidence that those experiments ran.
+Higher-cap diagnosis and semantic measurement have completed; natural TRAIN
+generation is running. Optimizer smoke/SFT await the user's continuation decision
+after final coverage review. See [data strategy](training-data-strategy.md).
 
 2026-10-05, M3 Pro (11 CPU cores), 18 GiB unified RAM, macOS 27.2.
 See `reports/environment.json` for the measured environment. Python 3.12.12 is

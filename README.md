@@ -22,7 +22,9 @@ The seven-case tail completed: two correct natural completions, five censored,
 all 13 prefix checks exact. Early exit recovered 3/34 probes; 31 exhausted the
 128-token final budget. Semantic calibration and offline guard replay completed.
 See [reasoning diagnosis](reports/phase3-reasoning-diagnosis.md). No trained
-adapter or reasoning improvement is claimed; the next gate is the 16×4 TRAIN pool.
+adapter or reasoning improvement is claimed. The 16×4 natural TRAIN pool is now
+generating. Finish and review its coverage before deciding with the user whether
+to start optimizer training. See [data options and safeguards](docs/training-data-strategy.md).
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -120,7 +122,7 @@ require new derived destinations.
 | Measurement calibration | Source-linked DEV judgments, local embeddings and exact guard replay |
 | TRAIN natural best-of-N | N=4; correctness, reasoning validity and clean closure precede length |
 | Optimizer smoke | Approved TRAIN targets, actual LoRA steps, save/reload/inference verification |
-| Real SFT | One bounded Phase 3 pilot authorized conditionally on diagnosis, data and optimizer gates |
+| Real SFT | Held at the current user checkpoint; decide after natural generation/coverage review, then satisfy data and optimizer gates |
 
 TEST stays sealed from model evaluation and training selection. Generator-only
 contamination audits inspect split metadata. Natural response targets come from

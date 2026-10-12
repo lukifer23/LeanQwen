@@ -26,6 +26,7 @@ docs/metrics.md
 docs/phase2-methodology.md
 docs/repository-files.txt
 docs/research-log.md
+docs/training-data-strategy.md
 pyproject.toml
 qwenlean/__init__.py
 qwenlean/cli.py
@@ -103,6 +104,7 @@ reports/phase3_gpu_handoff.json
 reports/phase3_live_profile_restoration.json
 reports/phase3_metadata_initial_failure.json
 reports/phase3_metal_integrity_preflight.json
+reports/phase3_natural_pilot_snapshot.json
 reports/phase3_research_log_restoration.json
 reports/phase3_tail_partial_records.jsonl
 reports/phase3_tail_partial_status.json
