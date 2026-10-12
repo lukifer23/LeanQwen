@@ -2,12 +2,12 @@
 
 Current Phase 3 work resumes the completed prompt-study checkpoint. PonderScope
 finished naturally before the stock context probes. Tail diagnosis was held for
-the audit addendum's missing preflights; those checks passed, and resumption follows
-the saved pre-run checkpoint. See
+the audit addendum's missing preflights; those checks passed and the seven-case
+tail, 34 early-exit probes and semantic calibration have now completed. See
 [current progress](../reports/phase3-progress.md), [historical checkpoint](../reports/phase2_checkpoint.md)
 and [reversible context profiles](context-management.md).
-Higher-cap diagnosis, semantic inference, TRAIN generation and optimizer smoke
-remain pending; implemented interfaces are not evidence that those experiments ran.
+TRAIN generation and optimizer smoke remain pending. See the
+[measured diagnosis](../reports/phase3-reasoning-diagnosis.md) for completed evidence.
 
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.

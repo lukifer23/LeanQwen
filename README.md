@@ -18,8 +18,11 @@ measured MLX peak from 5.016 to 2.960 GB at unchanged accuracy. Live short-reque
 See [measured context results](reports/phase3-context-stock.md),
 [current progress](reports/phase3-progress.md) and
 [context management / restoration](docs/context-management.md).
-The staged tail is resumable after passing the audit preflights; no trained
-adapter or reasoning improvement is claimed.
+The seven-case tail completed: two correct natural completions, five censored,
+all 13 prefix checks exact. Early exit recovered 3/34 probes; 31 exhausted the
+128-token final budget. Semantic calibration and offline guard replay completed.
+See [reasoning diagnosis](reports/phase3-reasoning-diagnosis.md). No trained
+adapter or reasoning improvement is claimed; the next gate is the 16×4 TRAIN pool.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -35,9 +38,9 @@ Procedural-v2 has eight families, four structural difficulty bins and 64 tasks p
 split with zero detected cross-split structural-signature collisions. See its
 [measured generator audit](reports/procedural_v2_quality.md) for limitations.
 
-Tail diagnostics, counterfactual early-exit probes, local semantic measurement,
-guard replay and natural TRAIN selection code are implemented; their model studies
-remain pending. A guarded `train-sft` interface exists but has not executed real
+Tail diagnostics, counterfactual early-exit probes, local semantic measurement
+and offline guard replay have run. Natural TRAIN selection remains pending.
+A guarded `train-sft` interface exists but has not executed real
 optimizer steps or adapter reload validation. No substantial SFT, preference
 training, compression pipeline, adaptive budget controller or CUDA backend has run.
 The [guide](docs/guide.md) distinguishes implemented interfaces from validated results.
@@ -58,7 +61,7 @@ These completed DEV results used a **2048 total-output-token cap** and historica
 `FINAL:` prompts/scorer v5. Thinking lengths are right-censored, not natural
 completion lengths. The prompt wording itself can provoke format deliberation;
 The completed Phase 2 prompt pilot measures its contribution alongside seed
-variance and ordinary mistakes; higher-cap diagnosis remains pending.
+variance and ordinary mistakes; higher-cap diagnosis is now reported separately.
 
 | Variant | Task-correct / 60 | Median / P95 thinking tokens | Cap failures |
 |---|---:|---:|---:|

@@ -575,3 +575,35 @@ run. Full Mac suite: 98 passed; Ruff/whitespace checks pass. Pre-run checkpoint:
 is pushed, CI is observed and main is clean. No TRAIN generations, solver targets,
 optimizer steps, adapter or model improvement are claimed. Next: resume the
 existing seven-case tail, then early exit, semantic calibration and 16×4 TRAIN.
+
+### Phase 3 — completed staged reasoning diagnosis
+
+Resumed the preserved controller after commit `8156239`, passing CI and the clean
+pre-run checkpoint. Seven predeclared DEV cases completed without prefix drift:
+13/13 exact comparisons. Natural correct completions: arithmetic 498 reasoning
+tokens, algebra 6122. Four cases remain censored at 8192; state machine remains
+censored at 16384. No inference about their unobserved larger-budget outcomes.
+Repeated correct derivations, renewed interpretation doubts, formatting fixation
+and intermediate drift are visible in the saved trajectories. No TEST used.
+Evidence: `reports/termination_tail_records.jsonl` and censor-aware measurements.
+
+All 34 six-source forced-close probes completed, including six zero-prefix
+controls. Three correct EOS answers across two tasks, one zero-prefix success;
+31 outputs capped at the predeclared 128-token final allowance, often while
+writing another explanation. This budget confounds mathematical insufficiency
+with incomplete finalization. Prefix success is not monotonic; this is not a
+validated stopping policy. Full outputs and seeds/configs are retained in
+`reports/early_exit_records.jsonl`.
+
+Installed the locked semantic extra only between Qwen workloads. CPU float32,
+one-thread pinned MiniLM calibration: 36 reviewed pairs across five DEV tasks;
+@0.90 TP11/FP1/TN16/FN8, precision91.7%, recall57.9%. Curated single-reviewer
+annotations lack held-out calibration and cannot certify useless reasoning.
+All 161 unique prompt/tail trajectories were measured without re-generating the
+144 prompt-study responses. Full exact-cycle replay at the same three thresholds
+again yielded zero triggers and zero savings. Guard remains disabled.
+
+`reports/phase3-reasoning-diagnosis.md` connects observations to the original
+post-training objective. No TRAIN generations, solver targets or optimizer steps
+have yet run. Next: the predeclared sixteen TRAIN tasks × four natural trajectories,
+then complete-target review and conditional optimizer/SFT gates.

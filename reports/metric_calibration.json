@@ -1,0 +1,76 @@
+{
+  "by_policy_semantic_density": {
+    "P0": 0.11391013544232252,
+    "P1": 0.10613405291471818,
+    "P2": 0.09613383188721789,
+    "P3": 0.1005693472789499
+  },
+  "calibration_pair_count": 36,
+  "default_threshold": 0.9,
+  "format_meta_presence_calibration": {
+    "anchored_v2": {
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 5,
+      "tp": 7
+    },
+    "historical_v1": {
+      "fn": 0,
+      "fp": 4,
+      "precision": 0.6363636363636364,
+      "recall": 1.0,
+      "tn": 1,
+      "tp": 7
+    }
+  },
+  "independent_annotated_tasks": 5,
+  "lexical_threshold_0.90": {
+    "fn": 10,
+    "fp": 2,
+    "precision": 0.8181818181818182,
+    "recall": 0.47368421052631576,
+    "tn": 15,
+    "tp": 9
+  },
+  "limitations": "Curated DEV pairs across five tasks, including four matched algebra policies; one assistant reviewer, no independent human labels or held-out calibration. Pair selection includes high lexical similarity and is not representative. Similarity does not establish uselessness. Not a training filter.",
+  "manual_annotation_count": 12,
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "policy_density_scope": "Matched 144-trajectory prompt study only; selected higher-cap tail observations excluded from policy averages",
+  "semantic_by_threshold": {
+    "0.8": {
+      "fn": 4,
+      "fp": 5,
+      "precision": 0.75,
+      "recall": 0.7894736842105263,
+      "tn": 12,
+      "tp": 15
+    },
+    "0.85": {
+      "fn": 5,
+      "fp": 4,
+      "precision": 0.7777777777777778,
+      "recall": 0.7368421052631579,
+      "tn": 13,
+      "tp": 14
+    },
+    "0.9": {
+      "fn": 8,
+      "fp": 1,
+      "precision": 0.9166666666666666,
+      "recall": 0.5789473684210527,
+      "tn": 16,
+      "tp": 11
+    },
+    "0.95": {
+      "fn": 13,
+      "fp": 1,
+      "precision": 0.8571428571428571,
+      "recall": 0.3157894736842105,
+      "tn": 16,
+      "tp": 6
+    }
+  },
+  "threshold_selection": "retain conservative preregistered 0.90; sweep characterizes sensitivity, no optimality claim"
+}

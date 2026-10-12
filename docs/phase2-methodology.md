@@ -1,7 +1,7 @@
 # Phase 2 — deconfounding before post-training
 
 The completed 2026-10-05 prompt study and its protocol remain historical. Phase 3
-resumes the pending diagnostics after stock context and backend preflight checks.
+completed the staged diagnostics after stock context and backend preflight checks.
 See [current progress](../reports/phase3-progress.md), [pre-run checkpoint](../reports/phase3-preflight-checkpoint.md)
 and [the preserved Phase 2 checkpoint](../reports/phase2_checkpoint.md).
 
@@ -80,10 +80,11 @@ stock context suite is measured through 32512 input tokens; adapter retention an
 
 ## Remaining gates
 
-The prompt-policy experiment is complete. Targeted termination tail, early-exit
-probes, semantic redundancy and guard replay remain pending; source-linked manual
-and lexical calibration is partial. These diagnostic gates must complete before
-TRAIN candidate generation. Procedural-v2 must pass structural contamination checks.
+The prompt-policy experiment, seven-case termination tail, 34 early-exit probes,
+semantic calibration and full offline guard replay are complete. See
+[measured reasoning diagnosis](../reports/phase3-reasoning-diagnosis.md).
+The curated calibration remains limited and is not a training filter.
+Procedural-v2 must pass structural contamination checks before TRAIN generation.
 A real optimizer smoke requires quality-approved TRAIN targets and adapter reload
 verification. The Phase 3 user authorization allows one bounded real SFT pilot
 only after diagnostic, data-quality and real optimizer/reload gates pass.

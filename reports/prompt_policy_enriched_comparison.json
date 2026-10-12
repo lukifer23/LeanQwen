@@ -1,0 +1,728 @@
+{
+  "P0": {
+    "deltas": {
+      "accuracy": {
+        "mean_paired_task_delta": 0.0,
+        "task_bootstrap_ci95": [
+          -0.1111111111111111,
+          0.13888888888888887
+        ]
+      },
+      "cap_rate": {
+        "mean_paired_task_delta": 0.0,
+        "task_bootstrap_ci95": [
+          -0.13888888888888887,
+          0.1111111111111111
+        ]
+      },
+      "eos_rate": {
+        "mean_paired_task_delta": 0.0,
+        "task_bootstrap_ci95": [
+          -0.1111111111111111,
+          0.13888888888888887
+        ]
+      },
+      "format_compliance": null,
+      "format_meta_density": {
+        "mean_paired_task_delta": -0.19307140226390107,
+        "task_bootstrap_ci95": [
+          -0.3342155287783376,
+          -0.06464926100659944
+        ]
+      },
+      "latency_s": {
+        "mean_paired_task_delta": 0.06560438669516262,
+        "task_bootstrap_ci95": [
+          -1.1317458302515457,
+          1.185195782913979
+        ]
+      },
+      "lexical_density": {
+        "mean_paired_task_delta": -0.000156840464410073,
+        "task_bootstrap_ci95": [
+          -0.012784743132399754,
+          0.014082226885654565
+        ]
+      },
+      "reasoning_tokens": {
+        "mean_paired_task_delta": 8.0,
+        "task_bootstrap_ci95": [
+          -85.30555555555556,
+          91.36111111111113
+        ]
+      },
+      "repeated_content_density": {
+        "mean_paired_task_delta": -0.02448991814949859,
+        "task_bootstrap_ci95": [
+          -0.04103019892514513,
+          -0.00809863487930366
+        ]
+      },
+      "semantic_density": {
+        "mean_paired_task_delta": 0.013340788163372627,
+        "task_bootstrap_ci95": [
+          -0.01742005161256622,
+          0.04453438019478363
+        ]
+      },
+      "total_tokens": {
+        "mean_paired_task_delta": 6.5,
+        "task_bootstrap_ci95": [
+          -73.91666666666667,
+          81.16666666666667
+        ]
+      }
+    },
+    "left_policy": "P3",
+    "paired_trajectories": 36,
+    "per_task_deltas": {
+      "v1-content-01599d831d90484e1cea": {
+        "accuracy": 0.6666666666666666,
+        "cap_rate": -0.6666666666666666,
+        "eos_rate": 0.6666666666666666,
+        "format_compliance": null,
+        "format_meta_density": -0.45943238822158367,
+        "latency_s": -4.870379250001861,
+        "lexical_density": -0.022723315991604123,
+        "reasoning_tokens": -413.0,
+        "repeated_content_density": -0.01043387404217791,
+        "semantic_density": 0.066757913396829,
+        "total_tokens": -341.0
+      },
+      "v1-content-13276a136d16a0f67643": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.04566460537709958,
+        "latency_s": -0.2198373750046206,
+        "lexical_density": 0.02593295101220659,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.01023468498762295,
+        "semantic_density": 0.014505138354413633,
+        "total_tokens": 0.0
+      },
+      "v1-content-19048e452785c34ac990": {
+        "accuracy": -0.3333333333333333,
+        "cap_rate": 0.3333333333333333,
+        "eos_rate": -0.3333333333333333,
+        "format_compliance": null,
+        "format_meta_density": -0.6802555596354566,
+        "latency_s": 3.718659458332695,
+        "lexical_density": -0.007549361207897794,
+        "reasoning_tokens": 293.6666666666667,
+        "repeated_content_density": -0.07337607278347935,
+        "semantic_density": 0.0733265952090574,
+        "total_tokens": 283.0
+      },
+      "v1-content-261d34b7df3c0d0a6eb6": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.44037706965650675,
+        "latency_s": 0.8711060556621911,
+        "lexical_density": -0.018126465376083378,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.04344379686370823,
+        "semantic_density": 0.07098016393894722,
+        "total_tokens": 0.0
+      },
+      "v1-content-28927e6708b1c87004be": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.015222819670615206,
+        "latency_s": -0.009981805332548296,
+        "lexical_density": 0.010680157391793142,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.00336642701381213,
+        "semantic_density": -0.0071689636555865854,
+        "total_tokens": 0.0
+      },
+      "v1-content-6a64c022f1b4aa758836": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.006794670868305069,
+        "latency_s": -0.05326981932739727,
+        "lexical_density": -0.0023008816978666233,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.026113782776490613,
+        "semantic_density": -0.008767761488537808,
+        "total_tokens": 0.0
+      },
+      "v1-content-7615394ec2c6c32cca30": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": 0.019138884352092517,
+        "latency_s": -0.26694891600345727,
+        "lexical_density": 0.0,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.012706040789040378,
+        "semantic_density": 0.01948674048577104,
+        "total_tokens": 0.0
+      },
+      "v1-content-89b0e50c1f45613d0cad": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.11752399960067504,
+        "latency_s": -0.5818680553347804,
+        "lexical_density": -0.03538537335287489,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.03363796423466087,
+        "semantic_density": -0.05114226371128939,
+        "total_tokens": 0.0
+      },
+      "v1-content-8ffe46687043e5360234": {
+        "accuracy": -0.3333333333333333,
+        "cap_rate": 0.3333333333333333,
+        "eos_rate": -0.3333333333333333,
+        "format_compliance": null,
+        "format_meta_density": -0.4762238375175203,
+        "latency_s": 2.468949125002837,
+        "lexical_density": -0.0042802229980258046,
+        "reasoning_tokens": 200.0,
+        "repeated_content_density": -0.01818464807651073,
+        "semantic_density": 0.11038555362387518,
+        "total_tokens": 136.0
+      },
+      "v1-content-99f991a96922ece23f91": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": 0.06236678615501617,
+        "latency_s": -1.703126624992971,
+        "lexical_density": -0.02084947560395085,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.048734773306147706,
+        "semantic_density": -0.05524722335354765,
+        "total_tokens": 0.0
+      },
+      "v1-content-ca26414b3c77cff24de9": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.11465084634841655,
+        "latency_s": -0.35600563866319135,
+        "lexical_density": 0.055056422126547384,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.014370905412992982,
+        "semantic_density": 0.003514611307921592,
+        "total_tokens": 0.0
+      },
+      "v1-content-e45b3252471eed7b967b": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": null,
+        "format_meta_density": -0.04221670077774251,
+        "latency_s": 1.7899554860050557,
+        "lexical_density": 0.017663480124835467,
+        "reasoning_tokens": 15.333333333333334,
+        "repeated_content_density": -0.07389930988665182,
+        "semantic_density": -0.07654104614738214,
+        "total_tokens": 0.0
+      }
+    },
+    "right_policy": "P0",
+    "uncertainty_unit": "task; replicate outcomes are averaged within task",
+    "unique_tasks": 12
+  },
+  "P1": {
+    "deltas": {
+      "accuracy": {
+        "mean_paired_task_delta": -0.08333333333333333,
+        "task_bootstrap_ci95": [
+          -0.19444444444444445,
+          0.0
+        ]
+      },
+      "cap_rate": {
+        "mean_paired_task_delta": 0.08333333333333333,
+        "task_bootstrap_ci95": [
+          0.0,
+          0.19444444444444445
+        ]
+      },
+      "eos_rate": {
+        "mean_paired_task_delta": -0.08333333333333333,
+        "task_bootstrap_ci95": [
+          -0.19444444444444445,
+          0.0
+        ]
+      },
+      "format_compliance": {
+        "mean_paired_task_delta": -0.08333333333333333,
+        "task_bootstrap_ci95": [
+          -0.19444444444444445,
+          0.0
+        ]
+      },
+      "format_meta_density": {
+        "mean_paired_task_delta": -0.19030968890034838,
+        "task_bootstrap_ci95": [
+          -0.3233616222409028,
+          -0.06662534694763288
+        ]
+      },
+      "latency_s": {
+        "mean_paired_task_delta": 1.1180219375847729,
+        "task_bootstrap_ci95": [
+          -0.1679641356605114,
+          3.3281589167818413
+        ]
+      },
+      "lexical_density": {
+        "mean_paired_task_delta": 0.008965634032515397,
+        "task_bootstrap_ci95": [
+          -0.012113310904250468,
+          0.02930560795517838
+        ]
+      },
+      "reasoning_tokens": {
+        "mean_paired_task_delta": 73.19444444444444,
+        "task_bootstrap_ci95": [
+          0.0,
+          184.97222222222226
+        ]
+      },
+      "repeated_content_density": {
+        "mean_paired_task_delta": -0.027142413857236272,
+        "task_bootstrap_ci95": [
+          -0.04390455300029548,
+          -0.008745280135194222
+        ]
+      },
+      "semantic_density": {
+        "mean_paired_task_delta": 0.005564705635768298,
+        "task_bootstrap_ci95": [
+          -0.025754389103662158,
+          0.03921795617780057
+        ]
+      },
+      "total_tokens": {
+        "mean_paired_task_delta": 66.33333333333333,
+        "task_bootstrap_ci95": [
+          0.0,
+          176.33333333333334
+        ]
+      }
+    },
+    "left_policy": "P3",
+    "paired_trajectories": 36,
+    "per_task_deltas": {
+      "v1-content-01599d831d90484e1cea": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.47085238249800393,
+        "latency_s": 0.8688351113378303,
+        "lexical_density": 0.013477097361698989,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.034284100584207555,
+        "semantic_density": 0.14025214798954141,
+        "total_tokens": 0.0
+      },
+      "v1-content-13276a136d16a0f67643": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.03837676214808101,
+        "latency_s": -0.0323179026793999,
+        "lexical_density": 0.011209963624322708,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.0009278987593323955,
+        "semantic_density": 0.010583429039023672,
+        "total_tokens": 0.0
+      },
+      "v1-content-19048e452785c34ac990": {
+        "accuracy": -0.6666666666666666,
+        "cap_rate": 0.6666666666666666,
+        "eos_rate": -0.6666666666666666,
+        "format_compliance": -0.6666666666666666,
+        "format_meta_density": -0.6485715959634071,
+        "latency_s": 12.583751277677948,
+        "lexical_density": -0.007549361207897794,
+        "reasoning_tokens": 663.0,
+        "repeated_content_density": -0.05297137219104048,
+        "semantic_density": 0.046729524215507225,
+        "total_tokens": 660.0
+      },
+      "v1-content-261d34b7df3c0d0a6eb6": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.42257902610343523,
+        "latency_s": -0.014084819335645685,
+        "lexical_density": 0.011309715876078505,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.061742738376008376,
+        "semantic_density": 0.02699958112820337,
+        "total_tokens": 0.0
+      },
+      "v1-content-28927e6708b1c87004be": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.00877088569346828,
+        "latency_s": -0.222839291668303,
+        "lexical_density": 0.035953959305505157,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.023914273608641155,
+        "semantic_density": 0.019363253495936605,
+        "total_tokens": 0.0
+      },
+      "v1-content-6a64c022f1b4aa758836": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.0051169549806959645,
+        "latency_s": 0.011953764008164095,
+        "lexical_density": 0.010776601683621864,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.01978763980861803,
+        "semantic_density": -0.0025498896397997245,
+        "total_tokens": 0.0
+      },
+      "v1-content-7615394ec2c6c32cca30": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.01422481455040577,
+        "latency_s": -0.5893846663384466,
+        "lexical_density": 0.015937460597654773,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.00992801742258141,
+        "semantic_density": 0.03150294212495348,
+        "total_tokens": 0.0
+      },
+      "v1-content-89b0e50c1f45613d0cad": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.04008447295449046,
+        "latency_s": -0.19562773599560992,
+        "lexical_density": -0.0645802821435532,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.047091979885977686,
+        "semantic_density": -0.08769315585709891,
+        "total_tokens": 0.0
+      },
+      "v1-content-8ffe46687043e5360234": {
+        "accuracy": -0.3333333333333333,
+        "cap_rate": 0.3333333333333333,
+        "eos_rate": -0.3333333333333333,
+        "format_compliance": -0.3333333333333333,
+        "format_meta_density": -0.4541585511310728,
+        "latency_s": 1.3176999443385284,
+        "lexical_density": -0.01277983076090994,
+        "reasoning_tokens": 200.0,
+        "repeated_content_density": -0.04987882623583801,
+        "semantic_density": -0.019502670559324347,
+        "total_tokens": 136.0
+      },
+      "v1-content-99f991a96922ece23f91": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.11432144231931184,
+        "latency_s": -0.7790185693302192,
+        "lexical_density": -0.042086882971328766,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.06193576147771798,
+        "semantic_density": -0.07324049023420509,
+        "total_tokens": 0.0
+      },
+      "v1-content-ca26414b3c77cff24de9": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.09123721995852303,
+        "latency_s": 0.10555466700073642,
+        "lexical_density": 0.06408671257029801,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.01762464003897722,
+        "semantic_density": 0.021509763322721906,
+        "total_tokens": 0.0
+      },
+      "v1-content-e45b3252471eed7b967b": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.06971745418638364,
+        "latency_s": 0.361741472001692,
+        "lexical_density": 0.07183245445469444,
+        "reasoning_tokens": 15.333333333333334,
+        "repeated_content_density": -0.05041137755695932,
+        "semantic_density": -0.04717796739624003,
+        "total_tokens": 0.0
+      }
+    },
+    "right_policy": "P1",
+    "uncertainty_unit": "task; replicate outcomes are averaged within task",
+    "unique_tasks": 12
+  },
+  "P2": {
+    "deltas": {
+      "accuracy": {
+        "mean_paired_task_delta": 0.1111111111111111,
+        "task_bootstrap_ci95": [
+          0.0,
+          0.22222222222222224
+        ]
+      },
+      "cap_rate": {
+        "mean_paired_task_delta": -0.1111111111111111,
+        "task_bootstrap_ci95": [
+          -0.22222222222222224,
+          0.0
+        ]
+      },
+      "eos_rate": {
+        "mean_paired_task_delta": 0.1111111111111111,
+        "task_bootstrap_ci95": [
+          0.0,
+          0.22222222222222224
+        ]
+      },
+      "format_compliance": {
+        "mean_paired_task_delta": 0.08333333333333333,
+        "task_bootstrap_ci95": [
+          -0.02777777777777778,
+          0.2222222222222222
+        ]
+      },
+      "format_meta_density": {
+        "mean_paired_task_delta": -0.13735407887127474,
+        "task_bootstrap_ci95": [
+          -0.24978996425022093,
+          -0.031049802558300147
+        ]
+      },
+      "latency_s": {
+        "mean_paired_task_delta": -2.0432653217515813,
+        "task_bootstrap_ci95": [
+          -3.7094683061270692,
+          -0.6098460830654607
+        ]
+      },
+      "lexical_density": {
+        "mean_paired_task_delta": 0.004294592470663521,
+        "task_bootstrap_ci95": [
+          -0.017597715257526562,
+          0.031166625683530864
+        ]
+      },
+      "reasoning_tokens": {
+        "mean_paired_task_delta": -131.5,
+        "task_bootstrap_ci95": [
+          -261.8340277777778,
+          -23.277777777777775
+        ]
+      },
+      "repeated_content_density": {
+        "mean_paired_task_delta": -0.025314457038079625,
+        "task_bootstrap_ci95": [
+          -0.042394456374050565,
+          -0.006474172354830465
+        ]
+      },
+      "semantic_density": {
+        "mean_paired_task_delta": -0.004435515391731992,
+        "task_bootstrap_ci95": [
+          -0.026806929638963264,
+          0.01502050591643621
+        ]
+      },
+      "total_tokens": {
+        "mean_paired_task_delta": -129.66666666666666,
+        "task_bootstrap_ci95": [
+          -241.20555555555555,
+          -30.027777777777775
+        ]
+      }
+    },
+    "left_policy": "P3",
+    "paired_trajectories": 36,
+    "per_task_deltas": {
+      "v1-content-01599d831d90484e1cea": {
+        "accuracy": 0.3333333333333333,
+        "cap_rate": -0.3333333333333333,
+        "eos_rate": 0.3333333333333333,
+        "format_compliance": 0.3333333333333333,
+        "format_meta_density": -0.2551041314978278,
+        "latency_s": -6.93387512533324,
+        "lexical_density": -0.039874682794637274,
+        "reasoning_tokens": -472.0,
+        "repeated_content_density": -0.05361127653225062,
+        "semantic_density": 0.028878600471297543,
+        "total_tokens": -469.6666666666667
+      },
+      "v1-content-13276a136d16a0f67643": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.03841801808369907,
+        "latency_s": 0.4663277776562609,
+        "lexical_density": 0.03425621573011567,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.04142645090741815,
+        "semantic_density": 0.0246517121684111,
+        "total_tokens": 0.0
+      },
+      "v1-content-19048e452785c34ac990": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": -0.3333333333333333,
+        "format_meta_density": -0.5014082472126477,
+        "latency_s": -1.3245470000013786,
+        "lexical_density": -0.007549361207897794,
+        "reasoning_tokens": -182.33333333333334,
+        "repeated_content_density": -0.05281100315720854,
+        "semantic_density": 0.03847088649998371,
+        "total_tokens": -207.66666666666666
+      },
+      "v1-content-261d34b7df3c0d0a6eb6": {
+        "accuracy": 0.6666666666666666,
+        "cap_rate": -0.6666666666666666,
+        "eos_rate": 0.6666666666666666,
+        "format_compliance": 0.6666666666666666,
+        "format_meta_density": -0.3942635107615813,
+        "latency_s": -7.965526305672635,
+        "lexical_density": -0.018126465376083378,
+        "reasoning_tokens": -644.3333333333334,
+        "repeated_content_density": -0.06630162302587796,
+        "semantic_density": 0.01313754327924454,
+        "total_tokens": -523.0
+      },
+      "v1-content-28927e6708b1c87004be": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.09847350468088001,
+        "latency_s": -0.5962751526676584,
+        "lexical_density": 0.010688042752171008,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.011146138734000286,
+        "semantic_density": 0.0069685738428312905,
+        "total_tokens": 0.0
+      },
+      "v1-content-6a64c022f1b4aa758836": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.036241834488506826,
+        "latency_s": 0.1630846526725994,
+        "lexical_density": -0.00011100011100011187,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.0205975172086031,
+        "semantic_density": 0.004613311398749914,
+        "total_tokens": 0.0
+      },
+      "v1-content-7615394ec2c6c32cca30": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.006227314853229092,
+        "latency_s": -0.8745380276717091,
+        "lexical_density": 0.004459308807134894,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": 0.0047460588128546395,
+        "semantic_density": 0.008716682411845273,
+        "total_tokens": 0.0
+      },
+      "v1-content-89b0e50c1f45613d0cad": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.01952495941273306,
+        "latency_s": -0.8173478053310342,
+        "lexical_density": -0.05688065056678457,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.04006975901840392,
+        "semantic_density": -0.06686905496085076,
+        "total_tokens": 0.0
+      },
+      "v1-content-8ffe46687043e5360234": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.4193007605944434,
+        "latency_s": -1.2206747083352336,
+        "lexical_density": 0.025842274438701837,
+        "reasoning_tokens": -14.0,
+        "repeated_content_density": -0.009808121230951308,
+        "semantic_density": -0.005341656232541796,
+        "total_tokens": -76.33333333333333
+      },
+      "v1-content-99f991a96922ece23f91": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": 0.00706579832115183,
+        "latency_s": -1.2005166110029677,
+        "lexical_density": -0.01626969806861886,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.0691680306631131,
+        "semantic_density": -0.08517044580461425,
+        "total_tokens": 0.0
+      },
+      "v1-content-ca26414b3c77cff24de9": {
+        "accuracy": 0.0,
+        "cap_rate": 0.0,
+        "eos_rate": 0.0,
+        "format_compliance": 0.0,
+        "format_meta_density": -0.11562693679011345,
+        "latency_s": 0.3529459443282879,
+        "lexical_density": -0.007758803916338587,
+        "reasoning_tokens": 0.0,
+        "repeated_content_density": -0.02760280967756661,
+        "semantic_density": 0.020730844954318345,
+        "total_tokens": 0.0
+      },
+      "v1-content-e45b3252471eed7b967b": {
+        "accuracy": 0.3333333333333333,
+        "cap_rate": -0.3333333333333333,
+        "eos_rate": 0.3333333333333333,
+        "format_compliance": 0.3333333333333333,
+        "format_meta_density": -0.07920612356502711,
+        "latency_s": -4.568241499660265,
+        "lexical_density": 0.12285992996119942,
+        "reasoning_tokens": -265.3333333333333,
+        "repeated_content_density": -0.0211219923972534,
+        "semantic_density": -0.04201318272945881,
+        "total_tokens": -279.3333333333333
+      }
+    },
+    "right_policy": "P2",
+    "uncertainty_unit": "task; replicate outcomes are averaged within task",
+    "unique_tasks": 12
+  }
+}

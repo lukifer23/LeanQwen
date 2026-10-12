@@ -1,0 +1,31 @@
+{
+  "capped_probes": 31,
+  "correct_probes": 3,
+  "eos_probes": 3,
+  "interpretation": "Conditional forced-close recovery, not natural stopping, certainty, or population accuracy. Censored source savings are relative to observed cap only. Capped final responses do not establish insufficient reasoning or an incorrect mathematical conclusion.",
+  "minimum_sufficient_observed_prefix": {
+    "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-19048e452785c34ac990-P2-a4770cd96f27:replicate-0": 0,
+    "20261005T193609-phase2-prompt-policy-8fdc19d6:v1-content-261d34b7df3c0d0a6eb6-P2-0f17dde45dee:replicate-0": 512
+  },
+  "policy": "P2",
+  "probes": 34,
+  "protocol": {
+    "additional_cutoff": "first cue-qualified candidate conclusion",
+    "cohort": "six balanced DEV trajectories under selected prompt policy, replicate zero",
+    "cutoffs": [
+      0,
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "final_budget": 128,
+    "final_sampler": "greedy, no presence/repetition penalties, explicit counterfactual control; does not estimate natural policy",
+    "intervention": "exact rendered prompt IDs plus emitted prefix, then forced </think> and two newlines; original traces never changed",
+    "zero_prefix_control": "Added before any probe generation to distinguish recovery from existing direct-answer capability; same forced close/greedy final decoder."
+  },
+  "source_trajectories": 6,
+  "test_evaluated": false,
+  "zero_prefix_correct": 1
+}

@@ -104,14 +104,17 @@ def main():
         if row['correct']:
             minima[row['source_generation_id']] = min(row['cutoff_token'], minima.get(row['source_generation_id'], row['cutoff_token']))
     result = {'probes': len(saved), 'source_trajectories': 6, 'correct_probes': sum(r['correct'] for r in saved),
+              'eos_probes': sum(r['termination_reason'] == 'eos' for r in saved),
+              'capped_probes': sum(r['termination_reason'] == 'max_output_tokens' for r in saved),
               'minimum_sufficient_observed_prefix': minima, 'protocol': protocol['early_exit'],
               'zero_prefix_correct':sum(r['correct'] for r in saved if r['cutoff_token']==0),
               'policy': study['selected_policy'], 'test_evaluated': False,
-              'interpretation': 'Conditional forced-close recovery, not natural stopping, certainty, or population accuracy. Censored source savings are relative to observed cap only.'}
+              'interpretation': 'Conditional forced-close recovery, not natural stopping, certainty, or population accuracy. Censored source savings are relative to observed cap only. Capped final responses do not establish insufficient reasoning or an incorrect mathematical conclusion.'}
     write_json('reports/early_exit_measurements.json', result)
     write_jsonl('reports/early_exit_records.jsonl', saved)
     lines = ['# Counterfactual early-exit probes', '', result['interpretation'], '',
              f"{result['correct_probes']}/{len(saved)} probes recovered the correct integer across six DEV sources. {len(minima)}/6 sources had at least one successful tested prefix.", '',
+             f"Final termination: {result['eos_probes']} EOS, {result['capped_probes']} capped at the predeclared 128-token final budget. Zero-prefix correct: {result['zero_prefix_correct']}/6. Extra explanation can exhaust the final budget even after a useful prefix; recovery failures must not be interpreted as proof of mathematical inability.", '',
              '| Source task | Earliest successful tested prefix | Original correct | Original EOS |',
              '|---|---:|---:|---:|']
     for r, _, _ in plan:

@@ -3,8 +3,8 @@
 Active work continues on main. No improved model is claimed. The user's PonderScope
 Qwen3.5-4B workload (PID 23131) exited naturally with `EVIDENCE_COMPLETE` before
 LeanQwen model runs. It was never terminated by this work. Original 144-trajectory
-results and historical artifacts are preserved. Tail diagnosis was held for the
-audit addendum's preflights, which now pass; resumption follows the saved checkpoint.
+results and historical artifacts are preserved. After the audit preflights passed,
+the staged tail, early-exit probes and semantic calibration completed successfully.
 
 ## Repository health
 
@@ -91,19 +91,29 @@ and later Phase 2/3 entries were merged verbatim, with source/entry/link checks.
 See [preflight checkpoint](phase3-preflight-checkpoint.md) for the exact gates and
 next commands. No GPU test or model run starts while a competing project is active.
 
-## Pending model evidence
+## Completed reasoning diagnostics and next gates
 
 CPU-only guard replay of the saved 144 prompt trajectories is now measured:
 zero triggers at all three predeclared threshold settings, using the actual
 16-token polling cadence. Observed token savings are zero; precision/recall remain
 unidentified. This rules out a benefit from these literal-cycle guards on those
 saved trajectories, while saying nothing about paraphrased redundant reasoning.
-It is explicitly a partial prompt-only result; tail replay and semantic calibration
-remain pending. See [partial replay](phase3-prompt-replay/runtime_guard_calibration.md).
+The original partial prompt-only result remains preserved. Full replay now covers
+161 unique prompt/tail trajectories, again with zero triggers/savings at the same
+three configurations. See [full replay](runtime_guard_calibration.md).
+
+Seven tail cases completed: correct EOS at 498 and 6122 reasoning tokens; five
+right-censored (four at 8192, state machine at 16384). All 13 exact prefix checks
+passed. Forced-close recovery: 3/34 correct EOS across two of six tasks, including
+one successful zero-prefix control; 31 capped final responses. The 128-token
+final budget limits interpretation: incomplete explanation is not proof of
+mathematical inability. Semantic @0.90: precision 91.7%, recall 57.9% on 36 curated
+pairs across five DEV tasks. No held-out calibration or training-filter claim.
+See [diagnosis and sources](phase3-reasoning-diagnosis.md).
 
 1. Completed stock 2K/8K/32K capability checks, bounded prefill comparison and
    live short-request profile restoration. Full-length larger contexts deferred.
-2. Existing seven-case termination-tail protocol, own-prefix early exit including
+2. Completed seven-case termination-tail protocol, own-prefix early exit including
    zero controls, semantic calibration and offline guard replay.
 3. Existing 16 TRAIN tasks × four trajectories at P2/4096; measure and review
    natural clean-target coverage. Solver targets are conditional on poor coverage.
