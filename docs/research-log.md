@@ -1012,3 +1012,33 @@ with all 768 human examples eligible under a 512-token complete bound (actual
 corpus epoch. Its throughput/deadline needs qualification; one historical step's
 156-second linear extrapolation is explicitly uncalibrated. No improvement run
 is authorized or executed. See reports/phase4d-review.md and phase4d-progress.json.
+
+### Phase 4D follow-up — user-requested resource qualification 02
+
+The user requested the next steps and repository/documentation updates. Started
+on clean main at d1875addf908d5eb45baff96cc4aa7ab4d20350c, matching remote main
+and successful CI. CPU inventory still found 0/112 valid frozen stock DEV jobs,
+56 pending per mode, with no new infrastructure attempt. Model lease was free;
+no project model workload was observed. No LM Studio or teacher commands used.
+
+One fresh CPU admission in runs/phase4d-resource-admission-02 exited 2:
+6,622,461,952 available RAM bytes (6.168 GiB) against 8 GiB required;
+2,665,873,408 occupied swap bytes (2.483 GiB) against 2 GiB allowed.
+RAM shortfall 1.832 GiB and excess occupied swap 0.483 GiB. Both gates fail.
+No automatic retry, GPU/model load, optimizer update, inference, other-process
+signal, threshold reduction or cache/reboot action followed. System inspection
+saved ordinary application names/RSS without private command arguments.
+
+Verified unchanged approved smoke/TRAIN dataset and manifest hashes, original
+source/license archive hashes, 129 prior tracked report/split files and retained
+unsafe quarantine. No implementation or training configuration changed in this
+follow-up. Full local suite 178 passed; device-free suite 148 passed (30 deselected),
+Ruff and whitespace checks passed. The new compact snapshot is
+reports/phase4d-resource-followup-02.json. README and guide now link the latest
+snapshot and point the next resource check at a fresh admission-03 destination.
+
+Progress toward optimizer/baseline execution remains blocked by shared Mac
+resources. A user-controlled quiet session is required; close unused browser/app
+sessions as appropriate, and consider a user-controlled restart if occupied swap
+persists. Both gates must pass before the one supervised smoke. No new CUDA
+backend, dataset research, improvement run or automatic retry was started.

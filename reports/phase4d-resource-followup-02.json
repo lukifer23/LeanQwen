@@ -1,0 +1,159 @@
+{
+  "admission": {
+    "baseline": {
+      "available_ram_bytes": 6622461952,
+      "monotonic_s": 31732.79548025,
+      "rss_bytes": 24117248,
+      "swap_out_bytes": 562511872,
+      "swap_used_bytes": 2665873408
+    },
+    "create_time": 1791851877.451636,
+    "pid": 64199,
+    "policy": {
+      "admission_ram_bytes": 8589934592,
+      "max_gradient_wall_s": 15,
+      "max_process_rss_bytes": 3221225472,
+      "max_start_swap_used_bytes": 2147483648,
+      "max_swap_out_delta_bytes": 536870912,
+      "max_swap_used_growth_bytes": 134217728,
+      "max_training_wall_s": 120,
+      "min_available_ram_bytes": 4294967296,
+      "poll_s": 0.1
+    },
+    "session_id": "c531f61d6bd94300ab0fe5a02103d110",
+    "status": "insufficient_starting_ram"
+  },
+  "approved_adapter_exists": false,
+  "automatic_retries": 0,
+  "available_ram_gib": 6.1676483154296875,
+  "baseline": {
+    "accuracy": null,
+    "completed_jobs": 0,
+    "contract": {
+      "adapter": null,
+      "protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd"
+    },
+    "infrastructure_failed_attempts": [],
+    "planned_jobs": 112,
+    "resource_events": [],
+    "status": "incomplete"
+  },
+  "conditional_next_smoke_command": "uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke-supervised.yaml --dataset data/processed/external-human-smoke8-v1/train.jsonl --quality-manifest data/processed/external-human-smoke8-v1/manifest.json --output adapters/phase4d-supervised-smoke-01",
+  "decision": "Resource qualification remains blocked; do not launch a model until both starting gates pass.",
+  "failed_gates": [
+    "starting_available_ram",
+    "starting_occupied_swap"
+  ],
+  "improvement_proposal": "reports/phase4d-progress.json",
+  "improvement_run_authorized": false,
+  "model_lease": "available_and_released",
+  "new_gpu_workloads": 0,
+  "new_optimizer_updates": 0,
+  "next_admission_command_after_resource_change": "uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-03",
+  "observed_project_workloads": [],
+  "occupied_swap_gib": 2.4827880859375,
+  "operator_action": "User-controlled quiet session: close unused browser tabs/windows and inactive applications; if swap persists, consider a user-controlled restart. Both admission gates must pass. No additional check launched in this pass.",
+  "pending_per_mode": {
+    "nonthinking": 56,
+    "thinking": 56
+  },
+  "prior_tracked_report_split_files_unchanged": 129,
+  "ram_deficit_gib": 1.8323516845703125,
+  "raw_admission_path": "runs/phase4d-resource-admission-02/resource-admission.json",
+  "raw_admission_sha256": "95539a9e4722272ff7e1eb256643ea7a413d2a4c76c1a387ac1041d52bb0cfde",
+  "smoke_attempted": false,
+  "source_model_training_resource_configs_changed": false,
+  "starting_branch": "main",
+  "starting_ci": "success",
+  "starting_sha": "d1875addf908d5eb45baff96cc4aa7ab4d20350c",
+  "starting_worktree": "clean",
+  "status": "user_requested_followup_admission_refused",
+  "swap_excess_gib": 0.4827880859375,
+  "system_observation_path": "runs/phase4d-followup-audit-01/system.json",
+  "system_observation_sha256": "1028ad317157401e8153364e0a05791b03d7199bd64f1feb2542dfeb58f2388c",
+  "top_rss_processes": [
+    {
+      "name": "Codex (Renderer)",
+      "pid": 1204,
+      "rss_bytes": 819281920
+    },
+    {
+      "name": "Google Chrome Helper (Renderer)",
+      "pid": 10705,
+      "rss_bytes": 747077632
+    },
+    {
+      "name": "Google Chrome Helper (Renderer)",
+      "pid": 62879,
+      "rss_bytes": 737656832
+    },
+    {
+      "name": "Google Chrome",
+      "pid": 1117,
+      "rss_bytes": 481984512
+    },
+    {
+      "name": "Google Chrome Helper (Renderer)",
+      "pid": 80106,
+      "rss_bytes": 399425536
+    },
+    {
+      "name": "Codex (Renderer)",
+      "pid": 1203,
+      "rss_bytes": 390463488
+    },
+    {
+      "name": "ChatGPT",
+      "pid": 909,
+      "rss_bytes": 388333568
+    },
+    {
+      "name": "codex",
+      "pid": 1205,
+      "rss_bytes": 323567616
+    },
+    {
+      "name": "Google Chrome Helper (Renderer)",
+      "pid": 63947,
+      "rss_bytes": 287260672
+    },
+    {
+      "name": "Google Chrome Helper (Renderer)",
+      "pid": 37811,
+      "rss_bytes": 234569728
+    },
+    {
+      "name": "com.apple.quicklook.ThumbnailsAgent",
+      "pid": 48967,
+      "rss_bytes": 233734144
+    },
+    {
+      "name": "python3.14",
+      "pid": 82233,
+      "rss_bytes": 174505984
+    }
+  ],
+  "training_pools": {
+    "data/processed/external-human-pilot-v1-approved": {
+      "count": 768,
+      "dataset_hash": "fab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1",
+      "manifest_hash": "1d7d0c725533f56fb02fbe303c545c53b1d7c769fbcba02e27303eb55d85c3a7",
+      "source_license_archive_hashes_unchanged": true
+    },
+    "data/processed/external-human-smoke8-v1": {
+      "count": 8,
+      "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+      "manifest_hash": "40c8b4340bc1c23e93d00493792c8d026eb4202c35d60c745cc2d1dfbad295fa",
+      "source_license_archive_hashes_unchanged": true
+    }
+  },
+  "unrelated_applications_signaled": 0,
+  "unsafe_checkpoint_quarantine_present": true,
+  "validation": {
+    "device_free_deselected": 30,
+    "device_free_tests_passed": 148,
+    "full_local_tests_passed": 178,
+    "ruff": "passed",
+    "whitespace": "passed"
+  }
+}

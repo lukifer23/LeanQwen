@@ -33,12 +33,14 @@ preserved beside the [corrected derived audit](reports/phase4c-historical-traini
 That partial checkpoint is quarantined, never an approved or improved adapter;
 frozen-prefix materialization remains disabled.
 
-Phase 4D's fresh CPU admission refused model work: **6.909 GiB available RAM**
-versus the 8 GiB requirement and **2.483 GiB occupied swap** versus the 2 GiB
-ceiling. No model loaded, optimizer step or baseline generation ran in this pass.
-The model lease was free. A quiet session is still needed; no threshold was relaxed
-and no application was stopped. All source/model hashes and historical artifacts
-were rechecked unchanged.
+The latest user-requested Phase 4D follow-up admission refused model work:
+**6.168 GiB available RAM** versus the 8 GiB requirement and **2.483 GiB occupied
+swap** versus the 2 GiB ceiling. No model loaded, optimizer step or baseline
+generation ran. The model lease was free. A quiet session is still needed; no
+threshold was relaxed and no application was stopped. Dataset/source/license
+hashes and prior report/split files remain unchanged. See the
+[fresh admission record](reports/phase4d-resource-followup-02.json); earlier
+Phase 4D measurements remain preserved in their original reports.
 
 The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed,
 with **0/112** thinking/non-thinking jobs complete. CPU safety review tightened
@@ -48,7 +50,7 @@ aggregate accuracy until the cohort is complete.
 
 **No successful four-step smoke, approved adapter or improvement result exists.**
 See [Phase 4D qualification and conditional SFT proposal](reports/phase4d-review.md)
-and [current measurements and exact commands](reports/phase4d-progress.json).
+and [original Phase 4D measurements and conditional proposal](reports/phase4d-progress.json).
 The [Phase 4C report](reports/phase4c-review.md) and its resource snapshot remain
 historical evidence. The proposed 128-update improvement run is not authorized.
 

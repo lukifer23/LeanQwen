@@ -359,10 +359,16 @@ app sessions yourself if appropriate. Persistent occupied swap may require a
 user-controlled restart followed by a quiet session. Do not kill other projects,
 clear their caches, reboot automatically or loosen guards.
 
-The next fresh CPU check, after that resource change, is:
+Admission 02 was subsequently refused on the explicit user-requested follow-up:
+6.168 GiB available RAM and 2.483 GiB occupied swap. Its measured RAM shortfall
+is 1.832 GiB; swap still exceeds the ceiling by 0.483 GiB. See the
+[fresh follow-up snapshot](../reports/phase4d-resource-followup-02.json). No model
+loaded or automatic retry followed.
+
+The next fresh CPU check, after a user-controlled resource change, is:
 
 ```bash
-uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-02
+uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-03
 ```
 
 Only if admission passes, no competing model is active and conditions remain

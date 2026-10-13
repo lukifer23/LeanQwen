@@ -167,6 +167,7 @@ reports/phase4c-progress.json
 reports/phase4c-review.md
 reports/phase4c-start-audit.json
 reports/phase4d-progress.json
+reports/phase4d-resource-followup-02.json
 reports/phase4d-review.md
 reports/procedural_v2_quality.json
 reports/procedural_v2_quality.md
