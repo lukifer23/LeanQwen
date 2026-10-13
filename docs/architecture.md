@@ -158,3 +158,20 @@ Success reports are published after supervision exits and final resource checks
 pass. CPU interruption tests pass; a full supervised Metal session is not validated.
 These sampled controls cannot guarantee protection against arbitrarily fast spikes.
 No native context, RoPE, tokenizer, weights, targets or loss objective changed.
+
+## Phase 4D adapter entrypoint review
+
+Normal MLX adapter loading continues to require complete approved source,
+integrity and reload evidence before base loading. The CPU-only context metadata
+command now uses the same approval gate, rather than labeling a partial adapter
+verified from file hashes and model pins alone. Read-only forensic byte inspection
+remains separate and confers no model-use approval.
+
+The trainer's mandatory pending-save reload is explicitly scoped: the current
+process must have its live owned watchdog, initializing completion, exact saved
+configuration, approved source manifest, matching adapter metadata and a byte-audited
+tensor fingerprint matching the just-updated live parameters. Quarantined or failed
+historical attempts cannot enter that path. The normal complete-adapter gate is
+unchanged. CPU rejection tests pass; fresh Metal reload remains unmeasured because
+Phase 4D resource admission failed. No objective, gradient architecture or resource
+threshold changed.

@@ -166,6 +166,8 @@ reports/phase4c-historical-training-audit.json
 reports/phase4c-progress.json
 reports/phase4c-review.md
 reports/phase4c-start-audit.json
+reports/phase4d-progress.json
+reports/phase4d-review.md
 reports/procedural_v2_quality.json
 reports/procedural_v2_quality.md
 reports/process_audit.json
@@ -227,6 +229,7 @@ scripts/termination_tail.py
 scripts/train_candidate_semantics.py
 scripts/train_candidates.py
 scripts/validate_environment.py
+tests/test_adapter_admission.py
 tests/test_checkpoint_contract.py
 tests/test_context.py
 tests/test_context_suite.py

@@ -20,6 +20,7 @@ from qwenlean.datasets.prompts import render_task
 from qwenlean.inference.mlx_backend import MLXBackend
 from qwenlean.inference.parsing import parse_tokens
 from qwenlean.scoring.exact import score
+from qwenlean.training.checkpoint_audit import require_owned_reload_checkpoint
 from qwenlean.training.integrity import frozen_base_fingerprint, tensor_fingerprint
 from qwenlean.training.mlx_loss import response_loss
 from qwenlean.training.quality import (
@@ -251,6 +252,7 @@ def _train(cfg, rows, output):
     gc.collect()
     mx.clear_cache()
     set_phase(output, 'fresh_model_reload')
+    require_owned_reload_checkpoint(output, cfg, after_hash)
     reloaded = MLXBackend(cfg)
     load_adapters(reloaded.model, output)
     reloaded.model.eval()

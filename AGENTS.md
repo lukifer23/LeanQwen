@@ -19,3 +19,5 @@
 
 - Preserve the native 262144-token model/position/RoPE configuration. Reversible runtime profiles are mac-128k (131072, default), mac-100k (102400, explicitly authorized fallback), and native-262k (262144). Refuse excess combined input/output budgets; never truncate. Output and training sequence budgets are separate.
 - Preserve historical v1/v5 artifacts; new prompt experiments use independent IDs/scoring contracts and task-clustered replicate statistics.
+
+- Phase 4D continues the same source and hardware contracts: make one fresh CPU admission, then at most one qualified four-step smoke and serial monitored stock DEV batches. Admission refusal or a resource failure stops model work with no automatic retry. Full improvement SFT remains proposal-only. Internal pending-checkpoint reload requires the live owned watchdog, exact attempt/config/source and saved tensor hash; ordinary loading and offline adapter verification require complete approval. Preserve every prior attempt.

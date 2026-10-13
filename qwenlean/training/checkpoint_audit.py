@@ -85,3 +85,30 @@ def require_approved_adapter(path, config):
     if audited['tensor_fingerprint'] != report.get('adapter_hash_after') or audited['tensor_fingerprint'] != report.get('adapter_hash_reloaded'):
         raise ValueError('Saved adapter differs from the integrity/reload-approved tensors')
     return audited
+
+
+def require_owned_reload_checkpoint(path, config, expected_tensor_hash):
+    """Only the live supervised trainer may validate its own pending final save.
+
+    This is an internal save/reload acceptance step, never an inference approval
+    or an entrypoint for reopening failed historical attempts.
+    """
+    path = Path(path)
+    if (path/'quarantine.json').exists():
+        raise ValueError('Quarantined checkpoint cannot enter trainer reload validation')
+    from qwenlean.training.watchdog import require_active_watchdog
+    require_active_watchdog(path)
+    if (json.loads((path/'completion.json').read_text()).get('status') != 'initializing'
+        or json.loads((path/'config.json').read_text()) != config):
+        raise ValueError('Reload requires this live trainer\'s pending exact-config attempt')
+    from qwenlean.training.external_contract import authorize_training_manifest
+    authorize_training_manifest(json.loads((path/'quality_manifest.json').read_text()), config)
+    meta = json.loads((path/'adapter_config.json').read_text())
+    if (meta.get('base_model') != config['model'] or meta.get('revision') != config['revision']
+        or meta.get('num_layers') != config['num_layers']
+        or meta.get('lora_parameters') != config['lora_parameters']):
+        raise ValueError('Pending reload adapter identity/config differs')
+    audited = audit_lora_file(path/'adapters.safetensors')
+    if audited['tensor_fingerprint'] != expected_tensor_hash:
+        raise ValueError('Pending saved checkpoint differs from the live updated tensors')
+    return audited

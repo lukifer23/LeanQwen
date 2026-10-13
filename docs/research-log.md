@@ -961,3 +961,54 @@ DecisionB: address shared-host admission and verified watchdog/controller issues
 then exactly one supervised technical smoke when healthy. No basis yet for A; a
 clean admitted Mac failure has not been measured, so no CUDA backend/migration was
 started. No workstation hardware/VRAM/access assumption. No128-update SFT authorized.
+
+### Phase 4D — fresh qualification refused; adapter paths audited
+
+Started on clean main at b82ea945e2d7d53dfdc14ff6d62a67fc224e9179, matching
+remote main and successful GitHub CI. Starting 175 local tests and Ruff passed.
+Revalidated the approved eight-example smoke and 768-example human GSM8K pools,
+exact source/license/review/template hashes and all cached pinned model files by
+CPU-only checks. Native 262144 context, RoPE and tokenizer unchanged. All 127
+starting tracked report/split files and historical raw failure inventories remain
+byte-identical; unsafe checkpoint quarantine remains present. Historical optimizer
+counts remain zero / one / three across separately initialized failed attempts.
+
+One fresh admission at runs/phase4d-resource-admission-01 exited 2:
+7,418,003,456 available RAM bytes (6.909 GiB) against 8,589,934,592 required;
+2,665,873,408 occupied swap bytes (2.483 GiB) against 2,147,483,648 allowed.
+Both gates fail. Model lease free, no project model process observed. CPU system
+snapshot records Mac15,6, 18 GiB RAM, vm_stat and kernel pressure value 1; that
+pressure indicator does not override admission. Chrome/Codex/ChatGPT ordinary app
+RSS was recorded without private command arguments. No application signaled,
+cache cleared, global memory limit changed or Mac restarted. No model loaded,
+optimizer update, inference or automatic admission retry. An initial CPU process
+inspection encountered a missing memory_info value; the error is retained beside
+the corrected CPU inspection, separate from model results.
+
+Reviewed watchdog session/parent identity, heartbeat, owned signals, fsynced stop
+journals, cleanup/reaping and final acceptance order. Existing 120-second deadline
+covers loading through integrity/reload/fresh inference; 15 seconds applies only
+while phase=gradient. No limit weakened. CPU fixtures pass, Metal behavior remains
+unvalidated and sampled controls cannot guarantee arbitrarily fast spikes.
+
+Closed remaining adapter validation paths: offline context metadata now requires
+complete adapter approval; pending training reload requires current live owned
+watchdog, initializing exact-config attempt, source permission, matching metadata
+and updated tensor hash. Weight-free CPU tests verify rejection of quarantine,
+failed/partial and foreign pending attempts. This is not a new training algorithm.
+Final validation: 178 local tests, 148 device-free tests (30 deselected), Ruff and
+whitespace checks pass.
+
+CPU baseline inventory still 0/112 completed, 56 pending per mode, no new
+infrastructure attempt and no accuracy/EOS/cap/token/latency result. Earlier failed
+cohorts remain historical diagnostics. No replacement task set was generated.
+
+Next decision: user-controlled quiet Mac session, one new admission and only then
+one supervised smoke. Current evidence cannot establish Mac SFT feasibility or
+justify a CUDA migration; no workstation/backend was assumed or built. A conditional
+128-update rank-4/scale-2 final-two-layer proposal is saved in Phase 4D manifests,
+with all 768 human examples eligible under a 512-token complete bound (actual
+97–499). At batch/accumulation one it consumes 128 distinct examples, not a whole
+corpus epoch. Its throughput/deadline needs qualification; one historical step's
+156-second linear extrapolation is explicitly uncalibrated. No improvement run
+is authorized or executed. See reports/phase4d-review.md and phase4d-progress.json.

@@ -33,19 +33,24 @@ preserved beside the [corrected derived audit](reports/phase4c-historical-traini
 That partial checkpoint is quarantined, never an approved or improved adapter;
 frozen-prefix materialization remains disabled.
 
-Fresh CPU admission refused model work: **7.854 GiB available RAM** versus the
-8 GiB requirement and **3.053 GiB occupied swap** versus the 2 GiB ceiling.
-No GPU smoke or baseline job ran in Phase 4C. Watchdog durability, session binding,
-monitor-failure detection and success publication were strengthened with CPU tests.
-The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed;
-its 112 thinking/non-thinking jobs are incomplete. The baseline controller now
-preserves failed attempts, supports explicit retries and bounded batches, and
-publishes aggregate accuracy only after the entire cohort completes.
+Phase 4D's fresh CPU admission refused model work: **6.909 GiB available RAM**
+versus the 8 GiB requirement and **2.483 GiB occupied swap** versus the 2 GiB
+ceiling. No model loaded, optimizer step or baseline generation ran in this pass.
+The model lease was free. A quiet session is still needed; no threshold was relaxed
+and no application was stopped. All source/model hashes and historical artifacts
+were rechecked unchanged.
+
+The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed,
+with **0/112** thinking/non-thinking jobs complete. CPU safety review tightened
+pending-checkpoint reload validation and offline adapter approval. The baseline
+controller preserves failures, uses bounded monitored batches and withholds
+aggregate accuracy until the cohort is complete.
 
 **No successful four-step smoke, approved adapter or improvement result exists.**
-See [Phase 4C findings and next experiment](reports/phase4c-review.md),
-[resource/source audit](reports/phase4c-start-audit.json) and
-[current reproducible status](reports/phase4c-progress.json).
+See [Phase 4D qualification and conditional SFT proposal](reports/phase4d-review.md)
+and [current measurements and exact commands](reports/phase4d-progress.json).
+The [Phase 4C report](reports/phase4c-review.md) and its resource snapshot remain
+historical evidence. The proposed 128-update improvement run is not authorized.
 
 Historical Phase 3: PonderScope finished naturally before LeanQwen model work.
 Stock context probes scored 3/5 at 2K and 4/5 at 8K/32K envelopes, with all

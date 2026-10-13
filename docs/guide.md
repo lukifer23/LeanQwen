@@ -348,3 +348,39 @@ quarantined weights; only a complete source/integrity/reload-approved adapter ca
 be attached. The source corpus and license audit are unchanged. Phase4C does not
 authorize a128-update improvement run; future SFT configuration selection requires
 the completed technical gates and full stock baseline.
+
+## Phase 4D quiet-session qualification
+
+The saved Phase 4D admission failed: 6.909 GiB available RAM (8 GiB required)
+and 2.483 GiB occupied swap (2 GiB maximum). No model job followed. The measured
+shortfall was 1.091 GiB RAM and 0.483 GiB excess swap; values fluctuate and clearing
+one does not prove the other passed. Close unused browser tabs/windows and inactive
+app sessions yourself if appropriate. Persistent occupied swap may require a
+user-controlled restart followed by a quiet session. Do not kill other projects,
+clear their caches, reboot automatically or loosen guards.
+
+The next fresh CPU check, after that resource change, is:
+
+```bash
+uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-02
+```
+
+Only if admission passes, no competing model is active and conditions remain
+healthy, execute one smoke in a new directory:
+
+```bash
+uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke-supervised.yaml --dataset data/processed/external-human-smoke8-v1/train.jsonl --quality-manifest data/processed/external-human-smoke8-v1/manifest.json --output adapters/phase4d-supervised-smoke-01
+```
+
+Refusal/failure ends the attempt; no automatic retry. Complete stock DEV through
+the existing monitored driver only with healthy admission. Inspect failed attempts
+before requesting an explicit retry. Normal adapter loading and CPU metadata
+verification require complete technical approval. The trainer's pending-save reload
+is limited to the current live supervised attempt. Forensic byte auditing of an
+unsafe file does not approve inference from it.
+
+The [Phase 4D report](../reports/phase4d-review.md) and
+[proposal manifest](../reports/phase4d-progress.json) record a conditional first SFT
+configuration. It is not executable approval: stock baseline, full smoke,
+499-token complete-example capacity and a measured longer-run deadline are still
+required. The unchanged 120-second smoke deadline cannot authorize 128 updates.

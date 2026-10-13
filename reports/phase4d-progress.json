@@ -1,0 +1,595 @@
+{
+  "available_ram_gib": 6.9085540771484375,
+  "baseline": {
+    "accuracy": null,
+    "completed_jobs": 0,
+    "contract": {
+      "adapter": null,
+      "protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd"
+    },
+    "infrastructure_failed_attempts": [],
+    "planned_jobs": 112,
+    "resource_events": [],
+    "status": "incomplete"
+  },
+  "baseline_pending_by_mode": {
+    "nonthinking": 56,
+    "thinking": 56
+  },
+  "baseline_protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd",
+  "eos_cap_token_latency_metrics": null,
+  "failed_admission_criteria": [
+    "starting_available_ram",
+    "starting_occupied_swap"
+  ],
+  "four_step_smoke_accepted": false,
+  "four_step_smoke_attempted": false,
+  "gpu_model_workloads": 0,
+  "historical_update_counts": [
+    0,
+    1,
+    3
+  ],
+  "improvement_sft_proposal": {
+    "adapter_fusion": false,
+    "batch_size": 1,
+    "capability_checks": [
+      "no final accuracy decrease in either frozen mode",
+      "preserve harder-task correct completions",
+      "compare accuracy and EOS/caps separately",
+      "compare token use and repetition only with correctness",
+      "matched existing 2K/8K/32K supported context suite under independently admitted monitored conditions"
+    ],
+    "checkpoint_every_updates": 32,
+    "compute_estimate_status": "Uncalibrated: one historical 281-token step is not full-corpus throughput",
+    "compute_extrapolation_excludes": [
+      "499_token_capacity",
+      "different_sequence_lengths",
+      "loading",
+      "integrity",
+      "save_reload",
+      "dev_evaluation",
+      "resource_contention"
+    ],
+    "dataset": "data/processed/external-human-pilot-v1-approved/train.jsonl",
+    "dataset_hash": "fab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1",
+    "deadline_note": "The unchanged 120s technical smoke ceiling does not authorize a 128-update job. Longer-run watchdog deadline needs measured justification and separate approval.",
+    "distinct_pool_examples": 768,
+    "dropout": 0.0,
+    "examples_consumed_at_batch_one_accumulation_one": 128,
+    "final_dev": "All 56 frozen tasks in both modes, 112 matched jobs",
+    "first_response_and_eos_supervised": true,
+    "gradient_accumulation": 1,
+    "historical_step_only_linear_extrapolation_seconds": 155.64569599973038,
+    "layer_22": [
+      "linear_attn.in_proj_qkv"
+    ],
+    "layer_23": [
+      "self_attn.q_proj",
+      "self_attn.v_proj"
+    ],
+    "learning_rate": 0.0001,
+    "long_run_wall_deadline_s": null,
+    "loss_chunk_size": 32,
+    "loss_contract": "response-only-full-vocabulary-checkpointed-chunks-v1",
+    "max_complete_sequence_tokens": 512,
+    "model": "Qwen/Qwen3.5-0.8B",
+    "not_executed": true,
+    "num_layers": 2,
+    "observed_corpus_complete_length_range": [
+      97,
+      499
+    ],
+    "optimizer": "adamw",
+    "periodic_dev_selection": "Freeze source/family/difficulty-stratified IDs before first optimizer update; same stock/student tasks/seeds/modes and frozen 2048 output budget. This subset is not a replacement baseline.",
+    "periodic_dev_tasks": 16,
+    "periodic_dev_updates": [
+      32,
+      64,
+      96
+    ],
+    "precision": "original_bf16",
+    "prerequisites": [
+      "complete_supervised_smoke",
+      "complete_stock_112_job_baseline",
+      "complete_499_token_example_capacity_measured",
+      "safe_longer_training_deadline_independently_justified"
+    ],
+    "prompt_masked": true,
+    "rank": 4,
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "scale": 2.0,
+    "seed": 20261012,
+    "status": "conditional_design_only_not_execution_ready_or_authorized",
+    "stopping_conditions": [
+      "any existing RAM/swap/RSS safety violation",
+      "monitor failure",
+      "nonfinite loss or gradients",
+      "zero gradients or invalid update",
+      "base/context/tokenizer/source drift",
+      "persistence or logit equivalence failure",
+      "checkpoint DEV correctness drop of at least two tasks against the fixed 16-task stock subset triggers stop and review",
+      "material matched hard-task/nonthinking/context regression"
+    ],
+    "updates": 128,
+    "weight_decay": 0.01,
+    "whole_pool_epoch_fraction": 0.16666666666666666
+  },
+  "integrity": {
+    "gpu_workloads": 0,
+    "historical_raw_files_verified": [
+      {
+        "bytes": 136,
+        "path": "adapters/external-human-smoke-v1-attempt1/completion.json",
+        "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+      },
+      {
+        "bytes": 1012,
+        "path": "adapters/external-human-smoke-v1-attempt1/config.json",
+        "sha256": "01d5d634c33f0a6f2dac2c308bb54cb6f756a535a321ef554b37898de3819792"
+      },
+      {
+        "bytes": 475,
+        "path": "adapters/external-human-smoke-v1-attempt1/environment.json",
+        "sha256": "f4c18a1cd173a125499766144a9cf253c0405f14d87cc80a750a96d4d0865aa5"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-v1-attempt1/frozen-base-before.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 0,
+        "path": "adapters/external-human-smoke-v1-attempt1/loss.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-v1-attempt1/original-loaded-base.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 4817,
+        "path": "adapters/external-human-smoke-v1-attempt1/quality_manifest.json",
+        "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+      },
+      {
+        "bytes": 1083,
+        "path": "adapters/external-human-smoke-v1-attempt1/raw-console.log",
+        "sha256": "4dd35fbac8c890ebe556b263bb308cefe2d77659e2f82245840544239df839c3"
+      },
+      {
+        "bytes": 478,
+        "path": "adapters/external-human-smoke-v1-attempt1/resource-stop.json",
+        "sha256": "b866b68591e0e3488860379a5bed2d557beaad5f7b6ac8736b7080a3b2a38c8e"
+      },
+      {
+        "bytes": 204,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/active-microbatch.json",
+        "sha256": "8aca75a0cefa6aaf0793cdb8888f1a959e2087a604d748107c1a7b9e5389894e"
+      },
+      {
+        "bytes": 136,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/completion.json",
+        "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+      },
+      {
+        "bytes": 1091,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/config.json",
+        "sha256": "a9ec31902c85fdb885fc627b9a25db8a4f10218fab2e8e578311ffed10425007"
+      },
+      {
+        "bytes": 475,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/environment.json",
+        "sha256": "e442fe31d0453e900c49b1af9edbe5dbb3eb7f4fd24580ebf0a01aa3004c5740"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/frozen-base-before.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 598,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/loss.jsonl",
+        "sha256": "a7a10e2f865372214b67bc9871af3762792622bce9a52630e7f82c9571a901bf"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/original-loaded-base.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 4817,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/quality_manifest.json",
+        "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+      },
+      {
+        "bytes": 1127,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/raw-console.log",
+        "sha256": "1bba68d7f0f7014196e38bba566d577b887cda6857828cdb15a2af5e256d8aaf"
+      },
+      {
+        "bytes": 553,
+        "path": "adapters/external-human-smoke-memory-efficient-attempt1/resource-stop.json",
+        "sha256": "c767a6d28204fc659ab10d57416ada8afe43e188f02a385e4f8427c4557b6084"
+      },
+      {
+        "bytes": 206,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/active-microbatch.json",
+        "sha256": "dc874e5496ac4fbb447705195c3ce459e62821f20357109d3b26a41d6e479ad1"
+      },
+      {
+        "bytes": 77,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/completion.json",
+        "sha256": "2b6310e7f674584df864455aa1a789adb4c7da2a475ff49b96752a1fbb237d5d"
+      },
+      {
+        "bytes": 1126,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/config.json",
+        "sha256": "fa1ac35d591833f8fa93d95dfb1659485bfefd965523c4dc518c05b082e836ab"
+      },
+      {
+        "bytes": 475,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/environment.json",
+        "sha256": "a8c89496fc3f26531e899aca1f93e1344a963a996b1d7d2539e154940db2a481"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/frozen-base-before.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 986,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/initial-adapter.json",
+        "sha256": "7349afa0de17a614ff5776523937c437a565ee9f9d4db0bc4f95890bbfcff21e"
+      },
+      {
+        "bytes": 2161,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/loss.jsonl",
+        "sha256": "754504ae09fd4d7013235fa24e13f423e9eeab532f477d49888a1972588d0078"
+      },
+      {
+        "bytes": 145684,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/macos-process-sample.txt",
+        "sha256": "7e52672c9a4d0ca946b8180ec0e020557dea5f525d782605bf1b2df691a09577"
+      },
+      {
+        "bytes": 191,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/original-loaded-base.json",
+        "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+      },
+      {
+        "bytes": 4817,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/quality_manifest.json",
+        "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+      },
+      {
+        "bytes": 2296,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/raw-console.log",
+        "sha256": "3871ff69b76f0f3ba3be041b94fdca1b5f0e0101d23acbc1fe6b07b9db6a3ac8"
+      },
+      {
+        "bytes": 221943,
+        "path": "adapters/external-human-smoke-bounded-prefix-attempt1/step-000002.safetensors",
+        "sha256": "f755acdbae7afb457660d1de480b56cc986545944c17c8d506c04b0b68a4aa80"
+      }
+    ],
+    "historical_report_split_files_unchanged": 127,
+    "model_files_unchanged": [
+      {
+        "bytes": 7755,
+        "cache_blob": "0ef09f214eaa6d9bca297988afc1454b5827b2c7",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/chat_template.jinja",
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80"
+      },
+      {
+        "bytes": 2907,
+        "cache_blob": "715f0448b9d38103211f0ad88bbb4d6e4f4be8c9",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/config.json",
+        "sha256": "b90b86f35c8e6925ef74ee04d0e758f0a845c83a42089ad82bbaa948de9b4204"
+      },
+      {
+        "bytes": 3353259,
+        "cache_blob": "a494e019ca1502219fd0128658b979e5f05ae8e8",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/merges.txt",
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+      },
+      {
+        "bytes": 1746942600,
+        "cache_blob": "f0140d845aced424f17b1c75ebc5a67ef75fe309c68d2f613acda2eb551db7dd",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/model.safetensors-00001-of-00001.safetensors",
+        "sha256": "04b1c301231dd422b8860db31311ab2721511346a32cb1e079c4c4e5f1fe4696"
+      },
+      {
+        "bytes": 50900,
+        "cache_blob": "f691cefdb79d73270895ebd6d9594ddcecfc1838",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/model.safetensors.index.json",
+        "sha256": "d8a08838a613b025eb7952ed9db11696213e57e76a375661ef5c12f9dd5dcf4e"
+      },
+      {
+        "bytes": 390,
+        "cache_blob": "2ea84a437d448ff71b08df68fdd949d5cc4ebb64",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/preprocessor_config.json",
+        "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "bytes": 12807982,
+        "cache_blob": "8f06040c24d0d6efc263cf398806debbf20d732031ba128349d086f6a7b8bab2",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/tokenizer.json",
+        "sha256": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42"
+      },
+      {
+        "bytes": 16709,
+        "cache_blob": "fae3ce993e07c092ad024dde45e592379fde91bb",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/tokenizer_config.json",
+        "sha256": "49e2b6e395f959f077f1e992b338919c0d4a9732fc6e613995e06557f843500c"
+      },
+      {
+        "bytes": 385,
+        "cache_blob": "3ba673a5ad7d4d13f54155ecd38b2a94a6dac8fe",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/video_preprocessor_config.json",
+        "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+      },
+      {
+        "bytes": 6722759,
+        "cache_blob": "0aa0ce0658d60ac4a5d609f4eadb0e8e43514176",
+        "path": "/Users/admin/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17/vocab.json",
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+      }
+    ],
+    "model_revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "native_context": 262144,
+    "quarantine_present": true,
+    "rope": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "starting_sha": "b82ea945e2d7d53dfdc14ff6d62a67fc224e9179",
+    "training_pools": {
+      "data/processed/external-human-pilot-v1-approved": {
+        "count": 768,
+        "dataset_hash": "fab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1",
+        "manifest_hash": "1d7d0c725533f56fb02fbe303c545c53b1d7c769fbcba02e27303eb55d85c3a7",
+        "max_complete_sequence_tokens": 499,
+        "min_complete_sequence_tokens": 97,
+        "source_permissions": [
+          {
+            "dataset_file_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+            "dataset_path": "data/raw/external-audit-20261012/gsm8k-train.jsonl",
+            "dataset_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+            "license": "MIT",
+            "license_file_sha256": "86bbb73e855821d7c401912fd4bf82e34313e6e3b6fd6f909f2b6cc9e209a53b",
+            "license_path": "data/raw/external-audit-20261012/gsm8k-LICENSE",
+            "license_url": "https://raw.githubusercontent.com/openai/grade-school-math/3101c7d5072418e28b9008a6636bde82a006892c/LICENSE",
+            "originating_author": "human_problem_writer",
+            "permission_basis": "Original human-written TRAIN responses distributed under MIT; not API outputs or Socratic/model-generated solutions",
+            "publisher": "OpenAI",
+            "source_id": "gsm8k-original-human-train",
+            "source_split": "train",
+            "source_url": "https://github.com/openai/grade-school-math/tree/3101c7d5072418e28b9008a6636bde82a006892c",
+            "teacher_model": null
+          }
+        ],
+        "sum_complete_sequence_tokens": 171374
+      },
+      "data/processed/external-human-smoke8-v1": {
+        "count": 8,
+        "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+        "manifest_hash": "40c8b4340bc1c23e93d00493792c8d026eb4202c35d60c745cc2d1dfbad295fa",
+        "max_complete_sequence_tokens": 333,
+        "min_complete_sequence_tokens": 137,
+        "source_permissions": [
+          {
+            "dataset_file_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+            "dataset_path": "data/raw/external-audit-20261012/gsm8k-train.jsonl",
+            "dataset_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+            "license": "MIT",
+            "license_file_sha256": "86bbb73e855821d7c401912fd4bf82e34313e6e3b6fd6f909f2b6cc9e209a53b",
+            "license_path": "data/raw/external-audit-20261012/gsm8k-LICENSE",
+            "license_url": "https://raw.githubusercontent.com/openai/grade-school-math/3101c7d5072418e28b9008a6636bde82a006892c/LICENSE",
+            "originating_author": "human_problem_writer",
+            "permission_basis": "Original human-written TRAIN responses distributed under MIT; not API outputs or Socratic/model-generated solutions",
+            "publisher": "OpenAI",
+            "source_id": "gsm8k-original-human-train",
+            "source_split": "train",
+            "source_url": "https://github.com/openai/grade-school-math/tree/3101c7d5072418e28b9008a6636bde82a006892c",
+            "teacher_model": null
+          }
+        ],
+        "sum_complete_sequence_tokens": 1770
+      }
+    }
+  },
+  "new_adapter_hash": null,
+  "new_loss_gradient_memory_measurements": null,
+  "new_optimizer_updates": 0,
+  "next_cpu_admission_command": "uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-02",
+  "next_decision": "Quiet Mac qualification required. Mac training viability remains unverified; CUDA migration is not yet warranted by an admitted ordinary-path failure.",
+  "no_automatic_resource_retry": true,
+  "no_other_process_signaled": true,
+  "occupied_swap_gib": 2.4827880859375,
+  "only_if_new_admission_passes_smoke_command": "uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke-supervised.yaml --dataset data/processed/external-human-smoke8-v1/train.jsonl --quality-manifest data/processed/external-human-smoke8-v1/manifest.json --output adapters/phase4d-supervised-smoke-01",
+  "ram_deficit_bytes": 1171931136,
+  "resource_admission": {
+    "baseline": {
+      "available_ram_bytes": 7418003456,
+      "monotonic_s": 31190.820350375,
+      "rss_bytes": 23969792,
+      "swap_out_bytes": 562298880,
+      "swap_used_bytes": 2665873408
+    },
+    "create_time": 1791851335.490931,
+    "pid": 62070,
+    "policy": {
+      "admission_ram_bytes": 8589934592,
+      "max_gradient_wall_s": 15,
+      "max_process_rss_bytes": 3221225472,
+      "max_start_swap_used_bytes": 2147483648,
+      "max_swap_out_delta_bytes": 536870912,
+      "max_swap_used_growth_bytes": 134217728,
+      "max_training_wall_s": 120,
+      "min_available_ram_bytes": 4294967296,
+      "poll_s": 0.1
+    },
+    "session_id": "551ec2890e284d239765e8b63680d540",
+    "status": "insufficient_starting_ram"
+  },
+  "resource_admission_raw_path": "runs/phase4d-resource-admission-01/resource-admission.json",
+  "resource_admission_raw_sha256": "39cdcd562c34e6cd0d19a214fdc2adf9d759ac23d28975aa17e93ea32dcd7569",
+  "save_reload_frozen_base_fresh_inference": "not_attempted_admission_refused",
+  "starting_branch": "main",
+  "starting_ci": {
+    "conclusion": "success",
+    "url": "https://github.com/lukifer23/LeanQwen/actions/runs/38325316233"
+  },
+  "starting_remote_main_matches": true,
+  "starting_sha": "b82ea945e2d7d53dfdc14ff6d62a67fc224e9179",
+  "starting_worktree": "clean",
+  "status": "admission_refused_no_model_loading",
+  "supervised_metal_watchdog_validation": "not_reached",
+  "swap_excess_bytes": 518389760,
+  "system_snapshot": {
+    "lease": "available_and_released",
+    "memory": {
+      "active": 6318981120,
+      "available": 7409500160,
+      "free": 1047986176,
+      "inactive": 6328729600,
+      "percent": 61.7,
+      "total": 19327352832,
+      "used": 9197813760,
+      "wired": 2878832640
+    },
+    "observed_project_workloads": [],
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "swap": {
+      "free": 1629093888,
+      "percent": 62.1,
+      "sin": 548946329600,
+      "sout": 562298880,
+      "total": 4294967296,
+      "used": 2665873408
+    },
+    "system_commands": {
+      "sysctl -n hw.memsize": {
+        "exit": 0,
+        "stderr": "",
+        "stdout": "19327352832\n"
+      },
+      "sysctl -n hw.model": {
+        "exit": 0,
+        "stderr": "",
+        "stdout": "Mac15,6\n"
+      },
+      "sysctl kern.memorystatus_vm_pressure_level": {
+        "exit": 0,
+        "stderr": "",
+        "stdout": "kern.memorystatus_vm_pressure_level: 1\n"
+      },
+      "sysctl vm.swapusage": {
+        "exit": 0,
+        "stderr": "",
+        "stdout": "vm.swapusage: total = 4096.00M  used = 2542.38M  free = 1553.62M  (encrypted)\n"
+      },
+      "vm_stat": {
+        "exit": 0,
+        "stderr": "",
+        "stdout": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                    63949.\nPages active:                                 385716.\nPages inactive:                               386248.\nPages speculative:                              1996.\nPages throttled:                                   0.\nPages wired down:                             175721.\nPages purgeable:                               17431.\n\"Translation faults\":                      331011747.\nPages copy-on-write:                        16447927.\nPages zero filled:                         433106293.\nPages reactivated:                          55282478.\nPages purged:                                5998506.\nFile-backed pages:                            276831.\nAnonymous pages:                              497129.\nPages stored in compressor:                   254103.\nPages occupied by compressor:                 126632.\nDecompressions:                             72979046.\nCompressions:                               84773807.\nPageins:                                    33505001.\nPageouts:                                      34320.\nSwapins:                                     2932406.\nSwapouts:                                    4899529.\n"
+      }
+    },
+    "top_rss_processes": [
+      {
+        "name": "Codex (Renderer)",
+        "pid": 1204,
+        "rss_bytes": 827342848
+      },
+      {
+        "name": "Google Chrome Helper (Renderer)",
+        "pid": 10705,
+        "rss_bytes": 718798848
+      },
+      {
+        "name": "Google Chrome",
+        "pid": 1117,
+        "rss_bytes": 474284032
+      },
+      {
+        "name": "Google Chrome Helper (Renderer)",
+        "pid": 80106,
+        "rss_bytes": 456704000
+      },
+      {
+        "name": "ChatGPT",
+        "pid": 909,
+        "rss_bytes": 374390784
+      },
+      {
+        "name": "Codex (Renderer)",
+        "pid": 1203,
+        "rss_bytes": 363659264
+      },
+      {
+        "name": "codex",
+        "pid": 1205,
+        "rss_bytes": 362561536
+      },
+      {
+        "name": "Codex (Renderer)",
+        "pid": 1335,
+        "rss_bytes": 282689536
+      },
+      {
+        "name": "com.apple.WebKit.WebContent",
+        "pid": 61571,
+        "rss_bytes": 258048000
+      },
+      {
+        "name": "Google Chrome Helper (Renderer)",
+        "pid": 37811,
+        "rss_bytes": 253247488
+      },
+      {
+        "name": "com.apple.quicklook.ThumbnailsAgent",
+        "pid": 48967,
+        "rss_bytes": 244465664
+      },
+      {
+        "name": "Google Chrome Helper (Renderer)",
+        "pid": 59201,
+        "rss_bytes": 240386048
+      },
+      {
+        "name": "python3.14",
+        "pid": 82233,
+        "rss_bytes": 200671232
+      },
+      {
+        "name": "codex",
+        "pid": 12804,
+        "rss_bytes": 164675584
+      },
+      {
+        "name": "Codex (Renderer)",
+        "pid": 44238,
+        "rss_bytes": 151470080
+      }
+    ],
+    "utc": "2026-10-13T00:28:55.384711+00:00"
+  },
+  "unsafe_checkpoint_quarantined": true,
+  "validation": {
+    "ci_equivalent_deselected": 30,
+    "ci_equivalent_pytest_passed": 148,
+    "cpu_adapter_and_watchdog_tests_passed": 16,
+    "local_pytest_passed": 178,
+    "ruff": "passed",
+    "whitespace": "passed"
+  }
+}

@@ -10,6 +10,7 @@ import yaml
 from huggingface_hub import snapshot_download
 
 from qwenlean.inference.context import PROFILES, context_contract
+from qwenlean.training.checkpoint_audit import require_approved_adapter
 from qwenlean.utils.io import digest, write_json
 
 
@@ -31,6 +32,8 @@ def main():
     if Path(args.output).exists():
         raise ValueError("Refuse overwriting an existing audit")
     config = yaml.safe_load(Path(args.config).read_text())
+    if args.adapter_path:
+        require_approved_adapter(args.adapter_path, config)
     path = Path(snapshot_download(
         config["model"], revision=config["revision"], local_files_only=True,
         allow_patterns=["*.json", "*.jinja", "*.safetensors", "tokenizer*", "*.txt"],
