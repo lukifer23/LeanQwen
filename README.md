@@ -25,20 +25,27 @@ models cannot author, rewrite or judge targets. Historical natural and solver
 corpora remain preserved and excluded from current SFT. Direct Python/MLX is the
 model engine; no LM Studio. A separate source-aware gate validates licensing
 before training data/tensor loading and reproduces exact source/template/token IDs.
-The four-step technical smoke on eight human targets stopped after its first
-backward pass at 2.583 GiB available RAM, below the unchanged 4 GiB floor.
-A subsequent [memory-efficient retry](reports/external-human-smoke-memory-efficient-attempt1.json)
-completed **one real optimizer update**, then stopped at the same floor before
-update2. No saved adapter, successful four-step smoke or improvement result exists.
-A subsequent frozen-prefix GPU experiment caused unsafe pressure and was stopped;
-that path is now disabled. Training has an independent CPU resource watchdog;
-no further model jobs ran after the pressure correction. See
-[local training and safety results](reports/local-training-resource-safety.md).
-See [saved smoke stop](reports/external-human-smoke-memory-stop.md).
-A new [56-task matched DEV protocol](reports/external-human-dev-protocol.json)
-combines 24 human-source questions and the existing 32 procedural retention tasks.
-The earlier stock baseline remains partial after memory stops. A complete matched baseline, actual smoke and capacity measurements remain
-required before an improvement pilot.
+Phase 4C audited the historical failures without loading a model. The ordinary
+chunked-loss retry completed one finite update; the unsafe frozen-prefix run
+completed **three updates**, with an intact step-two checkpoint, before its fourth
+step was interrupted. Its original zero-step report was incorrect and remains
+preserved beside the [corrected derived audit](reports/phase4c-historical-training-audit.json).
+That partial checkpoint is quarantined, never an approved or improved adapter;
+frozen-prefix materialization remains disabled.
+
+Fresh CPU admission refused model work: **7.854 GiB available RAM** versus the
+8 GiB requirement and **3.053 GiB occupied swap** versus the 2 GiB ceiling.
+No GPU smoke or baseline job ran in Phase 4C. Watchdog durability, session binding,
+monitor-failure detection and success publication were strengthened with CPU tests.
+The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed;
+its 112 thinking/non-thinking jobs are incomplete. The baseline controller now
+preserves failed attempts, supports explicit retries and bounded batches, and
+publishes aggregate accuracy only after the entire cohort completes.
+
+**No successful four-step smoke, approved adapter or improvement result exists.**
+See [Phase 4C findings and next experiment](reports/phase4c-review.md),
+[resource/source audit](reports/phase4c-start-audit.json) and
+[current reproducible status](reports/phase4c-progress.json).
 
 Historical Phase 3: PonderScope finished naturally before LeanQwen model work.
 Stock context probes scored 3/5 at 2K and 4/5 at 8K/32K envelopes, with all
@@ -58,7 +65,8 @@ One distinct eligible task is insufficient for meaningful SFT. See the
 [generation review](reports/phase3-natural-pilot-review.md) and
 [data options and safeguards](docs/training-data-strategy.md).
 That completed negative result is preserved. Its optimizer count was zero.
-Phase 4 subsequently completed one finite optimizer update, as reported above.
+Phase 4 later logged one ordinary-path update and three unsafe-path updates in
+separately initialized failed runs; those do not form a completed smoke.
 
 Phase 2 completed the **144-trajectory prompt-policy milestone**
 (12 DEV tasks × 3 matched seeds × 4 policies).
@@ -77,7 +85,7 @@ split with zero detected cross-split structural-signature collisions. See its
 Tail diagnostics, counterfactual early-exit probes, local semantic measurement
 and offline guard replay have run. Natural TRAIN generation/automatic selection
 completed; no quality-approved training pool was created.
-The guarded `train-sft` interface has executed one real optimizer update;
+The guarded `train-sft` interface has executed partial optimizer updates;
 complete smoke, full post-training integrity and adapter reload validation remain
 unfinished. No substantial SFT, preference
 training, compression pipeline, adaptive budget controller or CUDA backend has run.

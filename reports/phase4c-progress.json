@@ -1,0 +1,98 @@
+{
+  "admission_report": "reports/phase4c-start-audit.json",
+  "approved_adapter_exists": false,
+  "baseline": {
+    "accuracy": null,
+    "completed_jobs": 0,
+    "contract": {
+      "adapter": null,
+      "protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd"
+    },
+    "infrastructure_failed_attempts": [],
+    "planned_jobs": 112,
+    "resource_events": [],
+    "status": "incomplete"
+  },
+  "baseline_pending_tasks_by_mode": {
+    "nonthinking": 56,
+    "thinking": 56
+  },
+  "baseline_protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd",
+  "baseline_task_hash": "871ac0862005ed764c094282d6829c7e00f6aa8d83aaa0a149792fb306c11e10",
+  "cap_rate": null,
+  "decision": "B: fix shared Mac resource admission and verified watchdog/failed-job accounting issues; no evidence yet supports A or requires C.",
+  "eos_rate": null,
+  "four_step_smoke_complete": false,
+  "historical_correction": "reports/phase4c-historical-training-audit.json",
+  "historical_tracked_artifacts_unchanged": 123,
+  "new_gpu_jobs": 0,
+  "new_optimizer_steps": 0,
+  "next_experiment": {
+    "admission_command": "uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4c-resource-admission-02",
+    "gpu_retry_after_failure": false,
+    "improvement_run_authorized": false,
+    "new_attempt_directories_required": true,
+    "only_if_admitted_and_healthy": "uv run --frozen --no-sync qwenlean train-sft --config configs/training/external-human-smoke-supervised.yaml --dataset data/processed/external-human-smoke8-v1/train.jsonl --quality-manifest data/processed/external-human-smoke8-v1/manifest.json --output adapters/phase4c-supervised-smoke-01"
+  },
+  "nonthinking_accuracy": null,
+  "starting_sha": "a9f6bf1f9d66124f71175beb655e166557b18985",
+  "status": "resource_admission_refused_cpu_work_completed",
+  "supervised_metal_watchdog_validation": "not_attempted_due_to_refused_admission",
+  "supervised_smoke_attempted": false,
+  "test_results": {
+    "ci_equivalent_deselected": 30,
+    "ci_equivalent_passed": 145,
+    "diff_check": "passed",
+    "full_pytest_passed": 175,
+    "ruff": "passed"
+  },
+  "thinking_accuracy": null,
+  "training_sources": {
+    "data/processed/external-human-pilot-v1-approved": {
+      "count": 768,
+      "dataset_hash": "fab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1",
+      "manifest_hash": "1d7d0c725533f56fb02fbe303c545c53b1d7c769fbcba02e27303eb55d85c3a7",
+      "source_permissions": [
+        {
+          "dataset_file_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+          "dataset_path": "data/raw/external-audit-20261012/gsm8k-train.jsonl",
+          "dataset_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+          "license": "MIT",
+          "license_file_sha256": "86bbb73e855821d7c401912fd4bf82e34313e6e3b6fd6f909f2b6cc9e209a53b",
+          "license_path": "data/raw/external-audit-20261012/gsm8k-LICENSE",
+          "license_url": "https://raw.githubusercontent.com/openai/grade-school-math/3101c7d5072418e28b9008a6636bde82a006892c/LICENSE",
+          "originating_author": "human_problem_writer",
+          "permission_basis": "Original human-written TRAIN responses distributed under MIT; not API outputs or Socratic/model-generated solutions",
+          "publisher": "OpenAI",
+          "source_id": "gsm8k-original-human-train",
+          "source_split": "train",
+          "source_url": "https://github.com/openai/grade-school-math/tree/3101c7d5072418e28b9008a6636bde82a006892c",
+          "teacher_model": null
+        }
+      ]
+    },
+    "data/processed/external-human-smoke8-v1": {
+      "count": 8,
+      "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+      "manifest_hash": "40c8b4340bc1c23e93d00493792c8d026eb4202c35d60c745cc2d1dfbad295fa",
+      "source_permissions": [
+        {
+          "dataset_file_sha256": "17f347dc51477c50d4efb83959dbb7c56297aba886e5544ee2aaed3024813465",
+          "dataset_path": "data/raw/external-audit-20261012/gsm8k-train.jsonl",
+          "dataset_revision": "3101c7d5072418e28b9008a6636bde82a006892c",
+          "license": "MIT",
+          "license_file_sha256": "86bbb73e855821d7c401912fd4bf82e34313e6e3b6fd6f909f2b6cc9e209a53b",
+          "license_path": "data/raw/external-audit-20261012/gsm8k-LICENSE",
+          "license_url": "https://raw.githubusercontent.com/openai/grade-school-math/3101c7d5072418e28b9008a6636bde82a006892c/LICENSE",
+          "originating_author": "human_problem_writer",
+          "permission_basis": "Original human-written TRAIN responses distributed under MIT; not API outputs or Socratic/model-generated solutions",
+          "publisher": "OpenAI",
+          "source_id": "gsm8k-original-human-train",
+          "source_split": "train",
+          "source_url": "https://github.com/openai/grade-school-math/tree/3101c7d5072418e28b9008a6636bde82a006892c",
+          "teacher_model": null
+        }
+      ]
+    }
+  }
+}

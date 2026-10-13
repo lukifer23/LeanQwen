@@ -185,3 +185,9 @@ to bypass the stop or begin a new128K stress campaign. The native262144 context,
 RoPE, tokenizer and reversible runtime profiles are unchanged. CPU-only source,
 template, report and resource checks remain available. See
 [current safety evidence](../reports/local-training-resource-safety.md).
+
+Phase4C fresh admission refused model loading. The frozen short-input DEV driver
+now uses monitored one/two-job batches without modifying the56-task protocol or
+2048 output cap. This does not validate a long-context workload under that monitor.
+Supported32K diagnostic results remain historical; adapter context retention is
+unmeasured, and no128K campaign or long-context GPU probe was launched.

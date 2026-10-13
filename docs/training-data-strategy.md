@@ -173,3 +173,22 @@ wall-time. The MLX memory guideline is not a hard cap. See
 [actual stop and CPU safeguards](../reports/local-training-resource-safety.md).
 No GPU rerun was made after the user's system-pressure correction. Successful
 four-step optimization, frozen-base/reload and inference gates remain incomplete.
+
+## Phase 4C accounting correction and unchanged source
+
+Derived CPU auditing found that the unsafe-prefix run completed three updates
+and an intact finite step-two checkpoint before interruption in step four. The
+earlier whole-run zero/empty-loss statement was wrong. Preserve that original
+report as history; use [the corrected audit](../reports/phase4c-historical-training-audit.json).
+The checkpoint is quarantined, cannot authorize inference/SFT and does not pass
+base-integrity/reload/safety gates. Across independent failed initializations,
+one ordinary update plus three unsafe updates is not one four-step smoke.
+
+The existing768 human GSM8K TRAIN examples and eight-example smoke pool were
+revalidated against exact source/license/review/template hashes. No target changed,
+no teacher calls occurred and no solver/Qwen/LFM target entered the corpus.
+Phase4C fresh admission failed (RAM below8 GiB and occupied swap above2 GiB), so
+no new optimizer or baseline generation occurred. Full Metal watchdog validation,
+complete stock DEV, adapter persistence and measured sequence feasibility remain
+required. The previously proposed128-update schedule is unapproved and must not
+be launched. The next experiment is only one healthy, supervised four-step smoke.

@@ -64,6 +64,7 @@ qwenlean/metrics/semantic.py
 qwenlean/scoring/exact.py
 qwenlean/scoring/legacy_v5.py
 qwenlean/training/__init__.py
+qwenlean/training/checkpoint_audit.py
 qwenlean/training/external_contract.py
 qwenlean/training/integrity.py
 qwenlean/training/mlx_loss.py
@@ -161,6 +162,10 @@ reports/phase4-verified-reasoning.md
 reports/phase4_solver_corpus.json
 reports/phase4_solver_corpus_v1_1.json
 reports/phase4_start.json
+reports/phase4c-historical-training-audit.json
+reports/phase4c-progress.json
+reports/phase4c-review.md
+reports/phase4c-start-audit.json
 reports/procedural_v2_quality.json
 reports/procedural_v2_quality.md
 reports/process_audit.json
@@ -193,6 +198,7 @@ scripts/approve_external_dataset.py
 scripts/approve_natural_dataset.py
 scripts/approve_solver_pool.py
 scripts/audit_external_sources.py
+scripts/audit_phase4c_training.py
 scripts/build_solver_corpus.py
 scripts/calibrate_metrics.py
 scripts/check_training_resources.py
@@ -230,6 +236,7 @@ tests/test_integrity.py
 tests/test_local_metrics.py
 tests/test_mlx_loss.py
 tests/test_phase2_harness.py
+tests/test_phase4c_artifacts.py
 tests/test_procedural_v2.py
 tests/test_sampling.py
 tests/test_selection.py

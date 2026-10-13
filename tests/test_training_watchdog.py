@@ -67,6 +67,13 @@ def test_admission_refuses_before_workload_or_monitor_start(tmp_path):
 def test_missing_or_forged_watchdog_cannot_authorize_private_training(tmp_path):
     with pytest.raises(RuntimeError, match='before model loading'):
         require_active_watchdog(tmp_path)
+
+
+def test_stale_supervision_destination_cannot_be_reused(tmp_path):
+    (tmp_path/'watchdog-ready.json').write_text('{}')
+    with pytest.raises(RuntimeError, match='stale'):
+        with training_watchdog({}, tmp_path):
+            raise AssertionError('Stale files authorized a workload')
     (tmp_path/'watchdog-ready.json').write_text(json.dumps({'pid': 0, 'parent_pid': 0, 'create_time': 0}))
     with pytest.raises(RuntimeError, match='before model loading'):
         require_active_watchdog(tmp_path)
@@ -95,3 +102,28 @@ else:
     stopped = json.loads((tmp_path/'watchdog-stop.json').read_text())
     assert stopped['reason'] == 'training_wall_timeout'
     assert stopped['initial_signal'] == 'SIGINT'
+
+
+def test_monitor_death_interrupts_owned_cpu_workload_without_waiting_for_it(tmp_path):
+    code = '''import time, os, signal, json
+from pathlib import Path
+from qwenlean.training.watchdog import training_watchdog
+try:
+    with training_watchdog(CONFIG, OUTPUT):
+        ready=json.loads((Path(OUTPUT)/'watchdog-ready.json').read_text())
+        os.kill(ready['pid'], signal.SIGKILL)
+        time.sleep(4)
+except KeyboardInterrupt:
+    print('monitor_death_stopped_owned_fixture')
+else:
+    raise RuntimeError('Dead monitor failed open')
+'''.replace('CONFIG', repr({'min_available_ram_bytes': 0, 'training_admission_ram_bytes': 0,
+    'max_start_swap_used_bytes': 10**15, 'max_swap_used_growth_bytes': 10**15,
+    'max_swap_out_delta_bytes': 10**15, 'max_process_rss_bytes': 10**15, 'max_training_wall_s': 20}))
+    code = code.replace('OUTPUT', repr(str(tmp_path)))
+    result = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, timeout=8,
+                            cwd=Path(__file__).resolve().parents[1])
+    assert result.returncode == 0, result.stderr
+    assert 'monitor_death_stopped_owned_fixture' in result.stdout
+    assert json.loads((tmp_path/'watchdog-supervisor-stop.json').read_text())['reason'] == 'monitor_exited'
+    assert (tmp_path/'watchdog-release.json').exists()

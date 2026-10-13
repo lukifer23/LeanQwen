@@ -28,7 +28,7 @@ from qwenlean.training.quality import (
     validate_parent_sources,
     validate_training_pool,
 )
-from qwenlean.training.watchdog import require_active_watchdog, training_watchdog
+from qwenlean.training.watchdog import require_active_watchdog, set_phase, training_watchdog
 from qwenlean.utils.environment import environment_manifest
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
 from qwenlean.utils.process_lock import model_process_lock
@@ -78,7 +78,11 @@ def train(config, dataset, quality_manifest, output):
         previous_memory_limit = mx.set_memory_limit(config.get('mlx_memory_limit_bytes', 3*1024**3))
         try:
             with training_watchdog(config, output):
-                return _train(config, rows, output)
+                report = _train(config, rows, output)
+            # Never publish success before independent supervision exits cleanly.
+            write_json(output/'smoke_report.json', report)
+            write_json(output/'completion.json', {'status': 'complete', 'optimizer_steps': config['steps']})
+            return report
         except BaseException as exc:
             write_json(output/'completion.json', {'status': 'failed', 'error_type': type(exc).__name__, 'error': str(exc)})
             raise
@@ -96,6 +100,7 @@ def _train(cfg, rows, output):
     require_active_watchdog(output)
     mx.random.seed(cfg['seed'])
     rng = random.Random(cfg['seed'])
+    set_phase(output, 'model_loading')
     backend = MLXBackend(cfg)
     for row in rows:
         formatted = backend.tokenizer.apply_chat_template(
@@ -111,6 +116,7 @@ def _train(cfg, rows, output):
         if parsed.parse_status != 'complete' or not score(parsed.final, row['expected'], cfg['prompt_policy'])['correct']:
             raise ValueError('Supervised target must close reasoning and preserve the correct answer')
     model = backend.model
+    set_phase(output, 'initial_integrity')
     original_loaded_base = tensor_fingerprint(tree_flatten(model.parameters()))
     write_json(output/'original-loaded-base.json', original_loaded_base)
     targets = attach_adapters(model, cfg)
@@ -171,15 +177,14 @@ def _train(cfg, rows, output):
                     rng.shuffle(order)
                 tokens = mx.array([r['prompt_token_ids'] + r['target_token_ids']], dtype=mx.int32)
                 begin, end = supervision_range(r['prompt_token_ids'], r['target_token_ids'])
-                write_json(output/'active-microbatch.json', {'step': step, 'task_id': r['task_id'],
-                    'phase': 'gradient', 'started_monotonic_s': time.monotonic(),
-                    'sequence_length': tokens.shape[1], 'supervised_tokens': end-begin,
-                    'supervision_begin': begin, 'supervision_end': end,
-                    'loss_chunk_size': cfg.get('loss_chunk_size', 32)})
+                set_phase(output, 'gradient', step=step, task_id=r['task_id'],
+                    sequence_length=tokens.shape[1], supervised_tokens=end-begin,
+                    supervision_begin=begin, supervision_end=end,
+                    loss_chunk_size=cfg.get('loss_chunk_size', 32))
                 loss, gradients = value_grad(model, tokens, begin, end)
                 mx.eval(loss, gradients)
-                write_json(output/'active-microbatch.json', {'step': step, 'task_id': r['task_id'],
-                    'phase': 'gradient_completed', 'sequence_length': tokens.shape[1]})
+                set_phase(output, 'gradient_completed', step=step, task_id=r['task_id'],
+                          sequence_length=tokens.shape[1])
                 # Release reusable allocator buffers before checking current RAM.
                 # Live loss/gradient arrays and recorded peak allocation stay intact.
                 mx.clear_cache()
@@ -193,6 +198,7 @@ def _train(cfg, rows, output):
                 supervised += len(r['target_token_ids'])
                 rss_peak = max(rss_peak, process.memory_info().rss)
             averaged = tree_map(lambda g: g/cfg['gradient_accumulation'], accumulator)
+            set_phase(output, 'optimizer', step=step)
             optimizer.update(model, averaged)
             mx.eval(model.trainable_parameters(), optimizer.state)
             mx.synchronize()
@@ -218,6 +224,7 @@ def _train(cfg, rows, output):
             del gradients, accumulator, averaged, loss, tokens
             mx.clear_cache()
     training_time = time.perf_counter()-training_start
+    set_phase(output, 'post_training_integrity')
     leaves = dict(tree_flatten(model.trainable_parameters()))
     changed = [n for n, p in leaves.items() if bool(mx.any(p != initial[n]).item())]
     after_hash = parameter_hash(model.trainable_parameters())
@@ -232,15 +239,18 @@ def _train(cfg, rows, output):
                'lora_parameters': cfg['lora_parameters'], 'base_model': cfg['model'], 'revision': cfg['revision']})
     info = backend.model_info
     model.eval()
+    set_phase(output, 'reload_reference_logits')
     equivalence_ids = mx.array([rows[0]['prompt_token_ids'][:32]], dtype=mx.int32)
     before_reload_logits = model(equivalence_ids)[:, -1, :]
     mx.eval(before_reload_logits)
     before_reload_fingerprint = tensor_fingerprint([('last_logits', before_reload_logits)])
     del before_reload_logits
+    set_phase(output, 'original_model_release')
     backend.close()
     del leaves, initial, value_grad, optimizer, model, backend
     gc.collect()
     mx.clear_cache()
+    set_phase(output, 'fresh_model_reload')
     reloaded = MLXBackend(cfg)
     load_adapters(reloaded.model, output)
     reloaded.model.eval()
@@ -261,6 +271,7 @@ def _train(cfg, rows, output):
     # load_adapters does not freeze the fresh base. Freeze it for the same
     # independently enumerated frozen-base check; adapters remain trainable.
     reloaded.model.freeze()
+    set_phase(output, 'reload_integrity')
     for name, module in reloaded.model.named_modules():
         if hasattr(module, 'lora_a') and hasattr(module, 'lora_b'):
             module.unfreeze(keys=['lora_a', 'lora_b'], recurse=False)
@@ -272,6 +283,7 @@ def _train(cfg, rows, output):
         source = next(t for t in smoke_tasks if t['family'] == family and t['difficulty'] == 'trivial')
         t = render_task(source, cfg['prompt_policy'])
         gcfg = {**cfg, 'enable_thinking': True, 'max_output_tokens': 512, 'loop_guard': {'enabled': False}}
+        set_phase(output, 'fresh_inference', family=family)
         g = reloaded.generate(t['prompt'], cfg['seed'], gcfg)
         if g['termination_reason'] not in {'eos', 'max_output_tokens'}:
             raise RuntimeError('Reload inference failed; cannot publish successful smoke')
@@ -300,8 +312,7 @@ def _train(cfg, rows, output):
               'dev_smoke_correct': sum(r['correct'] for r in smoke_rows),
               'dev_smoke_count': len(smoke_rows), 'improvement_claim': False}
     reloaded.close()
-    write_json(output/'smoke_report.json', report)
-    write_json(output/'completion.json', {'status': 'complete', 'optimizer_steps': cfg['steps']})
+    set_phase(output, 'model_released')
     return report
 
 

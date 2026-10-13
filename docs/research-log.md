@@ -910,3 +910,54 @@ and private training calls require a live owned watcher before base loading.
 Documentation distinguishes the historical zero-step data milestone, one measured
 update, failed four-step gates and unsafe-prefix rejection. No GPU rerun after
 pressure correction. Compact evidence and original raw failures are preserved.
+
+### Phase 4C — derived failure reconciliation and refused resource admission
+
+Started at independently reviewed a9f6bf1, main, clean;171 tests/Ruff and latest
+remote CI passed. All specified source/template/revision files, Phase4 failure
+artifacts and56-task cohort hashes audited without model loading. Human768 TRAIN
+pool hashfab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1;
+smoke8 hash50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c.
+Model2fc0636 pinned file hashes recorded via bounded CPU reads, native262144/RoPE
+unchanged. No new data or teacher generation.
+
+CORRECTION to the earlier GPU-incident accounting: the whole unsafe-prefix run did
+emit three completed loss/update records. Update1 took91.064s, update2 7.166s,
+update3 17.917s; numeric logged MLX peak27,863,031,210 bytes. At interruption the
+active microbatch was step4 with333 complete tokens. Its221,943-byte step-two
+safetensors file has six float32 LoRA tensors/55,296 finite parameters. Independent
+CPU byte fingerprint7cf287f9fddb85dc13bdde9fc18989a15443748a6dce9ab97e0ccba1a1697ef1
+matches the completed step-two log. Original file/report hashes remain intact;
+new derived audit corrects the earlier zero-step/empty-loss claim. Quarantine marker
+prevents unsafe/partial attachment before model loading. No inference from it,
+no full-smoke acceptance and no post-training base/reload validation. One ordinary
+update plus three unsafe updates are separate failed initializations, not one smoke.
+
+Fresh CPU resource command runs/phase4c-resource-admission-01 refused:8,432,910,336
+available bytes below8 GiB,3,278,503,936 occupied swap bytes above2 GiB. Repository
+lease available; no competing model observed. Ordinary Chrome/Codex app consumption
+and retained swap are the current admission problem; no process was killed, cache
+cleared or Mac restarted. NO GPU workload or optimizer update launched this pass.
+User-controlled quiet session/closing unneeded tabs/windows may help; retained swap
+may warrant a user-controlled restart. No indefinite resource retry loop.
+
+Fixed monitor-failure detection during blocking work with a parent liveness guard,
+fresh session/heartbeat identity checks, atomic fsynced stop records and explicit
+phase journals. Success publication moves after watchdog exit/final acceptance.
+Current deadlines unchanged:120s whole smoke including load/integrity/reload/short
+inference,15s active gradient. CPU-owned timeout/dead-monitor cleanup fixtures pass;
+no heavy watchdog stress or supervised Metal validation. Sampled safety remains
+limited for arbitrarily fast spikes. No more gradient implementation experiments.
+
+Baseline driver now has CPU inventory, explicit unique retry attempts and at most
+two fresh jobs/invocation under the unchanged supervised resource policy. It never
+regenerates a valid durable row, rejects contract drift/duplicate success, preserves
+failed records and withholds aggregate metrics until all112 jobs complete. Real
+historical EOS/error records were used for CPU recovery validation; new56-task
+baseline remains0/112 because admission failed. Original32-task partial measurements
+are incompatible historical diagnostics, not substituted cohort outcomes.
+
+DecisionB: address shared-host admission and verified watchdog/controller issues,
+then exactly one supervised technical smoke when healthy. No basis yet for A; a
+clean admitted Mac failure has not been measured, so no CUDA backend/migration was
+started. No workstation hardware/VRAM/access assumption. No128-update SFT authorized.

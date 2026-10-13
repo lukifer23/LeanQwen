@@ -58,6 +58,9 @@ def make_penalties(prompt_length, sampling):
 
 class MLXBackend:
     def __init__(self, config):
+        if config.get('adapter_path'):
+            from qwenlean.training.checkpoint_audit import require_approved_adapter
+            require_approved_adapter(config['adapter_path'], config)
         self.config = config
         path = snapshot_download(
             config["model"],

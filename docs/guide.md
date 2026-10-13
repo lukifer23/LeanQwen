@@ -6,12 +6,11 @@ teacher or rewrite/judge pipeline and no LM Studio commands. The completed natur
 pilot and later solver corpus are preserved as historical evidence, excluded from
 current SFT. See [source comparison](../reports/external-source-comparison.md),
 [data strategy](training-data-strategy.md) and [corpus audit](../reports/external-human-pilot.json).
-The first external-human smoke stopped before update1. A later retry completed
-one finite optimizer update, then stopped before update2. An experimental frozen
-prefix path caused unsafe GPU pressure and is now disabled. Complete four-step
-smoke/integrity/reload and matched before/after results remain pending. Model jobs
-are stopped; use CPU checks until fresh admission and a monitored profile pass.
-See [current measured training/safety status](../reports/local-training-resource-safety.md).
+Phase 4C reconciled one ordinary chunked-loss update and three unsafe-prefix
+updates. The partial unsafe checkpoint is quarantined and rejected before model
+loading. No successful four-step smoke or approved adapter exists. Fresh admission
+failed both starting RAM and occupied-swap gates, so no Phase 4C GPU job ran.
+See [corrected evidence and operating decision](../reports/phase4c-review.md).
 
 This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.
@@ -300,3 +299,52 @@ means only CPU resource admission/readiness passed, not GPU feasibility or a
 successful optimizer experiment. The supervised SFT command repeats admission and
 requires a live owned watchdog before loading weights. Native MLX memory settings
 are guidelines; independent running-pressure checks must remain enabled.
+
+## Phase 4C supervised baseline and retry
+
+The cohort is immutable:24 source questions plus32 procedural retention tasks,
+56 tasks × thinking/non-thinking =112 jobs. Keep its task/prompt/seed/scorer/model
+contracts. The driver uses the supervised resource policy and a fresh watchdog
+session for each bounded invocation; no backend import/loading before admission.
+
+Inspect saved jobs on the CPU:
+
+```bash
+uv run --frozen --no-sync python scripts/phase4_dev.py --cohort data/generated/external-human-v1-frozen-dev --output runs/phase4c-stock-dev --inspect
+```
+
+After healthy admission, a stock-only batch can execute at most two new jobs:
+
+```bash
+uv run --frozen --no-sync python scripts/phase4_dev.py --cohort data/generated/external-human-v1-frozen-dev --output runs/phase4c-stock-dev --batch-jobs 2 --retry-failed
+```
+
+`--retry-failed` permits a new timestamp/UUID attempt for an existing failed job;
+it never overwrites/resumes failed files or regenerates an accepted durable EOS/cap
+row. Config/model/scoring changes or duplicate successful records fail closed.
+A new failure ends that invocation; there is no automatic retry loop. Infrastructure
+failures stay outside correctness denominators. Mode/overall aggregates appear
+only when all112 jobs are accepted; until then CPU inventory reports pending jobs
+and raw failure/resource events with accuracy null. Do not reuse historical32-task
+measurements as the completed external-human56-task baseline.
+
+Watchdog sessions use random identity tokens, exact PID/create-time checks, fresh
+heartbeats and durable stop records before signaling only the owned trainer. A
+separate liveness thread detects monitor death during blocking work. The total
+120-second smoke deadline covers loading, training, integrity, save/reload and
+short inference; the15-second gradient deadline applies only to the gradient phase.
+CPU fixtures verify monitor-death and normal timeout interruption/cleanup. Metal
+session behavior remains unvalidated, and sampled checks cannot guarantee protection
+from arbitrarily fast spikes. Native MLX memory limits are guidelines, not hard caps.
+
+Reproduce the historical checkpoint/accounting audit without a model:
+
+```bash
+uv run --frozen --no-sync python scripts/audit_phase4c_training.py --output reports/<new-derived-historical-audit>.json
+```
+
+Leave the original zero-step report and checkpoint bytes intact. No inference from
+quarantined weights; only a complete source/integrity/reload-approved adapter can
+be attached. The source corpus and license audit are unchanged. Phase4C does not
+authorize a128-update improvement run; future SFT configuration selection requires
+the completed technical gates and full stock baseline.

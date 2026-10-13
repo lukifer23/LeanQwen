@@ -1,0 +1,410 @@
+{
+  "audit_hash": "dfb36ab888b8e5bc1f1eb427c1dea64bdb122a56361e49cb9ca447c9fb9b7d46",
+  "audit_version": "phase4c-historical-accounting-v1",
+  "completed_updates_across_independent_failed_runs": 4,
+  "correction": "Unsafe frozen-prefix run completed updates1\u20133 and a matching intact step2 checkpoint; fourth microbatch was active when interrupted. Original whole-run zero-step/empty-loss accounting was erroneous. It remains preserved; this derived audit supersedes that accounting only.",
+  "counting_scope": "Four updates across two independently initialized failed runs are not one completed four-step smoke.",
+  "four_step_smoke_completed": false,
+  "gpu_used_for_audit": false,
+  "original_report_path": "reports/external-human-smoke-bounded-prefix-interruption.json",
+  "original_report_sha256": "dd34f83f7f2468044b94234042692d03a7fc981db3174907913c58ef6c58f7b9",
+  "quarantine": "Unsafe checkpoint remains in original ignored run directory, marked unapproved; no inference or publication of weights.",
+  "runs": [
+    {
+      "active_microbatch": null,
+      "approved_adapter": false,
+      "checkpoints": [],
+      "completed_optimizer_updates": 0,
+      "completed_smoke": false,
+      "fresh_adapter_inference": "not_reached",
+      "full_post_training_integrity": "not_reached",
+      "loss_history": [],
+      "max_logged_mlx_peak_bytes": null,
+      "raw_files": [
+        {
+          "bytes": 136,
+          "path": "adapters/external-human-smoke-v1-attempt1/completion.json",
+          "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+        },
+        {
+          "bytes": 1012,
+          "path": "adapters/external-human-smoke-v1-attempt1/config.json",
+          "sha256": "01d5d634c33f0a6f2dac2c308bb54cb6f756a535a321ef554b37898de3819792"
+        },
+        {
+          "bytes": 475,
+          "path": "adapters/external-human-smoke-v1-attempt1/environment.json",
+          "sha256": "f4c18a1cd173a125499766144a9cf253c0405f14d87cc80a750a96d4d0865aa5"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-v1-attempt1/frozen-base-before.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 0,
+          "path": "adapters/external-human-smoke-v1-attempt1/loss.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-v1-attempt1/original-loaded-base.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 4817,
+          "path": "adapters/external-human-smoke-v1-attempt1/quality_manifest.json",
+          "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+        },
+        {
+          "bytes": 1083,
+          "path": "adapters/external-human-smoke-v1-attempt1/raw-console.log",
+          "sha256": "4dd35fbac8c890ebe556b263bb308cefe2d77659e2f82245840544239df839c3"
+        },
+        {
+          "bytes": 478,
+          "path": "adapters/external-human-smoke-v1-attempt1/resource-stop.json",
+          "sha256": "b866b68591e0e3488860379a5bed2d557beaad5f7b6ac8736b7080a3b2a38c8e"
+        }
+      ],
+      "run_path": "adapters/external-human-smoke-v1-attempt1",
+      "save_reload_equivalence": "not_reached"
+    },
+    {
+      "active_microbatch": {
+        "loss_chunk_size": 32,
+        "sequence_length": 146,
+        "step": 2,
+        "supervised_tokens": 82,
+        "supervision_begin": 63,
+        "supervision_end": 145,
+        "task_id": "gsm8k-human-train-00034-0115e82ddf1a324d"
+      },
+      "approved_adapter": false,
+      "checkpoints": [],
+      "completed_optimizer_updates": 1,
+      "completed_smoke": false,
+      "fresh_adapter_inference": "not_reached",
+      "full_post_training_integrity": "not_reached",
+      "loss_history": [
+        {
+          "finite_gradients": true,
+          "loss": 1.0665366649627686,
+          "loss_chunk_size": 32,
+          "mlx_active_bytes": 1506119492,
+          "mlx_cache_bytes": 16433053,
+          "mlx_peak_bytes": 2810513840,
+          "optimizer_steps": 1,
+          "rss_peak_observed_bytes": 2092089344,
+          "sequence_length": 281,
+          "step": 1,
+          "step_s": 1.2159819999978936,
+          "supervised_tokens": 171,
+          "supervised_tokens_per_second": 140.62708165112332,
+          "swap": {
+            "free": 1561395200,
+            "percent": 51.5,
+            "sin": 476866347008,
+            "sout": 513163264,
+            "total": 3221225472,
+            "used": 1659830272
+          },
+          "system_available_ram_bytes": 4533387264,
+          "task_id": "gsm8k-human-train-01595-695a079a906bfc10"
+        }
+      ],
+      "max_logged_mlx_peak_bytes": 2810513840,
+      "raw_files": [
+        {
+          "bytes": 204,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/active-microbatch.json",
+          "sha256": "8aca75a0cefa6aaf0793cdb8888f1a959e2087a604d748107c1a7b9e5389894e"
+        },
+        {
+          "bytes": 136,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/completion.json",
+          "sha256": "e1eb9980b464046dad8830a7e072c1cbfd5d4effbd0f03c034b05964b74a06cf"
+        },
+        {
+          "bytes": 1091,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/config.json",
+          "sha256": "a9ec31902c85fdb885fc627b9a25db8a4f10218fab2e8e578311ffed10425007"
+        },
+        {
+          "bytes": 475,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/environment.json",
+          "sha256": "e442fe31d0453e900c49b1af9edbe5dbb3eb7f4fd24580ebf0a01aa3004c5740"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/frozen-base-before.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 598,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/loss.jsonl",
+          "sha256": "a7a10e2f865372214b67bc9871af3762792622bce9a52630e7f82c9571a901bf"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/original-loaded-base.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 4817,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/quality_manifest.json",
+          "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+        },
+        {
+          "bytes": 1127,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/raw-console.log",
+          "sha256": "1bba68d7f0f7014196e38bba566d577b887cda6857828cdb15a2af5e256d8aaf"
+        },
+        {
+          "bytes": 553,
+          "path": "adapters/external-human-smoke-memory-efficient-attempt1/resource-stop.json",
+          "sha256": "c767a6d28204fc659ab10d57416ada8afe43e188f02a385e4f8427c4557b6084"
+        }
+      ],
+      "run_path": "adapters/external-human-smoke-memory-efficient-attempt1",
+      "save_reload_equivalence": "not_reached"
+    },
+    {
+      "active_microbatch": {
+        "loss_chunk_size": 32,
+        "sequence_length": 333,
+        "step": 4,
+        "supervised_tokens": 228,
+        "supervision_begin": 104,
+        "supervision_end": 332,
+        "task_id": "gsm8k-human-train-01709-f4c022d4b0c16ece"
+      },
+      "approved_adapter": false,
+      "checkpoints": [
+        {
+          "all_parameters_finite": true,
+          "file_bytes": 221943,
+          "file_sha256": "f755acdbae7afb457660d1de480b56cc986545944c17c8d506c04b0b68a4aa80",
+          "gpu_used": false,
+          "header_bytes": 751,
+          "matches_logged_adapter_hash": true,
+          "method": "cpu-safetensors-f32-byte-audit-v1",
+          "parameters": 55296,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/step-000002.safetensors",
+          "step": 2,
+          "tensor_count": 6,
+          "tensor_fingerprint": "7cf287f9fddb85dc13bdde9fc18989a15443748a6dce9ab97e0ccba1a1697ef1",
+          "tensors": [
+            {
+              "data_bytes": 16384,
+              "dtype": "F32",
+              "name": "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_a",
+              "shape": [
+                1024,
+                4
+              ]
+            },
+            {
+              "data_bytes": 98304,
+              "dtype": "F32",
+              "name": "language_model.model.layers.22.linear_attn.in_proj_qkv.lora_b",
+              "shape": [
+                4,
+                6144
+              ]
+            },
+            {
+              "data_bytes": 16384,
+              "dtype": "F32",
+              "name": "language_model.model.layers.23.self_attn.q_proj.lora_a",
+              "shape": [
+                1024,
+                4
+              ]
+            },
+            {
+              "data_bytes": 65536,
+              "dtype": "F32",
+              "name": "language_model.model.layers.23.self_attn.q_proj.lora_b",
+              "shape": [
+                4,
+                4096
+              ]
+            },
+            {
+              "data_bytes": 16384,
+              "dtype": "F32",
+              "name": "language_model.model.layers.23.self_attn.v_proj.lora_a",
+              "shape": [
+                1024,
+                4
+              ]
+            },
+            {
+              "data_bytes": 8192,
+              "dtype": "F32",
+              "name": "language_model.model.layers.23.self_attn.v_proj.lora_b",
+              "shape": [
+                4,
+                512
+              ]
+            }
+          ]
+        }
+      ],
+      "completed_optimizer_updates": 3,
+      "completed_smoke": false,
+      "fresh_adapter_inference": "not_reached",
+      "full_post_training_integrity": "not_reached",
+      "loss_history": [
+        {
+          "adapter_changed_from_initial": true,
+          "adapter_hash": "b77ddaafcf8307e26fbcd5fcb819a37b9d2e8d61d7710ea68af6e6a2a993662b",
+          "finite_gradients": true,
+          "loss": 1.0665366649627686,
+          "loss_chunk_size": 32,
+          "mlx_active_bytes": 1506119492,
+          "mlx_cache_bytes": 1001909,
+          "mlx_peak_bytes": 27863031210,
+          "optimizer_steps": 1,
+          "rss_peak_observed_bytes": 1910849536,
+          "sequence_length": 281,
+          "step": 1,
+          "step_s": 91.06438716699995,
+          "supervised_tokens": 171,
+          "supervised_tokens_per_second": 1.877792244803765,
+          "swap": {
+            "free": 2061434880,
+            "percent": 78.7,
+            "sin": 514732179456,
+            "sout": 548405248,
+            "total": 9663676416,
+            "used": 7602241536
+          },
+          "system_available_ram_bytes": 10586718208,
+          "task_id": "gsm8k-human-train-01595-695a079a906bfc10"
+        },
+        {
+          "adapter_changed_from_initial": true,
+          "adapter_hash": "7cf287f9fddb85dc13bdde9fc18989a15443748a6dce9ab97e0ccba1a1697ef1",
+          "finite_gradients": true,
+          "loss": 1.1969138383865356,
+          "loss_chunk_size": 32,
+          "mlx_active_bytes": 1506135336,
+          "mlx_cache_bytes": 29514951,
+          "mlx_peak_bytes": 27863031210,
+          "optimizer_steps": 2,
+          "rss_peak_observed_bytes": 1910849536,
+          "sequence_length": 146,
+          "step": 2,
+          "step_s": 7.166281416997663,
+          "supervised_tokens": 82,
+          "supervised_tokens_per_second": 11.442475564175398,
+          "swap": {
+            "free": 1440546816,
+            "percent": 87.8,
+            "sin": 514849669120,
+            "sout": 551190528,
+            "total": 11811160064,
+            "used": 10370613248
+          },
+          "system_available_ram_bytes": 12449005568,
+          "task_id": "gsm8k-human-train-00034-0115e82ddf1a324d"
+        },
+        {
+          "adapter_changed_from_initial": true,
+          "adapter_hash": "2e5a1a2c174182200464a90daea45c66dd19f107f838084bc69c08c7b1ed43a6",
+          "finite_gradients": true,
+          "loss": 1.3037223815917969,
+          "loss_chunk_size": 32,
+          "mlx_active_bytes": 1506119056,
+          "mlx_cache_bytes": 1001861,
+          "mlx_peak_bytes": 27863031210,
+          "optimizer_steps": 3,
+          "rss_peak_observed_bytes": 1910849536,
+          "sequence_length": 172,
+          "step": 3,
+          "step_s": 17.917389292000735,
+          "supervised_tokens": 112,
+          "supervised_tokens_per_second": 6.250910675362883,
+          "swap": {
+            "free": 1551826944,
+            "percent": 83.9,
+            "sin": 518958645248,
+            "sout": 558972928,
+            "total": 9663676416,
+            "used": 8111849472
+          },
+          "system_available_ram_bytes": 12057640960,
+          "task_id": "gsm8k-human-train-03622-81bfa4d94f71b435"
+        }
+      ],
+      "max_logged_mlx_peak_bytes": 27863031210,
+      "raw_files": [
+        {
+          "bytes": 206,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/active-microbatch.json",
+          "sha256": "dc874e5496ac4fbb447705195c3ce459e62821f20357109d3b26a41d6e479ad1"
+        },
+        {
+          "bytes": 77,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/completion.json",
+          "sha256": "2b6310e7f674584df864455aa1a789adb4c7da2a475ff49b96752a1fbb237d5d"
+        },
+        {
+          "bytes": 1126,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/config.json",
+          "sha256": "fa1ac35d591833f8fa93d95dfb1659485bfefd965523c4dc518c05b082e836ab"
+        },
+        {
+          "bytes": 475,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/environment.json",
+          "sha256": "a8c89496fc3f26531e899aca1f93e1344a963a996b1d7d2539e154940db2a481"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/frozen-base-before.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 986,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/initial-adapter.json",
+          "sha256": "7349afa0de17a614ff5776523937c437a565ee9f9d4db0bc4f95890bbfcff21e"
+        },
+        {
+          "bytes": 2161,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/loss.jsonl",
+          "sha256": "754504ae09fd4d7013235fa24e13f423e9eeab532f477d49888a1972588d0078"
+        },
+        {
+          "bytes": 145684,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/macos-process-sample.txt",
+          "sha256": "7e52672c9a4d0ca946b8180ec0e020557dea5f525d782605bf1b2df691a09577"
+        },
+        {
+          "bytes": 191,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/original-loaded-base.json",
+          "sha256": "72baacafb034124f2cfd0fd0be90efd1ae81881283c0b78b4dc27c209d0ec18d"
+        },
+        {
+          "bytes": 4817,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/quality_manifest.json",
+          "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+        },
+        {
+          "bytes": 2296,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/raw-console.log",
+          "sha256": "3871ff69b76f0f3ba3be041b94fdca1b5f0e0101d23acbc1fe6b07b9db6a3ac8"
+        },
+        {
+          "bytes": 221943,
+          "path": "adapters/external-human-smoke-bounded-prefix-attempt1/step-000002.safetensors",
+          "sha256": "f755acdbae7afb457660d1de480b56cc986545944c17c8d506c04b0b68a4aa80"
+        }
+      ],
+      "run_path": "adapters/external-human-smoke-bounded-prefix-attempt1",
+      "save_reload_equivalence": "not_reached"
+    }
+  ],
+  "starting_sha": "a9f6bf1f9d66124f71175beb655e166557b18985"
+}

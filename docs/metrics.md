@@ -200,3 +200,13 @@ swap and swap-out counters have different meanings; one counter did not capture
 the full observed pressure. Do not sum overlapping values or infer exact bytes
 from rounded OS text. CPU watchdog tests/admission are not GPU feasibility tests.
 See [saved measurements and limits](../reports/local-training-resource-safety.md).
+
+Phase4C correction: unsafe-prefix loss records support three completed optimizer
+updates and a matching step-two checkpoint, despite the original zero-step summary.
+Byte integrity and finite parameters do not certify safety, frozen-base retention,
+save/reload equivalence or efficacy. The logs also contain an MLX peak27,863,031,210
+bytes; macOS's26.9G footprint is a separate displayed measure. Never merge the
+ordinary one-update trial with those three unsafe updates into a completed smoke.
+Baseline retry accounting accepts genuine EOS/output-cap jobs separately from
+infrastructure failures, reuses successful durable rows, and withholds aggregate
+accuracy until all112 frozen jobs complete. No Phase4C accuracy/token savings exist.

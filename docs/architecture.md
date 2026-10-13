@@ -139,3 +139,22 @@ confirmed; stops preserve snapshots before interrupting only the owned trainer.
 Native MLX's memory setting is a guideline, not a hard allocation cap. CPU watchdog
 fixtures pass, but the supervised GPU smoke has not been attempted after the
 pressure correction. See [measured safety report](../reports/local-training-resource-safety.md).
+
+## Phase 4C acceptance and resource supervision audit
+
+The corrected history is one ordinary-path update plus three unsafe-prefix updates
+across independent failed runs. The finite step-two unsafe checkpoint exists but
+is quarantined. A CPU byte-format parser verifies its intact tensor payload and
+reproduces the exact live step-two tensor fingerprint without loading a model.
+Adapter attachment now rejects quarantine, failed/partial completion, missing
+source permission and mismatched saved/integrity/reloaded tensors before base loading.
+
+Watchdog admission/ready/status files are bound to a fresh session and exact parent
+and monitor identities. Atomic durable stop records precede signals. Parent-side
+liveness supervision interrupts on monitor failure during blocking operations.
+Phases are explicitly journaled; total120 seconds includes model loading, integrity,
+reload and short inference; gradient15 seconds covers only active gradient work.
+Success reports are published after supervision exits and final resource checks
+pass. CPU interruption tests pass; a full supervised Metal session is not validated.
+These sampled controls cannot guarantee protection against arbitrarily fast spikes.
+No native context, RoPE, tokenizer, weights, targets or loss objective changed.
