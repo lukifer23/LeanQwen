@@ -91,7 +91,7 @@ relative to GSM8K; its old solver ID/OOD labels are not current training labels.
 
 ## Optimizer and improvement gates
 
-The first technical experiment uses `external-human-smoke.yaml`: four AdamW
+The active technical experiment uses `external-human-smoke-supervised.yaml`: four AdamW
 steps, rank 4/scale 2, last two mixed-attention blocks, batch/accumulation 1,
 learning rate 1e-4 and a 1024 maximum complete-example bound. Require finite loss
 and gradients, nonzero adapter updates, all frozen-base tensor hashes unchanged,
@@ -99,9 +99,11 @@ save/reload equivalence and fresh inference. The actual examples are shorter tha
 512 tokens; a passing smoke will not establish 1024/2048/4096 capacity.
 
 No improvement run starts before a complete matched stock DEV baseline and measured
-hardware feasibility. Initial proposed pilot: one removable rank-4 two-block
-adapter, sequence bound 512, 128 optimizer updates with accumulation 4 and
-checkpoints every 32 updates. This schedule is conditional, not an executed run.
+hardware feasibility. The current Phase 4D proposal is one removable rank-4 two-block
+adapter, sequence bound 512, 128 optimizer updates with batch/accumulation one and
+checkpoints every 32 updates. It supersedes the earlier accumulation-four proposal.
+This schedule remains unapproved, with a longer deadline still unset; see the
+[active completion plan](project-roadmap.md). No improvement run has executed.
 Periodic matched DEV checks and resource evidence must support the final schedule.
 Stock/adapter thinking and non-thinking comparisons use the same tasks, prompts,
 seeds, decoding, budgets and scoring. Report accuracy, EOS/caps, tokens per correct
@@ -149,22 +151,23 @@ relabeled teacher data. See the unchanged
 [review](../reports/phase3-natural-pilot-review.md) and
 [raw records](../reports/train_candidate_records.jsonl).
 
-### Further bounded-prefix execution
+### Historical bounded-prefix execution (disabled)
 
 The first memory-efficient retry completed one real optimizer update, then stopped
 at the unchanged RAM floor before update2. See the separately preserved
 [attempt report](../reports/external-human-smoke-memory-efficient-attempt1.json).
-It does not pass the four-step/integrity/reload gate. The next local fix materializes
-constant features from frozen prefix layers using the same complete-input decoder
-operations and training-mode recurrence, then differentiates the adapted suffix.
-No prefix contains trainable parameters; input embeddings must be frozen. The
-bounded-prefix profile keeps4 GiB RAM and512 MiB swap-out limits. Dense decoder loss
-and all LoRA gradients agree in small exact-operation CPU equivalence checks.
+It does not pass the four-step/integrity/reload gate. The historical next experiment
+materialized constant features from frozen prefix layers using complete-input
+decoder operations and training-mode recurrence, then differentiated the adapted
+suffix. It preserved frozen embeddings and prefix parameters, with 4 GiB RAM and
+512 MiB swap-out limits. Small CPU equivalence checks passed; the subsequent GPU
+pressure failure disabled this path. Those checks cannot authorize its reuse.
 
 ### System-pressure correction: unsafe prefix path disabled
 
 The frozen-prefix GPU experiment did not pass feasibility: macOS reported26.9G
-peak footprint and the owned run was interrupted before an optimizer update.
+peak footprint. The original report incorrectly said it stopped before any update;
+the later CPU audit established three updates and interruption during the fourth.
 The option and implementation are now disabled; the prior CPU-equivalence result
 cannot authorize it. Preserve its raw diagnostic/failure artifacts. Current SFT
 requires8 GiB startup RAM and bounded existing swap, then an independent CPU watchdog

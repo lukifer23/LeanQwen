@@ -1042,3 +1042,44 @@ resources. A user-controlled quiet session is required; close unused browser/app
 sessions as appropriate, and consider a user-controlled restart if occupied swap
 persists. Both gates must pass before the one supervised smoke. No new CUDA
 backend, dataset research, improvement run or automatic retry was started.
+
+### 2026-10-18 — project audit and active completion plan
+
+Started on clean main at 269b59b9d37a64aabbb07aac63b77f106d81673c, matching
+origin/main after fetch. Reviewed the code paths, historical studies, source
+contracts, failed SFT attempts, supervised controllers and conditional proposal.
+Added docs/project-roadmap.md as the active map from source ingestion through
+matched evaluation and an accepted adapter or reproducible negative result.
+Reconciled the living data strategy with the supervised profile, corrected unsafe
+update accounting and Phase 4D's accumulation-one proposal. Original reports remain
+unchanged; no new target or training configuration was authored.
+
+One fresh CPU admission in runs/phase4d-resource-admission-03 exited 2:
+6,216,712,192 bytes available RAM (5.790 GiB) against 8 GiB required;
+1,012,531,200 bytes occupied swap (0.943 GiB) against the 2 GiB ceiling.
+Only RAM failed. No model load, GPU job, optimizer step, baseline generation,
+automatic retry, unrelated-process signal or relaxed threshold followed. Process
+metadata inspection found no project workload and confirmed the lease was free.
+After a user-controlled resource change, the next admission destination is 04.
+
+Added scripts/audit_project_readiness.py: CPU-only source/template validation,
+published frozen-protocol comparison, saved cohort inventory, historical admission
+inspection and approved-adapter inventory. It never starts admission or model work;
+a saved passing admission cannot authorize a new process. Missing/invalid evidence
+stays explicit. Seven tests cover device-free import, contradictory/stale admission,
+rehashed cohort drift, TRAIN overlap, partial/quarantined updates, missing evidence
+and protected existing outputs. A complete three-update adapter cannot count as a
+four-step smoke. The missing-source fixture uses its own lease file.
+
+Both the eight-example smoke and 768-example pilot passed complete source, review,
+template and token checks. The frozen cohort remains 0/112, accuracy unavailable;
+no approved adapter exists. All 130 starting tracked report/split files, 32 archived
+raw failure files and 10 pinned cached model files retain their hashes. Native
+262144 context and RoPE remain unchanged. CPU hashing loaded no model tensors.
+
+Final full suite: 185 passed; Ruff and whitespace checks passed. Sandbox cache and
+process-list access failures were retained and resolved with sandbox escalation;
+resource admission was not repeated. Raw inventory, validation logs, admission and
+integrity hashes are linked from reports/project-readiness-20261018.json.
+Full improvement SFT remains proposal-only. No successful four-step smoke,
+measured full-pool training capacity or reasoning improvement is claimed.

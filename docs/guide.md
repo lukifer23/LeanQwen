@@ -16,6 +16,11 @@ This guide describes implemented commands. It does not assume an adapter,
 optimized decoder, successful training dataset, or benchmark improvement exists.
 Use the status and reports in the README for measured findings.
 
+The [active completion plan](project-roadmap.md) reconciles the entire pipeline
+and remaining gates. During the current safety-restricted stage, use the supervised
+smoke and bounded DEV driver below for model execution. Historical bare model
+commands in this guide describe interfaces and cannot bypass admission/monitoring.
+
 ## Install and validate
 
 Use Apple Silicon macOS, Python 3.12 and uv. The default project dependencies
@@ -365,10 +370,15 @@ is 1.832 GiB; swap still exceeds the ceiling by 0.483 GiB. See the
 [fresh follow-up snapshot](../reports/phase4d-resource-followup-02.json). No model
 loaded or automatic retry followed.
 
+Admission 03 on 2026-10-18 refused for RAM only: 5.790 GiB available against 8 GiB
+required; 0.943 GiB occupied swap passes the 2 GiB ceiling. No model work or retry
+followed. The [current CPU audit](../reports/project-readiness-20261018.json)
+revalidates both source pools and still finds 0/112 frozen stock DEV jobs.
+
 The next fresh CPU check, after a user-controlled resource change, is:
 
 ```bash
-uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-03
+uv run --frozen --no-sync python scripts/check_training_resources.py --config configs/training/external-human-smoke-supervised.yaml --output runs/phase4d-resource-admission-04
 ```
 
 Only if admission passes, no competing model is active and conditions remain
@@ -390,3 +400,12 @@ The [Phase 4D report](../reports/phase4d-review.md) and
 configuration. It is not executable approval: stock baseline, full smoke,
 499-token complete-example capacity and a measured longer-run deadline are still
 required. The unchanged 120-second smoke deadline cannot authorize 128 updates.
+
+CPU-only readiness inventory, using an existing admission record and a new output:
+
+```bash
+uv run --frozen --no-sync python scripts/audit_project_readiness.py --admission runs/phase4d-resource-admission-03/resource-admission.json --output runs/project-readiness-next.json
+```
+
+This command never retries admission or launches a model. Missing/invalid archives
+produce explicit evidence errors. A saved admission cannot authorize a new process.

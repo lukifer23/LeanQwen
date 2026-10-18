@@ -1,0 +1,290 @@
+{
+  "active_plan": "docs/project-roadmap.md",
+  "date": "2026-10-18",
+  "earlier_untracked_local_admission": {
+    "path": "runs/fresh-agent-resource-admission-01/resource-admission.json",
+    "sha256": "d3df4ea673499330e5dc35a71aa29e6bd5c03d54910dbe9c9b740a5d95a0ccc5"
+  },
+  "execution": {
+    "admission_exit_code": 2,
+    "automatic_retries": 0,
+    "fresh_resource_admissions": 1,
+    "new_baseline_jobs": 0,
+    "new_gpu_workloads": 0,
+    "new_model_loads": 0,
+    "new_optimizer_updates": 0,
+    "resource_limits_changed": false,
+    "training_targets_changed": false,
+    "unrelated_processes_signaled": 0
+  },
+  "improvement_claim": false,
+  "improvement_sft_authorized": false,
+  "integrity": {
+    "evidence": {
+      "path": "runs/project-audit-20261018-01/integrity.json",
+      "sha256": "5658f768a2ede37b0441bab74a0221ae6763e7b13d85d7d7f2fcbe38aac43d15"
+    },
+    "historical_raw_files_unchanged_count": 32,
+    "model_cache_hashes_match": true,
+    "native_max_position_embeddings": 262144,
+    "pinned_model_cache_files_rehashed": 10,
+    "prior_tracked_report_split_count": 130,
+    "prior_tracked_reports_splits_unchanged": true,
+    "rope": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    }
+  },
+  "next_admission_after_resource_change": "runs/phase4d-resource-admission-04",
+  "next_model_action": "Only after healthy fresh admission: at most one unchanged supervised four-step smoke, then qualified serial stock DEV batches; stop on resource refusal/failure.",
+  "objective": "Retain or improve correctness while reducing redundant reasoning and poor termination; no improved model is currently claimed.",
+  "readiness": {
+    "audit_implementation": {
+      "bytes": 10243,
+      "path": "/Users/admin/Downloads/CodeProjects/QwenLean/scripts/audit_project_readiness.py",
+      "sha256": "6d01d76b2b071883b0ffd44d769148caa560327b3da0ebeb55127cf9a3b651f3"
+    },
+    "audit_version": "project-readiness-v1",
+    "checks": {
+      "adapters": {
+        "approved_adapter_count": 0,
+        "attempts": [
+          {
+            "approved": false,
+            "completion": {
+              "error": "",
+              "error_type": "KeyboardInterrupt",
+              "status": "failed"
+            },
+            "logged_optimizer_updates": [
+              1,
+              2,
+              3
+            ],
+            "path": "adapters/external-human-smoke-bounded-prefix-attempt1",
+            "quarantined": true
+          },
+          {
+            "approved": false,
+            "completion": {
+              "error": "Training available-memory floor reached; stop without escalation",
+              "error_type": "RuntimeError",
+              "status": "failed"
+            },
+            "logged_optimizer_updates": [
+              1
+            ],
+            "path": "adapters/external-human-smoke-memory-efficient-attempt1",
+            "quarantined": false
+          },
+          {
+            "approved": false,
+            "completion": {
+              "error": "Training available-memory floor reached; stop without escalation",
+              "error_type": "RuntimeError",
+              "status": "failed"
+            },
+            "logged_optimizer_updates": [],
+            "path": "adapters/external-human-smoke-v1-attempt1",
+            "quarantined": false
+          }
+        ],
+        "matching_four_step_smoke_count": 0,
+        "status": "passed"
+      },
+      "frozen_dev": {
+        "inventory": {
+          "accuracy": null,
+          "completed_jobs": 0,
+          "contract": {
+            "adapter": null,
+            "protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd"
+          },
+          "infrastructure_failed_attempts": [],
+          "planned_jobs": 112,
+          "resource_events": [],
+          "status": "incomplete"
+        },
+        "pending_by_mode": {
+          "nonthinking": 56,
+          "thinking": 56
+        },
+        "protocol": {
+          "bytes": 6775,
+          "path": "reports/external-human-dev-protocol.json",
+          "sha256": "41dede58e7ea3ba1d8e2321da451959f8348a6c9d69bcdbe1dab92ee4fe308e6"
+        },
+        "protocol_hash": "5bc818fe5e780e6e5715b6380991639bcc9ec540a53ae1c8e45c7d8124343efd",
+        "status": "passed"
+      },
+      "pilot_data": {
+        "dataset": {
+          "bytes": 5187919,
+          "path": "data/processed/external-human-pilot-v1-approved/train.jsonl",
+          "sha256": "34e411f743f44e6eb92f2170583adf3a3daee2fbc5da6e8d5a703b1393116a09"
+        },
+        "dataset_hash": "fab6da950a7bbd7ad5ee81911ea7d2129359a93bcdd2ae71bf8680b65972d1b1",
+        "manifest": {
+          "bytes": 66467,
+          "path": "data/processed/external-human-pilot-v1-approved/manifest.json",
+          "sha256": "b37da4b5bb00b2e8e816491841a8bd0d221f1fead430b8982b3d0999da1e36fb"
+        },
+        "manifest_hash": "1d7d0c725533f56fb02fbe303c545c53b1d7c769fbcba02e27303eb55d85c3a7",
+        "quality_basis": "published_human_qa_with_exact_screening",
+        "records": 768,
+        "sequence_length_max": 499,
+        "sequence_length_min": 97,
+        "status": "passed"
+      },
+      "saved_admission": {
+        "authorizes_model_loading": false,
+        "available_ram_gib": 5.789764404296875,
+        "evidence": {
+          "bytes": 696,
+          "path": "runs/phase4d-resource-admission-03/resource-admission.json",
+          "sha256": "21bd04d340367f9640ae2e6d5b3f8e316023d5f910bbf73b9f1dfdb9ae8c3907"
+        },
+        "failed_gates": [
+          "starting_available_ram"
+        ],
+        "occupied_swap_gib": 0.9429931640625,
+        "record": {
+          "baseline": {
+            "available_ram_bytes": 6216712192,
+            "monotonic_s": 145127.064566333,
+            "rss_bytes": 23773184,
+            "swap_out_bytes": 6532235264,
+            "swap_used_bytes": 1012531200
+          },
+          "create_time": 1792344759.930978,
+          "pid": 64558,
+          "policy": {
+            "admission_ram_bytes": 8589934592,
+            "max_gradient_wall_s": 15,
+            "max_process_rss_bytes": 3221225472,
+            "max_start_swap_used_bytes": 2147483648,
+            "max_swap_out_delta_bytes": 536870912,
+            "max_swap_used_growth_bytes": 134217728,
+            "max_training_wall_s": 120,
+            "min_available_ram_bytes": 4294967296,
+            "poll_s": 0.1
+          },
+          "session_id": "a4ce915ab41b4ba9948b6dae1b7fe2e6",
+          "status": "insufficient_starting_ram"
+        },
+        "status": "recorded_refusal"
+      },
+      "smoke_data": {
+        "dataset": {
+          "bytes": 55009,
+          "path": "data/processed/external-human-smoke8-v1/train.jsonl",
+          "sha256": "9c001be4fac78870953953f1eae52a3ab11a4fd502e9a280ab120af1d01d45be"
+        },
+        "dataset_hash": "50a47dac6b91d78bb5d5fe3569a159e74794bc8e382d08c71fd4f0bd3e038a8c",
+        "manifest": {
+          "bytes": 4817,
+          "path": "data/processed/external-human-smoke8-v1/manifest.json",
+          "sha256": "b008fb84bb5d2cf99bfdfd2f6ad0782c156f9822401c507c9a0fd444098b0ea9"
+        },
+        "manifest_hash": "40c8b4340bc1c23e93d00493792c8d026eb4202c35d60c745cc2d1dfbad295fa",
+        "quality_basis": "published_human_qa_with_exact_screening",
+        "records": 8,
+        "sequence_length_max": 333,
+        "sequence_length_min": 137,
+        "status": "passed"
+      }
+    },
+    "config": {
+      "bytes": 1098,
+      "path": "configs/training/external-human-smoke-supervised.yaml",
+      "sha256": "a8795ccb294b71f3ef020b917be0e99e9e5b7875e3becc5d3a38add808c08158"
+    },
+    "evidence_errors": [],
+    "gates": {
+      "frozen_dev_verified": true,
+      "full_pool_capacity": "not_assessed_by_this_audit",
+      "improvement_experiment": "proposal_only",
+      "matching_four_step_smoke_approved": false,
+      "source_and_complete_records": true,
+      "stock_baseline_complete": false
+    },
+    "git_head": "269b59b9d37a64aabbb07aac63b77f106d81673c",
+    "git_worktree": [
+      "M  README.md",
+      "M  docs/guide.md",
+      "A  docs/project-roadmap.md",
+      "M  docs/repository-files.txt",
+      "M  docs/research-log.md",
+      "M  docs/training-data-strategy.md",
+      "A  reports/project-readiness-20261018.json",
+      "AM scripts/audit_project_readiness.py",
+      "AM tests/test_project_readiness.py"
+    ],
+    "improvement_sft_authorized": false,
+    "model_execution_authorized": false,
+    "next_action": "After a resource change, one fresh admission and at most one supervised smoke; stop on refusal/failure. Complete serial monitored stock DEV batches only when qualified. Capacity and improvement SFT require their remaining gates and separate authorization.",
+    "observed_utc": "2026-10-18T17:44:52.212312+00:00",
+    "scope": "CPU archives/tokenizer only; no resource admission or model workload. Saved admissions do not establish present resource availability.",
+    "status": "qualification_incomplete"
+  },
+  "readiness_raw": {
+    "path": "runs/project-audit-20261018-01/readiness-release.json",
+    "sha256": "802b4826aec7fa7672633c497c512f12be15e68d6583bc2e9572e104d657fe45"
+  },
+  "remaining_gates": [
+    "successful_supervised_four_step_smoke",
+    "complete_frozen_112_job_stock_baseline",
+    "measured_full_pool_capacity",
+    "justified_longer_deadline_and_explicit_improvement_authorization",
+    "bounded_sft_persistence_acceptance",
+    "matched_dev_efficiency_correctness_context_retention",
+    "reproducible_decision_and_handoff"
+  ],
+  "starting_branch": "main",
+  "starting_remote_main_matches": true,
+  "starting_sha": "269b59b9d37a64aabbb07aac63b77f106d81673c",
+  "starting_worktree": "clean",
+  "status": "resource_admission_refused_no_model_work",
+  "tooling_failures": [
+    {
+      "operation": "Initial uv pytest/Ruff calls",
+      "reason": "Sandbox denied uv cache access; rerun with required sandbox escalation.",
+      "retained_logs": [
+        "runs/project-audit-20261018-01/pytest.txt",
+        "runs/project-audit-20261018-01/ruff.txt"
+      ]
+    },
+    {
+      "evidence": {
+        "path": "runs/project-audit-20261018-01/workloads-inspection-failure.json",
+        "sha256": "e0d9788c813bb59aef74be9363d671f428de4196fa8f568c90772e294c69c7b7"
+      },
+      "operation": "Initial read-only psutil process inventory",
+      "reason": "Sandbox denied process-list sysctl; only metadata inspection was rerun with escalation."
+    }
+  ],
+  "validation": {
+    "full_local_tests_passed": 185,
+    "pytest_log": {
+      "path": "runs/project-audit-20261018-01/pytest-release.txt",
+      "sha256": "84145c701bf095ccf8709a12b833c54b4e0c0fa678e3f245e7dc2e50077255a0"
+    },
+    "ruff": "passed",
+    "ruff_log": {
+      "path": "runs/project-audit-20261018-01/ruff-final.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    }
+  },
+  "workloads": {
+    "inspection_scope": "Process metadata; command arguments inspected only for Python project ownership and never retained. No process signaled.",
+    "model_lease": "available_and_released",
+    "observed_project_workloads": []
+  }
+}

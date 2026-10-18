@@ -30,6 +30,7 @@ docs/guide.md
 docs/metrics.md
 docs/phase2-methodology.md
 docs/phase4-verified-reasoning.md
+docs/project-roadmap.md
 docs/repository-files.txt
 docs/research-log.md
 docs/training-data-strategy.md
@@ -172,6 +173,7 @@ reports/phase4d-review.md
 reports/procedural_v2_quality.json
 reports/procedural_v2_quality.md
 reports/process_audit.json
+reports/project-readiness-20261018.json
 reports/prompt_conclusion_states.jsonl
 reports/prompt_format_meta_v2.jsonl
 reports/prompt_policy_ablation.md
@@ -202,6 +204,7 @@ scripts/approve_natural_dataset.py
 scripts/approve_solver_pool.py
 scripts/audit_external_sources.py
 scripts/audit_phase4c_training.py
+scripts/audit_project_readiness.py
 scripts/build_solver_corpus.py
 scripts/calibrate_metrics.py
 scripts/check_training_resources.py
@@ -242,6 +245,7 @@ tests/test_mlx_loss.py
 tests/test_phase2_harness.py
 tests/test_phase4c_artifacts.py
 tests/test_procedural_v2.py
+tests/test_project_readiness.py
 tests/test_sampling.py
 tests/test_selection.py
 tests/test_solver_reasoning.py

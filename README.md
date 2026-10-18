@@ -10,6 +10,12 @@ all development stays on `main`.
 
 ## Current status
 
+The [current state and completion plan](docs/project-roadmap.md) maps the entire
+pipeline, measured results, remaining gates and acceptance criteria. A reproducible
+[CPU readiness audit](reports/project-readiness-20261018.json) now checks the local
+source pools, published DEV protocol, saved jobs and adapter approval without
+starting admission or a model workload.
+
 Phase 4 now uses independently sourced external reasoning. The first pilot contains
 **768 distinct original human-written GSM8K TRAIN solutions**, with 64 reserved
 DEV questions. The source is pinned and MIT licensed; original reasoning is
@@ -33,14 +39,15 @@ preserved beside the [corrected derived audit](reports/phase4c-historical-traini
 That partial checkpoint is quarantined, never an approved or improved adapter;
 frozen-prefix materialization remains disabled.
 
-The latest user-requested Phase 4D follow-up admission refused model work:
-**6.168 GiB available RAM** versus the 8 GiB requirement and **2.483 GiB occupied
-swap** versus the 2 GiB ceiling. No model loaded, optimizer step or baseline
-generation ran. The model lease was free. A quiet session is still needed; no
-threshold was relaxed and no application was stopped. Dataset/source/license
-hashes and prior report/split files remain unchanged. See the
-[fresh admission record](reports/phase4d-resource-followup-02.json); earlier
-Phase 4D measurements remain preserved in their original reports.
+The 2026-10-18 fresh Phase 4D admission refused model work:
+**5.790 GiB available RAM** versus the 8 GiB requirement. **0.943 GiB occupied
+swap** passes the 2 GiB ceiling. No model loaded, optimizer step or baseline
+generation ran; no automatic retry followed. A quiet session is still needed;
+no threshold was relaxed and no application was stopped. Both approved pools
+revalidated, and prior report/split files remain unchanged. See the
+[current audit and raw admission](reports/project-readiness-20261018.json);
+[earlier admission measurements](reports/phase4d-resource-followup-02.json)
+remain preserved in their original reports.
 
 The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed,
 with **0/112** thinking/non-thinking jobs complete. CPU safety review tightened
@@ -152,6 +159,11 @@ workloads; do not remove its lock file while a process is active. Configurations
 model pins, environments, dataset hashes, seeds, full outputs, emitted IDs and
 metrics are saved per run. Weights/caches/raw run directories stay out of Git.
 Environment validation refuses existing output; use `--output` for a new manifest.
+
+During the current safety-restricted stage, model execution uses the supervised
+smoke and bounded DEV driver in the [active plan](docs/project-roadmap.md).
+Historical bare inference/diagnostic examples describe interfaces, not permission
+to bypass fresh admission and independent monitoring.
 
 ```bash
 uv run --frozen qwenlean analyze runs/<run>
