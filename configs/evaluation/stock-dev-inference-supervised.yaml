@@ -1,0 +1,17 @@
+# Inference-only supervision profile for the frozen stock/adapter DEV cohort.
+# It never authorizes optimizer work: the training smoke keeps its own 8 GiB
+# admission in configs/training/external-human-smoke-supervised.yaml.
+# Admission = unchanged 4 GiB running reserve + measured 2048-token stock
+# inference RSS peak (2.140 GB, reports/baseline.md) + 0.5 GiB margin.
+name: stock-dev-inference-supervised-resource-profile
+workload: inference_only
+min_available_ram_bytes: 4294967296
+training_admission_ram_bytes: 6979321856
+max_start_swap_used_bytes: 2147483648
+max_swap_used_growth_bytes: 134217728
+max_swap_out_delta_bytes: 536870912
+max_process_rss_bytes: 3221225472
+mlx_cache_limit_bytes: 67108864
+mlx_memory_limit_bytes: 3221225472
+max_training_wall_s: 120
+max_gradient_wall_s: 15

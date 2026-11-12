@@ -49,6 +49,14 @@ revalidated, and prior report/split files remain unchanged. See the
 [earlier admission measurements](reports/phase4d-resource-followup-02.json)
 remain preserved in their original reports.
 
+**2026-11-12:** the pinned weights and environment had been removed from this Mac
+and were restored; all 10 model files match their recorded hashes and the
+[fresh CPU audit](reports/project-readiness-20261112.json) verifies both pools
+and the frozen cohort again. The stock baseline now has its own inference-only
+supervision profile (6.5 GiB admission, unchanged 4 GiB reserve and other limits);
+the training smoke still requires 8 GiB. Available RAM read 4.848 GiB, so no
+admission was spent and no model ran.
+
 The [56-task DEV protocol](reports/external-human-dev-protocol.json) remains fixed,
 with **0/112** thinking/non-thinking jobs complete. CPU safety review tightened
 pending-checkpoint reload validation and offline adapter approval. The baseline

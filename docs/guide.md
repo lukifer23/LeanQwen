@@ -309,8 +309,17 @@ are guidelines; independent running-pressure checks must remain enabled.
 
 The cohort is immutable:24 source questions plus32 procedural retention tasks,
 56 tasks × thinking/non-thinking =112 jobs. Keep its task/prompt/seed/scorer/model
-contracts. The driver uses the supervised resource policy and a fresh watchdog
+contracts. The driver uses a supervised resource policy and a fresh watchdog
 session for each bounded invocation; no backend import/loading before admission.
+
+Since 2026-11-12 the baseline defaults to the inference-only profile
+`configs/evaluation/stock-dev-inference-supervised.yaml`: 6.5 GiB starting
+available RAM (unchanged 4 GiB running reserve + the measured 2.140 GB stock
+2048-token RSS peak + 0.5 GiB margin). Swap, RSS, MLX and wall limits equal the
+training smoke's. `validate_resource_profile` hard-codes those floors, so a
+profile file cannot weaken them, and the chosen profile hash is bound to the
+output directory. The training smoke keeps its own 8 GiB admission. The frozen
+protocol's own 4 GiB generation floor is unchanged.
 
 Inspect saved jobs on the CPU:
 
@@ -323,6 +332,15 @@ After healthy admission, a stock-only batch can execute at most two new jobs:
 ```bash
 uv run --frozen --no-sync python scripts/phase4_dev.py --cohort data/generated/external-human-v1-frozen-dev --output runs/phase4c-stock-dev --batch-jobs 2 --retry-failed
 ```
+
+Serial completion without retries, one job per fresh supervised process:
+
+```bash
+uv run --frozen --no-sync python scripts/phase4_dev.py --cohort data/generated/external-human-v1-frozen-dev --output runs/phase4c-stock-dev --batch-jobs 1 --serial-invocations 112
+```
+
+Each child performs its own admission. The first refusal, resource stop or failed
+job ends the sequence with exit 2; it never passes `--retry-failed`.
 
 `--retry-failed` permits a new timestamp/UUID attempt for an existing failed job;
 it never overwrites/resumes failed files or regenerates an accepted durable EOS/cap

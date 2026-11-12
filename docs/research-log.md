@@ -1083,3 +1083,35 @@ resource admission was not repeated. Raw inventory, validation logs, admission a
 integrity hashes are linked from reports/project-readiness-20261018.json.
 Full improvement SFT remains proposal-only. No successful four-step smoke,
 measured full-pool training capacity or reasoning improvement is claimed.
+
+### 2026-11-12 — restoration, inference profile and serial baseline driver
+
+Started on clean main at 0d18fee; origin/main was 10 dependabot lockfile commits
+ahead (aiohttp, pillow, setuptools, filelock, certifi) and was fast-forwarded to
+5f61f50. `.venv` and the pinned Qwen/Qwen3.5-0.8B snapshot were absent locally
+(hub cache directory modified 2026-11-06; only lock files remained). Before
+restoration the CPU audit reported invalid_or_missing_evidence for smoke_data,
+pilot_data and frozen_dev, and four tokenizer-dependent tests failed. Rebuilt the
+environment with `uv sync --frozen`, downloaded revision
+2fc06364715b967f1860aea9cf38778875588b17 and rehashed all 10 files: every SHA-256
+equals runs/project-audit-20261018-01/integrity.json. The new audit
+reports/project-readiness-20261112.json has no evidence errors:
+source_and_complete_records and frozen_dev_verified true, 0/112 baseline jobs,
+no approved smoke. Local runs/, data/ and adapters/ evidence was still present.
+
+By user delegation the stock baseline received an inference-only supervision
+profile, configs/evaluation/stock-dev-inference-supervised.yaml: 6.5 GiB starting
+available RAM = 4 GiB running reserve + 2.140 GB measured stock 2048-token RSS
+peak + 0.5 GiB margin. Occupied-swap, swap growth, swap-out, RSS, MLX and
+120-second limits equal the training smoke. scripts/phase4_dev.py validates any
+profile against hard-coded floors and binds its hash to the output. The 8 GiB
+training-smoke admission and the frozen protocol are unchanged. Added
+--serial-invocations: fresh single-batch child processes, each with its own
+admission, ending at the first nonzero exit with no retry.
+
+CPU memory reading (not an admission): 4.848 GiB available, 1.721 GiB occupied
+swap. Application RSS totals: Chrome 3.85 GiB, Codex about 1.3 GiB, ChatGPT
+0.25 GiB. Below 6.5 GiB, and loading about 2 GiB would cross the protocol's own
+4 GiB floor, so no admission was spent, no model loaded and no application was
+signaled. Full suite 198 passed; Ruff passed. Deleting the merged remote
+dependabot branch was refused by the agent permission layer and is left to the user.

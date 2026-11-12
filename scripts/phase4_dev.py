@@ -2,6 +2,8 @@
 
 import argparse
 import json
+import subprocess
+import sys
 from pathlib import Path
 from uuid import uuid4
 
@@ -12,6 +14,32 @@ from qwenlean.evaluation.single_job import evaluate_single, inspect_single
 from qwenlean.evaluation.summary import summarize
 from qwenlean.training.watchdog import set_phase
 from qwenlean.utils.io import digest, read_jsonl, write_json, write_jsonl
+
+GIB = 1024**3
+INFERENCE_PROFILE = 'configs/evaluation/stock-dev-inference-supervised.yaml'
+# Measured stock 2048-token inference RSS peak was 2.140 GB; require 2 GiB of
+# admission headroom above the running reserve whatever profile is supplied.
+INFERENCE_HEADROOM_BYTES = 2*GIB
+
+
+def validate_resource_profile(profile, protocol):
+    """Hard floors for any baseline supervision profile; a file cannot weaken them."""
+    reserve = max(c.get('min_available_ram_bytes', 0) for c in protocol['configs'].values())
+    required = ('min_available_ram_bytes', 'training_admission_ram_bytes', 'max_start_swap_used_bytes',
+                'max_swap_used_growth_bytes', 'max_swap_out_delta_bytes', 'max_process_rss_bytes',
+                'mlx_cache_limit_bytes', 'mlx_memory_limit_bytes', 'max_training_wall_s')
+    if any(type(profile.get(k)) is not int or profile[k] <= 0 for k in required):
+        raise ValueError('Baseline resource profile must state every positive integer limit')
+    if (profile['min_available_ram_bytes'] < max(reserve, 4*GIB)
+            or profile['training_admission_ram_bytes'] < profile['min_available_ram_bytes']+INFERENCE_HEADROOM_BYTES
+            or profile['max_start_swap_used_bytes'] > 2*GIB
+            or profile['max_swap_used_growth_bytes'] > 128*1024**2
+            or profile['max_swap_out_delta_bytes'] > 512*1024**2
+            or profile['max_process_rss_bytes'] > 3*GIB
+            or profile['mlx_memory_limit_bytes'] > 3*GIB
+            or profile['max_training_wall_s'] > 120):
+        raise ValueError('Baseline resource profile weakens a supervised safety limit')
+    return profile
 
 
 def freeze(corpus, destination):
@@ -83,7 +111,7 @@ def inspect_cohort(cohort, output, adapter=None):
     return result, records, pending
 
 
-def run(cohort, output, adapter=None, batch_jobs=2, retry_failed=False):
+def run(cohort, output, adapter=None, batch_jobs=2, retry_failed=False, resource_profile=INFERENCE_PROFILE):
     from qwenlean.training.watchdog import training_watchdog
     from qwenlean.utils.process_lock import model_process_lock
     if type(batch_jobs) is not int or not 1 <= batch_jobs <= 2:
@@ -98,13 +126,15 @@ def run(cohort, output, adapter=None, batch_jobs=2, retry_failed=False):
         return result
     if any(j['prior_status'] == 'failed' for j in pending[:batch_jobs]) and not retry_failed:
         raise ValueError('Failed job preserved; --retry-failed explicitly permits a new unique attempt')
-    resource_config = yaml.safe_load(Path('configs/training/external-human-smoke-supervised.yaml').read_text())
+    protocol = json.loads((cohort/'protocol.json').read_text())
+    resource_config = validate_resource_profile(yaml.safe_load(Path(resource_profile).read_text()), protocol)
     safety_hash = digest(resource_config)
     safety_path = output/'resource-contract.json'
     if safety_path.exists() and json.loads(safety_path.read_text())['config_hash'] != safety_hash:
         raise ValueError('Baseline operational resource policy changed')
     if not safety_path.exists():
         write_json(safety_path, {'config_hash': safety_hash, 'config': resource_config,
+                                'profile_path': str(resource_profile),
                                 'frozen_protocol_unchanged': True, 'batch_jobs_max': 2})
     invocation = output/'supervision'/uuid4().hex
     invocation.mkdir(parents=True)
@@ -143,6 +173,30 @@ def run(cohort, output, adapter=None, batch_jobs=2, retry_failed=False):
     return result
 
 
+def serial(cohort, output, adapter=None, batch_jobs=1, resource_profile=INFERENCE_PROFILE,
+           max_invocations=112):
+    """Serial bounded invocations, each a new process with its own fresh admission.
+
+    This parent never imports MLX or holds the lease. The first refusal, resource
+    stop or failed job ends the sequence: nothing is retried and failed jobs are
+    never reattempted here.
+    """
+    if type(max_invocations) is not int or not 1 <= max_invocations <= 112:
+        raise ValueError('Serial baseline permits 1..112 invocations')
+    command = [sys.executable, str(Path(__file__).resolve()), '--cohort', str(cohort), '--output', str(output),
+               '--batch-jobs', str(batch_jobs), '--resource-profile', str(resource_profile)]
+    if adapter:
+        command += ['--adapter', str(adapter)]
+    for started in range(max_invocations):
+        if inspect_cohort(cohort, output, adapter)[0]['status'] == 'complete':
+            return {'status': 'complete', 'invocations': started}
+        code = subprocess.call(command, stdout=subprocess.DEVNULL)
+        if code != 0:
+            return {'status': 'stopped_without_retry', 'invocations': started+1, 'exit_code': code}
+    final = inspect_cohort(cohort, output, adapter)[0]['status']
+    return {'status': final, 'invocations': max_invocations}
+
+
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--corpus')
@@ -153,10 +207,20 @@ if __name__ == '__main__':
     p.add_argument('--inspect', action='store_true', help='CPU-only saved-job inventory; no model loading')
     p.add_argument('--retry-failed', action='store_true')
     p.add_argument('--batch-jobs', type=int, default=2)
+    p.add_argument('--resource-profile', default=INFERENCE_PROFILE,
+                   help='Supervision limits; validated against hard floors and bound to the output')
+    p.add_argument('--serial-invocations', type=int,
+                   help='Run up to N fresh single-batch processes; stop at the first refusal or failure')
     a = p.parse_args()
+    if a.serial_invocations:
+        if a.retry_failed or a.freeze or a.inspect:
+            raise SystemExit('--serial-invocations never retries, freezes or inspects')
+        outcome = serial(a.cohort, a.output, a.adapter, a.batch_jobs, a.resource_profile, a.serial_invocations)
+        print(json.dumps(outcome, indent=2))
+        raise SystemExit(0 if outcome['status'] == 'complete' else 2)
     if a.freeze:
         freeze(a.corpus, a.cohort)
     elif a.inspect:
         print(json.dumps(inspect_cohort(a.cohort, a.output, a.adapter)[0], indent=2))
     else:
-        print(json.dumps(run(a.cohort, a.output, a.adapter, a.batch_jobs, a.retry_failed), indent=2))
+        print(json.dumps(run(a.cohort, a.output, a.adapter, a.batch_jobs, a.retry_failed, a.resource_profile), indent=2))

@@ -94,7 +94,7 @@ sampler variance remains unestimated. Completion is still 0/112.
 |---|---|---|
 | 1. Resource qualification | Fresh admission: at least 8 GiB available RAM and at most 2 GiB occupied swap | One check after a resource change; refusal stops model work |
 | 2. Technical smoke | Four finite nonzero updates; unchanged frozen base; saved/reloaded adapter fingerprints and exact logits; fresh inference; clean watchdog exit | At most one qualified attempt; failure stops model work with no automatic GPU retry |
-| 3. Stock reference | All 112 frozen jobs complete; raw records and per-mode correctness/EOS/caps/tokens/latency | Serial monitored batches of one or two jobs, unchanged tasks/seeds/samplers/budgets |
+| 3. Stock reference | All 112 frozen jobs complete; raw records and per-mode correctness/EOS/caps/tokens/latency | Serial monitored batches of one or two jobs under the inference profile (6.5 GiB admission), unchanged tasks/seeds/samplers/budgets |
 | 4. Capacity and experiment contract | Complete 499-token example feasibility; measured total cost; defensible longer deadline; frozen periodic DEV IDs and acceptance rules | Remains gated; the four-step smoke does not authorize new capacity workloads or longer SFT |
 | 5. Bounded improvement SFT | Approved conditional configuration; complete update/resource/checkpoint journals and persistence acceptance | Proposal only; the existing 128-update design is not authorized |
 | 6. Matched evaluation | Same 56 tasks/both modes, paired correctness and efficiency, hard-task/non-thinking retention and supported context checks | Separately qualified monitored execution; no partial-cohort success claim |
@@ -124,6 +124,22 @@ Trajectory compression, preference optimization, adaptive budgets and a CUDA
 backend are future alternatives. They are not prerequisites for completing this
 bounded human-reference SFT experiment. A refused shared-host admission does not
 by itself establish that the ordinary MLX path is infeasible or justify migration.
+
+## 2026-11-12 update: restored evidence and inference-sized baseline profile
+
+The pinned model snapshot and `.venv` were absent from this Mac (hub cache changed
+2026-11-06). The pinned revision was downloaded again; all 10 files match the
+hashes saved on 2026-10-18. The CPU audit
+[project-readiness-20261112.json](../reports/project-readiness-20261112.json)
+again verifies both source pools and the frozen DEV cohort; 0/112 jobs, no smoke.
+
+Milestone 3 no longer waits on the training gate. The stock baseline uses
+`configs/evaluation/stock-dev-inference-supervised.yaml` (6.5 GiB admission, same
+4 GiB reserve and all other limits; hard floors enforced in code). Milestone 2
+keeps its 8 GiB admission. The milestones are independent: run the baseline when
+6.5 GiB is available and the smoke when 8 GiB is available. A CPU reading on
+2026-11-12 showed 4.848 GiB available and 1.721 GiB occupied swap, below both, so
+no admission was spent and no model was loaded. Qwen3.5-0.8B remains the only model.
 
 ## Resume from evidence
 
