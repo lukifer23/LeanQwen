@@ -1115,3 +1115,16 @@ swap. Application RSS totals: Chrome 3.85 GiB, Codex about 1.3 GiB, ChatGPT
 4 GiB floor, so no admission was spent, no model loaded and no application was
 signaled. Full suite 198 passed; Ruff passed. Deleting the merged remote
 dependabot branch was refused by the agent permission layer and is left to the user.
+
+### 2026-11-12 — first inference-profile admission refused
+
+The user approved a graceful quit of Google Chrome to free memory. After the quit
+a CPU reading showed 6.836 GiB available and 1.682 GiB occupied swap. Chrome was
+relaunched at 00:20:17 local time (parent launchd; the launcher is unidentified)
+before the baseline invocation started. The single baseline invocation
+(runs/phase4c-stock-dev, inference profile, batch 1) recorded
+insufficient_starting_ram: 5.227 GiB available against 6.5 GiB required; 1.674 GiB
+occupied swap passed. No MLX import, model load or generation occurred; 0/112
+jobs remain. No retry followed and Chrome was not quit a second time. The 8 GiB
+training smoke was not attempted. Raw record:
+runs/phase4c-stock-dev/supervision/ac9c32ef01a740bfad3215b490b849d6/resource-admission.json.
